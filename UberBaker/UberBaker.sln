@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uber.Core", "Uber.Core\Uber.Core.csproj", "{EB41FB81-4561-4B10-8C79-C1FC405DD4DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uber.Data", "..\Uber.Data\Uber.Data.csproj", "{E2CD674D-A1FD-4632-8828-0B8842520645}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uber.Data", "Uber.Data\Uber.Data.csproj", "{E2CD674D-A1FD-4632-8828-0B8842520645}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uber.Web", "..\Uber.Web\Uber.Web.csproj", "{9D592CF6-DFB0-427F-A411-742D8A03F24F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uber.Web", "Uber.Web\Uber.Web.csproj", "{9D592CF6-DFB0-427F-A411-742D8A03F24F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

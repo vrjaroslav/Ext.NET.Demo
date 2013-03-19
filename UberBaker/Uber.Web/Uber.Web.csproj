@@ -40,18 +40,18 @@
   <ItemGroup>
     <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Uber.Core\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Ext.Net">
-      <HintPath>..\Uber.Core\packages\Ext.NET.2.1.1\lib\net40\Ext.Net.dll</HintPath>
+      <HintPath>..\packages\Ext.NET.2.1.1\lib\net40\Ext.Net.dll</HintPath>
     </Reference>
     <Reference Include="Ext.Net.Utilities">
-      <HintPath>..\Uber.Core\packages\Ext.NET.Utilities.2.1.0\lib\Ext.Net.Utilities.dll</HintPath>
+      <HintPath>..\packages\Ext.NET.Utilities.2.1.0\lib\Ext.Net.Utilities.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Uber.Core\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Web.DynamicData" />
@@ -71,7 +71,7 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="Transformer.NET">
-      <HintPath>..\Uber.Core\packages\Transformer.NET.2.1.1\lib\net35\Transformer.NET.dll</HintPath>
+      <HintPath>..\packages\Transformer.NET.2.1.1\lib\net35\Transformer.NET.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -99,7 +99,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Uber.Core\Uber.Core\Uber.Core.csproj">
+    <ProjectReference Include="..\Uber.Core\Uber.Core.csproj">
       <Project>{eb41fb81-4561-4b10-8c79-c1fc405dd4da}</Project>
       <Name>Uber.Core</Name>
     </ProjectReference>

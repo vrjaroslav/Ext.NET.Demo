@@ -194,7 +194,7 @@
                     </Columns>
                 </ColumnModel>
                 <Plugins>
-                    <ext:RowEditing runat="server" SaveHandler="var data = this.editingPlugin.context.record.data; this.editingPlugin.completeEdit(); App.direct.UpdateProduct(data.id, data.name, data.type.id);" />
+                    <ext:RowEditing runat="server" SaveHandler="var data = this.editingPlugin.context.record.data; this.editingPlugin.completeEdit(); console.log(data.type.id); App.direct.UpdateProduct(data.id, data.name, data.type);" />
                 </Plugins>
                 <DockedItems>
                     <ext:PagingToolbar runat="server" Dock="Bottom" />

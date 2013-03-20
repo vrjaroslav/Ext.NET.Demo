@@ -74,14 +74,19 @@
         var product = data.Products.Find(id);
         var productType = data.ProductTypes.Find(type);
 
-        if (product != null && productType != null)
+        if (product != null)
         {
             product.Name = name;
-            product.Type = productType;
-
             data.SaveChanges();
-            this.BindProducts();
         }
+        
+        if (productType != null)
+        {
+            product.Type = productType;
+            data.SaveChanges();
+        }
+        
+        this.BindProducts();        
     }
 </script>
 
@@ -93,6 +98,8 @@
 
     <script>
         var prepareTypeId = function (value, record) {
+            console.log(arguments);
+
             if (!Ext.isEmpty(value)) {
                 return value;
             }
@@ -125,6 +132,21 @@
             data = this.editingPlugin.context.record.data;
             App.direct.UpdateProduct(data.id, data.name, data.typeId);
         };
+
+        Ext.create("Ext.form.Panel", {
+            title: "Example",
+            height: 215,
+            width: 350,
+            defaultAnchor: "100%",
+            bodyPadding: 5,
+            items: [{
+                xtype: "textfield",
+                fieldLabel: "Message"
+            }],    
+            buttons: [{
+                text: "Submit"
+            }]
+        });
     </script>
 </head>
 <body>
@@ -235,12 +257,14 @@
                             runat="server" 
                             Text="Date Created" 
                             DataIndex="dateCreated" 
-                            Format="HH:mm:ss" />
+                            Format="HH:mm:ss" 
+                            />
                         <ext:DateColumn 
                             runat="server" 
                             Text="Date Updated" 
                             DataIndex="dateUpdated" 
-                            Format="HH:mm:ss" />
+                            Format="HH:mm:ss" 
+                            />
                     </Columns>
                 </ColumnModel>
                 <Plugins>

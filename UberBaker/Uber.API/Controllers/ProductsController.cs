@@ -18,9 +18,10 @@ namespace Uber.API.Controllers
         private UberContext data = new UberContext();
 
         // GET api/Products
-        public IEnumerable<Product> GetProducts()
+        [Queryable]
+        public IQueryable<Product> GetProducts()
         {
-            return data.Products.AsEnumerable();
+            return data.Products;
         }
 
         // GET api/Products/5

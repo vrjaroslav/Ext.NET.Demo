@@ -220,12 +220,14 @@
                             runat="server" 
                             Text="Date Created" 
                             DataIndex="dateCreated" 
-                            Format="HH:mm:ss" />
+                            Format="HH:mm:ss" 
+                            />
                         <ext:DateColumn 
                             runat="server" 
                             Text="Date Updated" 
                             DataIndex="dateUpdated" 
-                            Format="HH:mm:ss" />
+                            Format="HH:mm:ss" 
+                            />
                     </Columns>
                 </ColumnModel>
                 <Plugins>

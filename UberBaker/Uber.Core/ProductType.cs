@@ -1,12 +1,15 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Uber.Core
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class ProductType : BaseItem
     {
+        [JsonProperty("name")]
         public string Name { get; set; }
+
+        [JsonProperty("products")]
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

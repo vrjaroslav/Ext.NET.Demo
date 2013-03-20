@@ -8,27 +8,85 @@
     {
         if (!X.IsAjaxRequest)
         {
-            var data = new UberContext();
-
-            var store = this.GridPanel1.GetStore();
-
-            store.Data = data.Products;
-            store.DataBind();
+            this.BindProducts();
+            this.BindProductTypes();
         }
+    }
+
+    protected void GetProducts(object sender, StoreReadDataEventArgs e)
+    {
+        this.BindProducts();
+    }
+
+    protected void GetProductTypes(object sender, StoreReadDataEventArgs e)
+    {
+        this.BindProductTypes();
     }
 
     protected void Button1_Click(object sender, DirectEventArgs e)
     {
         using (var data = new UberContext())
         {
-            var product = new Product { Name = this.txtName.Text };
+            var product = new Product { Name = this.txtProductName.Text };
 
             data.Products.Add(product);
 
             data.SaveChanges();
         }
-        
-        this.GridPanel1.GetStore().Reload();
+
+        this.BindProducts();
+    }
+
+    protected void Button2_Click(object sender, DirectEventArgs e)
+    {
+        using (var data = new UberContext())
+        {
+            var productType = new ProductType { Name = this.txtProductTypeName.Text };
+
+            data.ProductTypes.Add(productType);
+
+            data.SaveChanges();
+        }
+
+        this.BindProductTypes();
+    }
+    
+    public void BindProducts()
+    {
+        var data = new UberContext();
+
+        var store = this.GridPanel1.GetStore();
+
+        store.Data = data.Products;
+        store.DataBind();
+    }
+
+    public void BindProductTypes()
+    {
+        var data = new UberContext();
+
+        var store = this.storeProductTypes;
+
+        store.Data = data.ProductTypes;
+        store.DataBind();
+    }
+
+    [DirectMethod]
+    public void SaveProduct(int id, string name, int type)
+    {
+        var data = new UberContext();
+
+        var product = data.Products.Find(id);
+        var productType = data.ProductTypes.Find(type);
+
+        if (product != null && productType != null)
+        {
+            product.Type = productType;
+
+            data.SaveChanges();
+
+            this.BindProducts();
+        }
     }
 </script>
 
@@ -37,48 +95,120 @@
 <html>
 <head runat="server">
     <title>Ext.NET Demo</title>
+
+    <script>
+        var productTypeRenderer = function (value) {
+            var r = App.storeProductTypes.getById(value);
+
+            if (Ext.isEmpty(r)) {
+                return "";
+            }
+
+            return r.get("name");
+        };
+    </script>
 </head>
 <body>
-<form runat="server">
     <ext:ResourceManager runat="server" />
 
-    <ext:TextField ID="txtName" runat="server" FieldLabel="Name" />
-
-    <ext:Button runat="server" Text="Submit" OnDirectClick="Button1_Click" />
-
-    <ext:DisplayField ID="txtResults" runat="server" />
-
-    <ext:GridPanel 
-        ID="GridPanel1"
-        runat="server" 
-        Title="Productss" 
-        Width="600" 
-        Height="350">
-        <Store>
-            <ext:Store runat="server">
-                <Model>
-                    <ext:Model runat="server">
-                        <Fields>
-                            <ext:ModelField Name="Id" />
-                            <ext:ModelField Name="Name" />
-                            <ext:ModelField Name="DateCreated" Type="Date" />
-                            <ext:ModelField Name="DateUpdated" Type="Date" />
-                        </Fields>
-                    </ext:Model>
-                </Model>
-            </ext:Store>
-        </Store>
-        <ColumnModel>
-            <Columns>
-                <ext:Column runat="server" Text="Name" DataIndex="Name" Flex="1" />
-                <ext:DateColumn runat="server" Text="Date Created" DataIndex="DateCreated" Format="HH:mm:ss" />
-                <ext:DateColumn runat="server" Text="Date Updated" DataIndex="DateUpdated" Format="HH:mm:ss" />
-            </Columns>
-        </ColumnModel>
-        <SelectionModel>
-            <ext:RowSelectionModel runat="server" />
-        </SelectionModel>
-    </ext:GridPanel>
-</form>
+    <ext:Viewport runat="server" Layout="HBoxLayout" Margin="12">
+        <Items>
+            <ext:Container runat="server" Flex="1" MarginSpec="0 12 0 0">
+                <Items>
+                    <ext:FormPanel 
+                        runat="server" 
+                        Title="Product" 
+                        BodyPadding="5"
+                        DefaultAnchor="100%"
+                        Flex="1">
+                        <Items>
+                            <ext:TextField ID="txtProductName" runat="server" FieldLabel="Name" />
+                        </Items>
+                        <Buttons>
+                            <ext:Button runat="server" Text="Save" Icon="Disk" OnDirectClick="Button1_Click" />
+                        </Buttons>
+                    </ext:FormPanel>
+                    <ext:FormPanel 
+                        runat="server" 
+                        Title="Product Type" 
+                        BodyPadding="5"
+                        DefaultAnchor="100%"
+                        Flex="1"
+                        MarginSpec="12 0 0 0">
+                        <Items>
+                            <ext:TextField ID="txtProductTypeName" runat="server" FieldLabel="Name" />
+                        </Items>
+                        <Buttons>
+                            <ext:Button runat="server" Text="Save" Icon="Disk" OnDirectClick="Button2_Click" />
+                        </Buttons>
+                    </ext:FormPanel>
+                </Items>
+            </ext:Container>
+            <ext:GridPanel 
+                ID="GridPanel1"
+                runat="server" 
+                Title="Uber Products" 
+                Height="350"
+                Flex="1">
+                <Bin>
+                    <ext:Store ID="storeProductTypes" runat="server" OnReadData="GetProductTypes">
+                        <Model>
+                            <ext:Model runat="server">
+                                <Fields>
+                                    <ext:ModelField Name="id" Type="Int" />
+                                    <ext:ModelField Name="name" />
+                                </Fields>
+                            </ext:Model>
+                        </Model>
+                    </ext:Store>
+                </Bin>
+                <Store>
+                    <ext:Store runat="server" OnReadData="GetProducts" PageSize="10">
+                        <Model>
+                            <ext:Model runat="server">
+                                <Fields>
+                                    <ext:ModelField Name="id" Type="Int" />
+                                    <ext:ModelField Name="name" />
+                                    <ext:ModelField Name="productType" IsComplex="true" />
+                                    <ext:ModelField Name="dateCreated" Type="Date" />
+                                    <ext:ModelField Name="dateUpdated" Type="Date" />
+                                </Fields>
+                            </ext:Model>
+                        </Model>
+                    </ext:Store>
+                </Store>
+                <ColumnModel>
+                    <Columns>
+                        <ext:Column runat="server" Text="Id" DataIndex="id" />
+                        <ext:Column runat="server" Text="Name" DataIndex="name" Flex="1">
+                            <Editor>
+                                <ext:TextField runat="server" />
+                            </Editor>
+                        </ext:Column>
+                        <ext:Column runat="server" Text="Type" DataIndex="productType">
+                            <Renderer Fn="productTypeRenderer" />
+                            <Editor>
+                                <ext:ComboBox 
+                                    runat="server"     
+                                    Editable="false"
+                                    StoreID="storeProductTypes" 
+                                    DisplayField="name" 
+                                    ValueField="id"
+                                    />
+                            </Editor> 
+                        </ext:Column>
+                        <ext:DateColumn runat="server" Text="Date Created" DataIndex="dateCreated" Format="HH:mm:ss" />
+                        <ext:DateColumn runat="server" Text="Date Updated" DataIndex="dateUpdated" Format="HH:mm:ss" />
+                    </Columns>
+                </ColumnModel>
+                <Plugins>
+                    <ext:RowEditing runat="server" SaveHandler="console.log(arguments);" />
+                </Plugins>
+                <DockedItems>
+                    <ext:PagingToolbar runat="server" Dock="Bottom" />
+                </DockedItems>
+            </ext:GridPanel>
+        </Items>
+    </ext:Viewport>
 </body>
 </html>

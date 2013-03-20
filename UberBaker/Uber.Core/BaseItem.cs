@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Uber.Core
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public abstract class BaseItem
     {
+        [JsonProperty("id")]
         public virtual int Id { get; set; }
 
         public virtual bool IsNew
@@ -32,7 +35,7 @@ namespace Uber.Core
 
         private DateTime dateCreated = DateTime.Now;
 
-        [Required]
+        [JsonProperty("dateCreated")]
         public DateTime DateCreated
         {
             get
@@ -47,7 +50,7 @@ namespace Uber.Core
 
         private DateTime dateUpdated = DateTime.Now;
 
-        [Required]
+        [JsonProperty("dateUpdated")]
         public DateTime DateUpdated
         {
             get

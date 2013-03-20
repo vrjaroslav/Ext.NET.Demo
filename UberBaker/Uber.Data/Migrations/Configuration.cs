@@ -15,9 +15,17 @@ namespace Uber.Data
         {
             var products = new List<Product> { 
                 new Product { Name = "Sour Dough" },
+                new Product { Name = "5 Grain" },
             };
 
             products.ForEach(product => data.Products.AddOrUpdate(item => item.Name, product));
+
+            var productTypes = new List<ProductType>
+            {
+                new ProductType { Name = "Bread" }
+            };
+
+            productTypes.ForEach(productType => data.ProductTypes.AddOrUpdate(item => item.Name, productType));
 
             // IMPORTANT!!
             data.SaveChanges();

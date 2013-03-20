@@ -93,14 +93,10 @@
     <title>Ext.NET Demo</title>
 
     <script>
-        var productTypeRenderer = function (value) {
-            var r = App.storeProductTypes.getById(value);
-
-            if (Ext.isEmpty(r)) {
-                return "";
+        var productTypeRenderer = function (record) {
+            if (!Ext.isEmpty(record)) {
+                return record.name;
             }
-
-            return r.get("name");
         };
     </script>
 </head>
@@ -165,7 +161,7 @@
                                 <Fields>
                                     <ext:ModelField Name="id" Type="Int" />
                                     <ext:ModelField Name="name" />
-                                    <ext:ModelField Name="typeId" Type="Int" DefaultValue="-1" />
+                                    <ext:ModelField Name="type" IsComplex="true" />
                                     <ext:ModelField Name="dateCreated" Type="Date" />
                                     <ext:ModelField Name="dateUpdated" Type="Date" />
                                 </Fields>
@@ -181,7 +177,7 @@
                                 <ext:TextField runat="server" />
                             </Editor>
                         </ext:Column>
-                        <ext:Column runat="server" Text="Type" DataIndex="typeId">
+                        <ext:Column runat="server" Text="Type" DataIndex="type">
                             <Renderer Fn="productTypeRenderer" />
                             <Editor>
                                 <ext:ComboBox 
@@ -198,7 +194,7 @@
                     </Columns>
                 </ColumnModel>
                 <Plugins>
-                    <ext:RowEditing runat="server" SaveHandler="var data = this.editingPlugin.context.record.data; this.editingPlugin.completeEdit(); App.direct.UpdateProduct(data.id, data.name, data.typeId);" />
+                    <ext:RowEditing runat="server" SaveHandler="var data = this.editingPlugin.context.record.data; this.editingPlugin.completeEdit(); App.direct.UpdateProduct(data.id, data.name, data.type.id);" />
                 </Plugins>
                 <DockedItems>
                     <ext:PagingToolbar runat="server" Dock="Bottom" />

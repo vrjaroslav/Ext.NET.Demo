@@ -18,18 +18,8 @@ namespace Uber.Core
         [JsonProperty("unitPrice")]
         public double UnitPrice { get; set; }
 
-        [JsonIgnore]
+        [JsonProperty("type")]
         public virtual ProductType Type { get; set; }
-
-        [DefaultValue(-1)]
-        [JsonProperty("typeId")]
-        public int TypeId
-        {
-            get
-            {
-                return this.Type != null ? this.Type.Id : -1;
-            }
-        }
 
         [JsonProperty("orderItems")]
         public virtual ICollection<OrderItem> OrderItems { get; set; }

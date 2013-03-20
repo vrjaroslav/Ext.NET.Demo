@@ -92,15 +92,11 @@
     <title>Ext.NET Demo</title>
 
     <script>
-        //var productTypeRenderer = function (record) {
-        //    if (!Ext.isEmpty(record)) {
-        //        return record.name;
-        //    }
-        //};
-
         var productTypeRenderer = function (value, metadata, record) {
-            if (!Ext.isEmpty(record.data.type)) {
-                return record.data.type.name;
+            if (!Ext.isEmpty(record.data.typeId)) {
+                var item = App.storeProductTypes.getById(record.data.typeId);       
+
+                return item.get('name');
             }
         };
     </script>
@@ -166,7 +162,9 @@
                                 <Fields>
                                     <ext:ModelField Name="id" Type="Int" />
                                     <ext:ModelField Name="name" />
-                                    <ext:ModelField Name="typeId" Mapping="type.id" />
+                                    <%--<ext:ModelField Name="typeId" Mapping="type.id">
+                                        <Convert Handler="return null;" />
+                                    </ext:ModelField>--%>
                                     <ext:ModelField Name="dateCreated" Type="Date" />
                                     <ext:ModelField Name="dateUpdated" Type="Date" />
                                 </Fields>

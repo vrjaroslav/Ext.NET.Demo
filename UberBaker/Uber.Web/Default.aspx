@@ -76,12 +76,11 @@
 
         if (product != null && productType != null)
         {
+            product.Name = name;
             product.Type = productType;
 
             data.SaveChanges();
             this.BindProducts();
-
-            X.Msg.Notify("Update", productType.Name).Show();
         }
     }
 </script>
@@ -194,7 +193,7 @@
                     </Columns>
                 </ColumnModel>
                 <Plugins>
-                    <ext:RowEditing runat="server" SaveHandler="var data = this.editingPlugin.context.record.data; this.editingPlugin.completeEdit(); console.log(data.type.id); App.direct.UpdateProduct(data.id, data.name, data.type);" />
+                    <ext:RowEditing runat="server" SaveHandler="var data = this.editingPlugin.context.record.data; this.editingPlugin.completeEdit(); App.direct.UpdateProduct(data.id, data.name, data.type.id);" />
                 </Plugins>
                 <DockedItems>
                     <ext:PagingToolbar runat="server" Dock="Bottom" />

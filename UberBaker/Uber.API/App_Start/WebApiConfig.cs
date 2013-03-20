@@ -26,10 +26,9 @@ namespace Uber.API
                 DefaultValueHandling = DefaultValueHandling.Ignore,
                 NullValueHandling = NullValueHandling.Ignore,
                 Formatting = Formatting.Indented
+                //ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                //PreserveReferencesHandling = PreserveReferencesHandling.Objects
             };
-
-            //formatter.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
-            //formatter.SerializerSettings.DefaultValueHandling = Newtonsoft.Json.DefaultValueHandling.Ignore;
 
 
             // Uncomment the following line of code to enable query support for actions with an IQueryable or IQueryable<T> return type.

@@ -165,7 +165,7 @@
                                 <Fields>
                                     <ext:ModelField Name="id" Type="Int" />
                                     <ext:ModelField Name="name" />
-                                    <ext:ModelField Name="type" IsComplex="true" />
+                                    <ext:ModelField Name="typeId" Type="Int" />
                                     <ext:ModelField Name="dateCreated" Type="Date" />
                                     <ext:ModelField Name="dateUpdated" Type="Date" />
                                 </Fields>
@@ -181,7 +181,7 @@
                                 <ext:TextField runat="server" />
                             </Editor>
                         </ext:Column>
-                        <ext:Column runat="server" Text="Type" DataIndex="type">
+                        <ext:Column runat="server" Text="Type" DataIndex="typeId">
                             <Renderer Fn="productTypeRenderer" />
                             <Editor>
                                 <ext:ComboBox 
@@ -198,7 +198,7 @@
                     </Columns>
                 </ColumnModel>
                 <Plugins>
-                    <ext:RowEditing runat="server" SaveHandler="var data = this.editingPlugin.context.record.data; this.editingPlugin.completeEdit(); App.direct.UpdateProduct(data.id, data.name, data.type);" />
+                    <ext:RowEditing runat="server" SaveHandler="var data = this.editingPlugin.context.record.data; this.editingPlugin.completeEdit(); App.direct.UpdateProduct(data.id, data.name, data.typeId);" />
                 </Plugins>
                 <DockedItems>
                     <ext:PagingToolbar runat="server" Dock="Bottom" />

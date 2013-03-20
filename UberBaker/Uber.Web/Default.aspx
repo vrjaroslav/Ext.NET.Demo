@@ -165,7 +165,7 @@
                                 <Fields>
                                     <ext:ModelField Name="id" Type="Int" />
                                     <ext:ModelField Name="name" />
-                                    <ext:ModelField Name="typeId" Type="Int" />
+                                    <ext:ModelField Name="typeId" Type="Int" DefaultValue="-1" />
                                     <ext:ModelField Name="dateCreated" Type="Date" />
                                     <ext:ModelField Name="dateUpdated" Type="Date" />
                                 </Fields>

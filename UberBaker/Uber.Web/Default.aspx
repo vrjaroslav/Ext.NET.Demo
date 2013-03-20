@@ -18,11 +18,6 @@
         this.BindProducts();
     }
 
-    protected void GetProductTypes(object sender, StoreReadDataEventArgs e)
-    {
-        this.BindProductTypes();
-    }
-
     protected void Button1_Click(object sender, DirectEventArgs e)
     {
         using (var data = new UberContext())
@@ -72,7 +67,7 @@
     }
 
     [DirectMethod]
-    public void SaveProduct(int id, string name, int type)
+    public void UpdateProduct(int id, string name, int type)
     {
         var data = new UberContext();
 
@@ -151,7 +146,7 @@
                 Height="350"
                 Flex="1">
                 <Bin>
-                    <ext:Store ID="storeProductTypes" runat="server" OnReadData="GetProductTypes">
+                    <ext:Store ID="storeProductTypes" runat="server">
                         <Model>
                             <ext:Model runat="server">
                                 <Fields>
@@ -189,20 +184,20 @@
                             <Renderer Fn="productTypeRenderer" />
                             <Editor>
                                 <ext:ComboBox 
-                                    runat="server"     
+                                    runat="server"
                                     Editable="false"
-                                    StoreID="storeProductTypes" 
-                                    DisplayField="name" 
+                                    StoreID="storeProductTypes"
+                                    DisplayField="name"
                                     ValueField="id"
                                     />
-                            </Editor> 
+                            </Editor>
                         </ext:Column>
                         <ext:DateColumn runat="server" Text="Date Created" DataIndex="dateCreated" Format="HH:mm:ss" />
                         <ext:DateColumn runat="server" Text="Date Updated" DataIndex="dateUpdated" Format="HH:mm:ss" />
                     </Columns>
                 </ColumnModel>
                 <Plugins>
-                    <ext:RowEditing runat="server" SaveHandler="console.log(arguments);" />
+                    <ext:RowEditing runat="server" SaveHandler="var grid = App.GridPanel1; grid.editingPlugin.completeEdit(); console.log(arguments);" />
                 </Plugins>
                 <DockedItems>
                     <ext:PagingToolbar runat="server" Dock="Bottom" />

@@ -67,7 +67,7 @@
     }
 
     [DirectMethod]
-    public void UpdateProduct(int id, string name, int type)
+    public void UpdateProduct(int id, string name, int? type)
     {
         var data = new UberContext();
 
@@ -92,12 +92,38 @@
     <title>Ext.NET Demo</title>
 
     <script>
-        var productTypeRenderer = function (value, metadata, record) {
-            if (!Ext.isEmpty(record.data.typeId)) {
-                var item = App.storeProductTypes.getById(record.data.typeId);       
+        var prepareTypeId = function (value, record) {
+            if (!Ext.isEmpty(value)) {
+                return value;
+            }
 
-                return item.get('name');
+            var type = record.get('type');
+
+            if (type && type.id) {
+                return type.id;
+            }
+
+            return '';
+        };
+
+        var productTypeRenderer = function (value, metadata, record) {
+            if (!Ext.isEmpty(value)) {
+                var item = App.storeProductTypes.getById(value);       
+
+                if (item) {
+                    return item.get('name');
+                }
             }
+
+            return '';
+        };
+
+        var onUpdate = function () {
+            var data;
+            
+            this.editingPlugin.completeEdit(); 
+            data = this.editingPlugin.context.record.data;
+            App.direct.UpdateProduct(data.id, data.name, data.typeId);
         };
     </script>
 </head>
@@ -118,7 +144,11 @@
                             <ext:TextField ID="txtProductName" runat="server" FieldLabel="Name" />
                         </Items>
                         <Buttons>
-                            <ext:Button runat="server" Text="Save" Icon="Disk" OnDirectClick="Button1_Click" />
+                            <ext:Button 
+                                runat="server" 
+                                Text="Save" 
+                                Icon="Disk" 
+                                OnDirectClick="Button1_Click" />
                         </Buttons>
                     </ext:FormPanel>
                     <ext:FormPanel 
@@ -132,7 +162,11 @@
                             <ext:TextField ID="txtProductTypeName" runat="server" FieldLabel="Name" />
                         </Items>
                         <Buttons>
-                            <ext:Button runat="server" Text="Save" Icon="Disk" OnDirectClick="Button2_Click" />
+                            <ext:Button 
+                                runat="server" 
+                                Text="Save" 
+                                Icon="Disk" 
+                                OnDirectClick="Button2_Click" />
                         </Buttons>
                     </ext:FormPanel>
                 </Items>
@@ -162,9 +196,10 @@
                                 <Fields>
                                     <ext:ModelField Name="id" Type="Int" />
                                     <ext:ModelField Name="name" />
-                                    <%--<ext:ModelField Name="typeId" Mapping="type.id">
-                                        <Convert Handler="return null;" />
-                                    </ext:ModelField>--%>
+                                    <ext:ModelField Name="type" />
+                                    <ext:ModelField Name="typeId">
+                                        <Convert Fn="prepareTypeId" />
+                                    </ext:ModelField>
                                     <ext:ModelField Name="dateCreated" Type="Date" />
                                     <ext:ModelField Name="dateUpdated" Type="Date" />
                                 </Fields>
@@ -175,7 +210,11 @@
                 <ColumnModel>
                     <Columns>
                         <ext:Column runat="server" Text="Id" DataIndex="id" />
-                        <ext:Column runat="server" Text="Name" DataIndex="name" Flex="1">
+                        <ext:Column 
+                            runat="server" 
+                            Text="Name" 
+                            DataIndex="name"
+                             Flex="1">
                             <Editor>
                                 <ext:TextField runat="server" />
                             </Editor>
@@ -192,12 +231,20 @@
                                     />
                             </Editor>
                         </ext:Column>
-                        <ext:DateColumn runat="server" Text="Date Created" DataIndex="dateCreated" Format="HH:mm:ss" />
-                        <ext:DateColumn runat="server" Text="Date Updated" DataIndex="dateUpdated" Format="HH:mm:ss" />
+                        <ext:DateColumn 
+                            runat="server" 
+                            Text="Date Created" 
+                            DataIndex="dateCreated" 
+                            Format="HH:mm:ss" />
+                        <ext:DateColumn 
+                            runat="server" 
+                            Text="Date Updated" 
+                            DataIndex="dateUpdated" 
+                            Format="HH:mm:ss" />
                     </Columns>
                 </ColumnModel>
                 <Plugins>
-                    <ext:RowEditing runat="server" SaveHandler="var data = this.editingPlugin.context.record.data; this.editingPlugin.completeEdit(); App.direct.UpdateProduct(data.id, data.name, data.typeId);" />
+                    <ext:RowEditing runat="server" SaveHandler="onUpdate" />
                 </Plugins>
                 <DockedItems>
                     <ext:PagingToolbar runat="server" Dock="Bottom" />

@@ -12,7 +12,10 @@ namespace Uber.API.Controllers
         {
             return View();
         }
-
+        public ActionResult oData()
+        {
+            return View();
+        }
         public ActionResult ProductList()
         {
             return View();

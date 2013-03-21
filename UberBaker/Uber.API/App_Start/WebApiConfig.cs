@@ -41,6 +41,15 @@ namespace Uber.API
             // To disable tracing in your application, please comment out or remove the following line of code
             // For more information, refer to: http://www.asp.net/web-api
             config.EnableSystemDiagnosticsTracing();
+
+            ODataModelBuilder modelBuilder = new ODataConventionModelBuilder();
+            modelBuilder.EntitySet<Product>("OProducts");
+            modelBuilder.EntitySet<ProductType>("ProductTypes");
+            modelBuilder.EntitySet<Order>("Orders");
+            modelBuilder.EntitySet<OrderItem>("OrderItems");
+            
+            Microsoft.Data.Edm.IEdmModel model = modelBuilder.GetEdmModel();
+            config.Routes.MapODataRoute("ODataRoute", "odata", model);
         }
     }
 }

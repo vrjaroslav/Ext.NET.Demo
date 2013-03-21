@@ -8,9 +8,6 @@ namespace Uber.Data
 {
     public class UberContext : DbContext
     {
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderItem> OrdersItems { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
 
@@ -20,9 +17,6 @@ namespace Uber.Data
             builder.Entity<BaseItem>().Property(item => item.DateCreated).IsRequired();
             builder.Entity<BaseItem>().Property(item => item.DateUpdated).IsRequired();
 
-            builder.Entity<Customer>().ToTable("Customers");
-            builder.Entity<Order>().ToTable("Orders");
-            builder.Entity<OrderItem>().ToTable("OrderItems");
             builder.Entity<Product>().ToTable("Products");
             builder.Entity<ProductType>().ToTable("ProductTypes");
         }

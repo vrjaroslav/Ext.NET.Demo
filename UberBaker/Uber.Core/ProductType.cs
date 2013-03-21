@@ -11,10 +11,5 @@ namespace Uber.Core
         [JsonProperty("name")]
         [DataMember]
         public string Name { get; set; }
-
-        [DataMember]
-        [JsonIgnore]
-        [JsonProperty("products")]
-        public virtual ICollection<Product> Products { get; set; }
     }
 }

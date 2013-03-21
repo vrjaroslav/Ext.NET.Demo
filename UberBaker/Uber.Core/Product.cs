@@ -20,8 +20,5 @@ namespace Uber.Core
 
         [JsonProperty("type")]
         public virtual ProductType Type { get; set; }
-
-        [JsonProperty("orderItems")]
-        public virtual ICollection<OrderItem> OrderItems { get; set; }
     }
 }

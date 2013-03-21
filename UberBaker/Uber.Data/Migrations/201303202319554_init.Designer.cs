@@ -11,7 +11,7 @@ namespace Uber.Data
         
         string IMigrationMetadata.Id
         {
-            get { return "201303200425428_init"; }
+            get { return "201303202319554_init"; }
         }
         
         string IMigrationMetadata.Source

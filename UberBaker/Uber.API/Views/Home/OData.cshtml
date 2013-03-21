@@ -1,0 +1,97 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+      @Html.X().ResourceManager()      
+
+      @(Html.X().GridPanel()
+        .Title("OData Grid: Remote paging/sorting")
+        .Width(600)        
+        .Height(350)
+        .Store(Html.X().Store()
+            .ID("Store1")
+            .PageSize(2)
+            .RemoteSort(true)
+            .RemoteFilter(true)
+            .Model(Html.X().Model()
+                .IDProperty("Id")
+                .Fields(
+                    new ModelField("Id"),
+                    new ModelField("Name"),
+                    new ModelField("UnitPrice", ModelFieldType.Float),
+                    new ModelField("Description")
+                )
+            )
+            .Proxy(
+                Html.X().ODataProxy()
+                    .Url("/odata/OProducts")                    
+            )
+        )
+        .ColumnModel(
+            Html.X().Column().Text("Id").DataIndex("Id").Flex(1),
+            Html.X().Column().Text("Name").DataIndex("Name"),
+            Html.X().Column().Text("UnitPrice").DataIndex("UnitPrice"),
+            Html.X().Column().Text("Description").DataIndex("Description")
+        )
+        .BottomBar(
+            Html.X().PagingToolbar()
+        )
+    )
+
+     @(Html.X().GridPanel()
+        .Title("OData Grid: Filtering")
+        .Width(600)
+        .Height(350)
+        .Store(Html.X().Store()
+            .ID("Store2")
+            .RemoteSort(true)
+            .RemoteFilter(true)            
+            .Model(Html.X().Model()
+                .IDProperty("Id")
+                .Fields(
+                    new ModelField("Id"),
+                    new ModelField("Name"),
+                    new ModelField("UnitPrice", ModelFieldType.Float),
+                    new ModelField("Description")
+                )
+            )
+            .Proxy(
+                Html.X().ODataProxy()
+                    .Url("/odata/OProducts")       
+                    .EnablePagingParams(false)             
+            )
+        )
+        .ColumnModel(
+            Html.X().Column().Text("Id").DataIndex("Id").Flex(1),
+            Html.X().Column().Text("Name").DataIndex("Name"),
+            Html.X().Column().Text("UnitPrice").DataIndex("UnitPrice"),
+            Html.X().Column().Text("Description").DataIndex("Description")
+        )      
+        .Buttons(
+            Html.X().Button()
+                .Text("Filter: ID >= 5")
+                .Handler("var store = App.Store2; store.clearFilter(true); store.filter([{property: 'ID', value: 5, operator: 'ge', type: 'int'}]);"),
+                
+            Html.X().Button()
+                .Text("Filter: Name contains 'zz'")
+                .Handler("var store = App.Store2; store.clearFilter(true); store.filter([{property: 'Name', value: 'zz', operator: 'like'}]);"),
+                
+            Html.X().Button()
+                .Text("Filter: Category equals 'Toys'")
+                .Handler("var store = App.Store2; store.clearFilter(true); store.filter([{property: 'Category', value: 'Toys'}]);"),
+                
+            Html.X().Button()
+                .Text("Filter: Date after 2005 year")
+                .Handler("var store = App.Store2; store.clearFilter(true); store.filter([{property: 'year(Date)', value: 2005, operator: 'gt', type: 'int'}]);")
+        )
+    )
+
+</body>
+</html>

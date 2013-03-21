@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,8 @@ namespace Uber.API
             {
                 DefaultValueHandling = DefaultValueHandling.Ignore,
                 NullValueHandling = NullValueHandling.Ignore,
-                Formatting = Formatting.Indented
+                Formatting = Formatting.Indented,
+                //ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 //ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 //PreserveReferencesHandling = PreserveReferencesHandling.Objects
             };

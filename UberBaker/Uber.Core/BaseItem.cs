@@ -7,7 +7,8 @@ namespace Uber.Core
     [JsonObject(MemberSerialization.OptIn)]
     public abstract class BaseItem
     {
-        [JsonProperty("id")]
+        //[JsonProperty("id")]
+        [JsonProperty]
         public virtual int Id { get; set; }
 
         public virtual bool IsNew
@@ -35,7 +36,8 @@ namespace Uber.Core
 
         private DateTime dateCreated = DateTime.Now;
 
-        [JsonProperty("dateCreated")]
+        //[JsonProperty("dateCreated")]
+        [JsonProperty]
         public DateTime DateCreated
         {
             get
@@ -50,7 +52,8 @@ namespace Uber.Core
 
         private DateTime dateUpdated = DateTime.Now;
 
-        [JsonProperty("dateUpdated")]
+        //[JsonProperty("dateUpdated")]
+        [JsonProperty]
         public DateTime DateUpdated
         {
             get

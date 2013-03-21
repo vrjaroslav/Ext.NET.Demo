@@ -7,18 +7,22 @@ namespace Uber.Core
     [JsonObject(MemberSerialization.OptIn)]
     public class Product : BaseItem
     {
-        [JsonProperty("name")]
+        //[JsonProperty("name")]
+        [JsonProperty]
         public string Name { get; set; }
 
+        //[JsonProperty("description")]
         [DefaultValue("")]
-        [JsonProperty("description")]
+        [JsonProperty]
         public string Description { get; set; }
 
+        //[JsonProperty("unitPrice")]
         [DefaultValue(0.0)]
-        [JsonProperty("unitPrice")]
+        [JsonProperty]
         public double UnitPrice { get; set; }
 
-        [JsonProperty("type")]
+        //[JsonProperty("type")]
+        [JsonProperty]
         public virtual ProductType Type { get; set; }
     }
 }

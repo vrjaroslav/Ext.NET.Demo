@@ -27,7 +27,8 @@ namespace Uber.API
             {
                 DefaultValueHandling = DefaultValueHandling.Ignore,
                 NullValueHandling = NullValueHandling.Ignore,
-                Formatting = Formatting.Indented
+                Formatting = Formatting.Indented,
+                DateFormatHandling = DateFormatHandling.IsoDateFormat,
                 //ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 //PreserveReferencesHandling = PreserveReferencesHandling.Objects
             };
@@ -45,9 +46,9 @@ namespace Uber.API
             ODataModelBuilder modelBuilder = new ODataConventionModelBuilder();
             modelBuilder.EntitySet<Product>("OProducts");
             modelBuilder.EntitySet<ProductType>("ProductTypes");
-            modelBuilder.EntitySet<Order>("Orders");
-            modelBuilder.EntitySet<OrderItem>("OrderItems");
-            
+            //modelBuilder.EntitySet<Order>("Orders");
+            //modelBuilder.EntitySet<OrderItem>("OrderItems");
+
             Microsoft.Data.Edm.IEdmModel model = modelBuilder.GetEdmModel();
             config.Routes.MapODataRoute("ODataRoute", "odata", model);
         }

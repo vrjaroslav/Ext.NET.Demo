@@ -25,25 +25,25 @@
             .Model(Html.X().Model()
                 .IDProperty("id")
                 .Fields(
-                    new ModelField("id"),
-                    new ModelField("name"),
-                    new ModelField("dateUpdated", ModelFieldType.Date)
+                    new ModelField("Id"),
+                    new ModelField("Name"),
+                    new ModelField("DateUpdated", ModelFieldType.Date, "c")
                 )
             )
             .Proxy(
-                Html.X().AjaxProxy()
-                    .Url("/api/Products")                    
-            )
-            
+                Html.X().AjaxProxy()
+                    .Url("/api/Products")
+            )
+
             //.Proxy(
             //    Html.X().ODataProxy()
-            //        .Url("/api/products") 
+            //        .Url("/api/products")
             //)
         )
         .ColumnModel(
-            Html.X().Column().Text("id").DataIndex("id"),
-            Html.X().Column().Text("Name").DataIndex("name").Flex(1),
-            Html.X().Column().Text("Date Updated").DataIndex("dateUpdated")
+            Html.X().Column().Text("id").DataIndex("Id"),
+            Html.X().Column().Text("Name").DataIndex("Name").Flex(1),
+            Html.X().Column().Text("Date Updated").DataIndex("DateUpdated")
         )
         .BottomBar(
             Html.X().PagingToolbar()

@@ -36,7 +36,6 @@ namespace Uber.Core
 
         private DateTime dateCreated = DateTime.Now;
 
-        //[JsonProperty("dateCreated")]
         [JsonProperty]
         public DateTime DateCreated
         {
@@ -52,7 +51,6 @@ namespace Uber.Core
 
         private DateTime dateUpdated = DateTime.Now;
 
-        //[JsonProperty("dateUpdated")]
         [JsonProperty]
         public DateTime DateUpdated
         {

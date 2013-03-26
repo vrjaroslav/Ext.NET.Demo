@@ -39,11 +39,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ext.Net">
-      <HintPath>..\..\..\..\..\..\Documents\vTrunk\Ext.Net\bin\MVC Release\Ext.Net.dll</HintPath>
+    <Reference Include="Ext.Net, Version=2.2.0.39209, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\svn.ext.net\trunk\Ext.Net\bin\MVC Debug\Ext.Net.dll</HintPath>
     </Reference>
-    <Reference Include="Ext.Net.Utilities">
-      <HintPath>..\..\..\..\..\..\Documents\vTrunk\Ext.Net\bin\MVC Release\Ext.Net.Utilities.dll</HintPath>
+    <Reference Include="Ext.Net.Utilities, Version=2.2.0.9199, Culture=neutral, PublicKeyToken=2c34ac34702a3c23, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\svn.ext.net\trunk\Ext.Net\bin\MVC Debug\Ext.Net.Utilities.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
@@ -166,8 +168,9 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\ODataProductsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\OProductsController.cs" />
+    <Compile Include="Controllers\EntityProductsController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\ProductTypesController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -330,7 +333,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>62932</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:50261/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

@@ -1,5 +1,7 @@
 ﻿@{
     Layout = null;
+    //string controller_url = "/odata/ODataProducts";
+    string controller_url = "/odata/EntityProducts";
 }
 
 <!DOCTYPE html>
@@ -31,7 +33,7 @@
             )
             .Proxy(
                 Html.X().ODataProxy()
-                    .Url("/odata/OProducts")                    
+                    .Url(controller_url)                    
             )
         )
         .ColumnModel(
@@ -46,13 +48,13 @@
     )
 
      @(Html.X().GridPanel()
-        .Title("OData Grid: Filtering")
+        .Title("OData Grid: Filtering/Editing")
         .Width(600)
         .Height(350)
         .Store(Html.X().Store()
             .ID("Store2")
             .RemoteSort(true)
-            .RemoteFilter(true)            
+            .RemoteFilter(true)
             .Model(Html.X().Model()
                 .IDProperty("Id")
                 .Fields(
@@ -64,33 +66,101 @@
             )
             .Proxy(
                 Html.X().ODataProxy()
-                    .Url("/odata/OProducts")       
-                    .EnablePagingParams(false)             
+                    .Url(controller_url)
+                    .EnablePagingParams(false)
             )
+            .Listeners(l => {
+                l.Write.Handler = "Ext.net.Notification.show({title: 'Write: ' + operation.action, html : 'Success'});";
+            })
+        )
+        .Plugins(
+            Html.X().CellEditing()
         )
         .ColumnModel(
             Html.X().Column().Text("Id").DataIndex("Id").Flex(1),
-            Html.X().Column().Text("Name").DataIndex("Name"),
-            Html.X().Column().Text("UnitPrice").DataIndex("UnitPrice"),
-            Html.X().Column().Text("Description").DataIndex("Description")
-        )      
+            Html.X().Column().Text("Name").DataIndex("Name").Editor(Html.X().TextField()),
+            Html.X().Column().Text("UnitPrice").DataIndex("UnitPrice").Editor(Html.X().NumberField()),
+            Html.X().Column().Text("Description").DataIndex("Description").Editor(Html.X().TextField())
+        )
+        .BottomBar(
+            Html.X().Toolbar()
+                .Flat(true)
+                .ClassicButtonStyle(true)
+                .Items(
+                    Html.X().ToolbarFill(),
+
+                    Html.X().Button()
+                        .Text("Insert")
+                        .Handler("this.up('grid').store.insert(0, {Name : 'Bread', UnitPrice : 100, Description : 'Foods'});"),
+
+                    Html.X().Button()
+                        .Text("Delete selected")
+                        .Handler("this.up('grid').deleteSelected();"),
+
+                    Html.X().Button()
+                        .Text("Sync")
+                        .Handler("this.up('grid').store.sync();")
+                )
+        )
         .Buttons(
             Html.X().Button()
-                .Text("Filter: ID >= 5")
-                .Handler("var store = App.Store2; store.clearFilter(true); store.filter([{property: 'ID', value: 5, operator: 'ge', type: 'int'}]);"),
-                
+                .Text("Filter: Id >= 5")
+                .Handler("var store = App.Store2; store.clearFilter(true); store.filter([{property: 'Id', value: 5, operator: 'ge', type: 'int'}]);"),
+
             Html.X().Button()
-                .Text("Filter: Name contains 'zz'")
-                .Handler("var store = App.Store2; store.clearFilter(true); store.filter([{property: 'Name', value: 'zz', operator: 'like'}]);"),
-                
+                .Text("Filter: Name contains 'tt'")
+                .Handler("var store = App.Store2; store.clearFilter(true); store.filter([{property: 'Name', value: 'tt', operator: 'like'}]);"),
+
             Html.X().Button()
-                .Text("Filter: Category equals 'Toys'")
-                .Handler("var store = App.Store2; store.clearFilter(true); store.filter([{property: 'Category', value: 'Toys'}]);"),
-                
+                .Text("Filter: UnitPrice == 0")
+                .Handler("var store = App.Store2; store.clearFilter(true); store.filter([{property: 'UnitPrice', value: 0, type: 'int'}]);"),
+
             Html.X().Button()
                 .Text("Filter: Date after 2005 year")
+                .Disabled(true)
                 .Handler("var store = App.Store2; store.clearFilter(true); store.filter([{property: 'year(Date)', value: 2005, operator: 'gt', type: 'int'}]);")
         )
+    )
+
+    @(
+ Html.X().FormPanel()
+            .Width(600)
+            .TopBarItem(
+                Html.X().Button()
+                    .Text("Load Product with ID = ")
+                    .Handler("this.up('form').load({url: Ext.String.format('"+controller_url+"({0})', this.next().getValue()), method: 'GET', simpleObject:true});"),
+
+                Html.X().NumberField().AllowDecimals(false).Number(1),
+
+                Html.X().ToolbarFill(),
+
+                Html.X().Button()
+                    .Text("Update")
+                    .Handler("this.up('form').submit({url: Ext.String.format('"+controller_url+"({0})', this.up('form').getComponent(0).getValue()), method: 'PUT', allowNoContent: true, success:function(){alert('Success');}});")
+            )
+            .Items(
+                Html.X().Hidden()
+                    .Name("Id")
+                    .Listeners(l =>
+                    {
+                        l.Change.Handler = "this.next().setValue(this.getValue());";
+                    }),
+
+                Html.X().DisplayField()
+                    .FieldLabel("ID"),
+
+                Html.X().TextField()
+                    .FieldLabel("Name")
+                    .Name("Name"),
+
+               Html.X().NumberField()
+                    .FieldLabel("UnitPrice")
+                    .Name("UnitPrice"),
+
+               Html.X().TextField()
+                    .FieldLabel("Description")
+                    .Name("Description")
+            )
     )
 
 </body>

@@ -11,7 +11,7 @@ using Uber.Data;
 
 namespace Uber.API.Controllers
 {
-    public class OProductsController : EntitySetController<Product, int>
+    public class EntityProductsController : EntitySetController<Product, int>
     {
         private UberContext data = new UberContext();
 
@@ -33,7 +33,7 @@ namespace Uber.API.Controllers
             return product;
         }
 
-        public override void Delete([FromODataUri] int key)
+        public override void Delete(int key)
         {
             Product product = data.Products.Find(key);
 
@@ -54,7 +54,7 @@ namespace Uber.API.Controllers
             }
         }
 
-        protected override Product PatchEntity([FromODataUri] int key, [FromBody] Delta<Product> patch)
+        protected override Product PatchEntity(int key, Delta<Product> patch)
         {
             if (!ModelState.IsValid)
             {
@@ -83,7 +83,7 @@ namespace Uber.API.Controllers
             return product;
         }
 
-        protected override Product UpdateEntity([FromODataUri] int key, [FromBody] Product update)
+        protected override Product UpdateEntity(int key, Product update)
         {
             if (!ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace Uber.API.Controllers
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            data.Entry(update).State = EntityState.Modified;
+            data.Entry(product).CurrentValues.SetValues(update);
             try
             {
                 data.SaveChanges();
@@ -109,7 +109,7 @@ namespace Uber.API.Controllers
             return update;
         }
 
-        protected override Product CreateEntity([FromBody]Product entity)
+        protected override Product CreateEntity(Product entity)
         {
             if (ModelState.IsValid)
             {

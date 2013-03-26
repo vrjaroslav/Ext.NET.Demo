@@ -44,10 +44,9 @@ namespace Uber.API
             config.EnableSystemDiagnosticsTracing();
 
             ODataModelBuilder modelBuilder = new ODataConventionModelBuilder();
-            modelBuilder.EntitySet<Product>("OProducts");
+            modelBuilder.EntitySet<Product>("EntityProducts");
+            modelBuilder.EntitySet<Product>("ODataProducts");
             modelBuilder.EntitySet<ProductType>("ProductTypes");
-            //modelBuilder.EntitySet<Order>("Orders");
-            //modelBuilder.EntitySet<OrderItem>("OrderItems");
 
             Microsoft.Data.Edm.IEdmModel model = modelBuilder.GetEdmModel();
             config.Routes.MapODataRoute("ODataRoute", "odata", model);

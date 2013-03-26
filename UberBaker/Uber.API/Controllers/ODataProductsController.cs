@@ -11,21 +11,21 @@ using Uber.Data;
     
 namespace Uber.API.Controllers
 {
-    public class ProductsController : ApiController
+    public class ODataProductsController : ODataController
     {
         private UberContext data = new UberContext();
 
         // GET api/Products
         [Queryable]
-        public IQueryable<Product> GetProducts()
+        public IQueryable<Product> Get()
         {
             return data.Products;
         }
-
+        
         // GET api/Products/5
-        public Product GetProduct(int id)
+        public Product Get([FromODataUri] int key)
         {
-            Product product = data.Products.Find(id);
+            Product product = data.Products.Find(key);
 
             if (product == null)
             {
@@ -36,14 +36,14 @@ namespace Uber.API.Controllers
         }
 
         // PUT api/Products/5
-        public HttpResponseMessage PutProduct(int id, Product product)
+        public HttpResponseMessage Put([FromODataUri] int key, Product product)
         {
             if (!ModelState.IsValid)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
             }
 
-            if (id != product.Id)
+            if (key != product.Id)
             {
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
@@ -59,11 +59,11 @@ namespace Uber.API.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return Request.CreateResponse(HttpStatusCode.NoContent);
         }
 
         // POST api/Products
-        public HttpResponseMessage PostProduct(Product product)
+        public HttpResponseMessage Post(Product product)
         {
             if (ModelState.IsValid)
             {
@@ -81,9 +81,9 @@ namespace Uber.API.Controllers
         }
 
         // DELETE api/Products/5
-        public HttpResponseMessage DeleteProduct(int id)
+        public HttpResponseMessage Delete([FromODataUri] int key)
         {
-            Product product = data.Products.Find(id);
+            Product product = data.Products.Find(key);
 
             if (product == null)
             {
@@ -101,7 +101,7 @@ namespace Uber.API.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, product);
+            return Request.CreateResponse(HttpStatusCode.NoContent);
         }
 
         protected override void Dispose(bool disposing)

@@ -4,8 +4,6 @@ using System.Runtime.Serialization;
 
 namespace Uber.Core
 {
-    [JsonObject(MemberSerialization.OptIn)]
-    [DataContract]
     public class ProductType : BaseItem
     {
         [JsonProperty("name")]

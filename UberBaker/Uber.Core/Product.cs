@@ -4,7 +4,6 @@ using System.ComponentModel;
 
 namespace Uber.Core
 {
-    [JsonObject(MemberSerialization.OptIn)]
     public class Product : BaseItem
     {
         [JsonProperty]

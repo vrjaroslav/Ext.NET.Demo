@@ -6,7 +6,8 @@
 
 <script runat="server">
     
-    UberContext dbContext = new UberContext();
+    UberContext data = new UberContext();
+    
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!X.IsAjaxRequest)
@@ -19,7 +20,7 @@
     {
         var store = this.Store1;
 
-        store.DataSource = dbContext.ProductTypes.ToList();
+        store.DataSource = data.ProductTypes.ToList();
         store.DataBind();
     }
 
@@ -29,11 +30,12 @@
         {
             e.Success = false;
             e.ErrorMessage = "Product type cannot be empty";
+            
             return;
         }
 
         string type = e.Value.ToString();
-        bool found = dbContext.ProductTypes.Any(pt => pt.Name == type);
+        bool found = data.ProductTypes.Any(pt => pt.Name == type);
 
         e.Success = !found;
         
@@ -51,15 +53,15 @@
         {
             foreach (ProductType created in productTypes)
             {
-                if (dbContext.ProductTypes.Any(pt => pt.Name == created.Name))
+                if (data.ProductTypes.Any(pt => pt.Name == created.Name))
                 {
                     throw new Exception(string.Format("Product type with '{0}' name is already exists", created.Name));
                 }
                 
-                dbContext.ProductTypes.Add(created);                
+                data.ProductTypes.Add(created);                
             }
 
-            dbContext.SaveChanges();
+            data.SaveChanges();
             e.ResponseRecords.AddRange(productTypes);
         }
 
@@ -68,11 +70,11 @@
             foreach (ProductType deleted in productTypes)
             {
 
-                //dbContext.ProductTypes.Remove(dbContext.ProductTypes.Find(deleted.Id));
-                dbContext.ProductTypes.Remove(deleted);
+                //data.ProductTypes.Remove(data.ProductTypes.Find(deleted.Id));
+                data.ProductTypes.Remove(deleted);
             }
             
-            dbContext.SaveChanges();
+            data.SaveChanges();
         }
 
         if (e.Action == StoreAction.Update)
@@ -81,12 +83,13 @@
             
             foreach (ProductType updated in productTypes)
             {
-                ProductType pType = dbContext.ProductTypes.Find(updated.Id);
-                dbContext.Entry(pType).CurrentValues.SetValues(updated);
+                ProductType pType = data.ProductTypes.Find(updated.Id);
+                
+                data.Entry(pType).CurrentValues.SetValues(updated);
                 updatedEntities.Add(pType);
             }
 
-            dbContext.SaveChanges();
+            data.SaveChanges();
             
             e.ResponseRecords.AddRange(updatedEntities);
         }

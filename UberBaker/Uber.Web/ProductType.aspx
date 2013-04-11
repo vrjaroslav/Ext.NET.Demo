@@ -36,6 +36,7 @@
         bool found = dbContext.ProductTypes.Any(pt => pt.Name == type);
 
         e.Success = !found;
+        
         if (found)
         {
             e.ErrorMessage = string.Format("Product type with '{0}' name is already exists", type);
@@ -70,12 +71,14 @@
                 //dbContext.ProductTypes.Remove(dbContext.ProductTypes.Find(deleted.Id));
                 dbContext.ProductTypes.Remove(deleted);
             }
+            
             dbContext.SaveChanges();
         }
 
         if (e.Action == StoreAction.Update)
         {
             List<ProductType> updatedEntities = new List<ProductType>(productTypes.Count);
+            
             foreach (ProductType updated in productTypes)
             {
                 ProductType pType = dbContext.ProductTypes.Find(updated.Id);
@@ -84,8 +87,10 @@
             }
 
             dbContext.SaveChanges();
+            
             e.ResponseRecords.AddRange(updatedEntities);
         }
+        
         e.Cancel = true;
     }
 </script>
@@ -104,6 +109,7 @@
                     html     : "There is no bound record",
                     title    : "Error"
                 });
+
                 return false;
             }
             
@@ -113,11 +119,12 @@
                     html     : "Product type is invalid",
                     title    : "Error"
                 });
+
                 return false;
             }
             
             form.getForm().updateRecord();
-       };
+        };
 
         var addProductType = function (form, store) {
             if (!form.getForm().isValid()) {
@@ -132,38 +139,43 @@
             
             store.insert(0, new ProductType(form.getForm().getValues()));
             form.getForm().reset();
-       };
+        };
 
-       var insertRecord = function (grid, form) {
-           var store = grid.store;
+        var insertRecord = function (grid, form) {
+            var store = grid.store;
 
-           store.insert(0, new ProductType());
-           grid.getSelectionModel().select(0);
-           form.getComponent(0).focus();
-       };
+            store.insert(0, new ProductType());
+            grid.getSelectionModel().select(0);
+            form.getComponent(0).focus();
+        };
     </script>
 </head>
-<body style="padding:30px;">
+<body>
     <ext:ResourceManager runat="server" />
 
     <ext:Container runat="server">
         <Items>
-            <ext:FormPanel runat="server"
+            <ext:FormPanel 
+                runat="server"
                 Width="400"
                 Height="90"
                 Frame="true"
                 Layout="FormLayout"
                 MarginSpec="0 0 10 0">
                 <Items>
-                    <ext:TextField runat="server"                        
+                    <ext:TextField 
                         ID="ProductTypeName" 
+                        runat="server"                        
                         Name="Name"
                         AllowBlank="false"
                         MsgTarget="Under"
                         FieldLabel="Product Type"
                         IsRemoteValidation="true">
-                        <RemoteValidation ShowBusy="true" OnValidation="CheckProductType" InitValueValidation="Invalid">                   
-                        </RemoteValidation>
+                        <RemoteValidation 
+                            ShowBusy="true" 
+                            OnValidation="CheckProductType" 
+                            InitValueValidation="Invalid" 
+                            />                   
                     </ext:TextField>
                 </Items>
                 <Buttons>
@@ -197,15 +209,18 @@
                 </Buttons>
             </ext:FormPanel>
 
-            <ext:GridPanel runat="server"
+            <ext:GridPanel 
                 ID="GridPanel1"
+                runat="server"
                 Title="Product Types"
                 MultiSelect="false"
                 Frame="true"
                 Width="400"
                 Height="300">
                 <Store>
-                    <ext:Store ID="Store1" runat="server" 
+                    <ext:Store 
+                        ID="Store1" 
+                        runat="server" 
                         AutoSync="true"
                         ShowWarningOnFailure="false"
                         OnBeforeStoreChanged="HandleChanges">
@@ -224,6 +239,7 @@
                             <Exception Handler="
                                 var error = operation.getError(),
                                     message = Ext.isString(error) ? error : ('(' + error.status + ')' + error.statusText);
+
                                 Ext.net.Notification.show({
                                     iconCls    : 'icon-exclamation', 
                                     html       : message, 
@@ -233,14 +249,14 @@
                                     width      : 300, 
                                     height     : 200
                                 });
-                                this.rejectChanges({destroy:true});" />
+
+                                this.rejectChanges({ destroy : true });" />
                         </Listeners>
                     </ext:Store>
                 </Store>
                 <ColumnModel>
                     <Columns>
-                        <ext:Column runat="server" DataIndex="Name" Text="Name" Flex="1">
-                        </ext:Column>
+                        <ext:Column runat="server" DataIndex="Name" Text="Name" Flex="1" />
                     </Columns>
                 </ColumnModel>
                 <Listeners>

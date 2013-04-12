@@ -69,7 +69,8 @@
                 {
                     throw new Exception(string.Format("Product with '{0}' name is already exists", created.Name));
                 }
-                
+
+                created.Type = data.ProductTypes.Find(created.Type.Id);
                 data.Products.Add(created);                
             }
 
@@ -82,7 +83,7 @@
             foreach (Product deleted in products)
             {
 
-                data.ProductTypes.Remove(data.ProductTypes.Find(deleted.Id));
+                data.Products.Remove(data.Products.Find(deleted.Id));
             }
             
             data.SaveChanges();
@@ -90,17 +91,19 @@
 
         if (e.Action == StoreAction.Update)
         {
+            List<Product> updatedEntities = new List<Product>(products.Count);
             foreach (Product updated in products)
             {
-                /*Product product = data.Products.Find(updated.Id);
+                Product product = data.Products.Find(updated.Id);
                 data.Entry(product).CurrentValues.SetValues(updated);
-                product.Type = updated.Type;*/
-                
-                data.Entry(updated).State = EntityState.Modified;                
+                product.Type = data.ProductTypes.Find(updated.Type.Id);
+
+                data.Entry(product).State = EntityState.Modified;
+                updatedEntities.Add(product);
             }
 
             data.SaveChanges();
-            e.ResponseRecords.AddRange(products);
+            e.ResponseRecords.AddRange(updatedEntities);
         }
        
         e.Cancel = true;
@@ -220,7 +223,7 @@
                         Name="Type"
                         FieldLabel="Type"
                         AllowBlank="false"
-                        Editable="true"
+                        Editable="false"
                         StoreID="ProductTypeStore"
                         DisplayField="Name"
                         ValueField="Id">                        
@@ -303,7 +306,7 @@
                                     height     : 200
                                 });
 
-                                this.rejectChanges({ destroy : true });" />
+                                this.rejectChanges();" />
                         </Listeners>
                     </ext:Store>
                 </Store>

@@ -3,8 +3,10 @@
 <%@ Import Namespace="Uber.Core" %>
 <%@ Import Namespace="Uber.Data" %>
 <%@ Import Namespace="System.Data.Entity.Infrastructure" %>
+<%@ Import Namespace="System.Data" %>
 
 <script runat="server">
+    
     UberContext data = new UberContext();
     
     protected void Page_Load(object sender, EventArgs e)
@@ -12,62 +14,72 @@
         if (!X.IsAjaxRequest)
         {
             this.BindProductTypes();
+            this.BindProducts();
         }        
+    }
+
+    private void BindProducts()
+    {
+        var store = this.Store1;
+
+        store.DataSource = data.Products.ToList();
+        store.DataBind();
     }
 
     private void BindProductTypes()
     {
-        var store = this.Store1;
+        var store = this.ProductTypeStore;
 
         store.DataSource = data.ProductTypes.ToList();
         store.DataBind();
     }
 
-    protected void CheckProductType(object sender, RemoteValidationEventArgs e)
+    protected void CheckProductName(object sender, RemoteValidationEventArgs e)
     {
         if (e.Value == null || string.IsNullOrWhiteSpace(e.Value.ToString()))
         {
             e.Success = false;
-            e.ErrorMessage = "Product type cannot be empty";
+            e.ErrorMessage = "Product name cannot be empty";
             
             return;
         }
 
-        string type = e.Value.ToString();
-        bool found = data.ProductTypes.Any(pt => pt.Name == type);
+        string name = e.Value.ToString();
+        bool found = data.Products.Any(pt => pt.Name == name);
 
         e.Success = !found;
         
         if (found)
         {
-            e.ErrorMessage = string.Format("Product type with '{0}' name is already exists", type);
+            e.ErrorMessage = string.Format("Product with '{0}' name is already exists", name);
         }
     }
 
     protected void HandleChanges(object sender, BeforeStoreChangedEventArgs e)
     {
+        var converters = new List<Newtonsoft.Json.JsonConverter> { new ProductTypeJsonConverter() };
+        List<Product> products = e.DataHandler.ObjectData<Product>(converters);
+        e.ResponseRecords.Converters = converters;
         
-        List<ProductType> productTypes = e.DataHandler.ObjectData<ProductType>();
-
         if (e.Action == StoreAction.Create)
         {
-            foreach (ProductType created in productTypes)
+            foreach (Product created in products)
             {
-                if (data.ProductTypes.Any(pt => pt.Name == created.Name))
+                if (data.Products.Any(pt => pt.Name == created.Name))
                 {
-                    throw new Exception(string.Format("Product type with '{0}' name is already exists", created.Name));
+                    throw new Exception(string.Format("Product with '{0}' name is already exists", created.Name));
                 }
                 
-                data.ProductTypes.Add(created);                
+                data.Products.Add(created);                
             }
 
             data.SaveChanges();
-            e.ResponseRecords.AddRange(productTypes);
+            e.ResponseRecords.AddRange(products);
         }
 
         if (e.Action == StoreAction.Destroy)
         {
-            foreach (ProductType deleted in productTypes)
+            foreach (Product deleted in products)
             {
 
                 data.ProductTypes.Remove(data.ProductTypes.Find(deleted.Id));
@@ -78,19 +90,17 @@
 
         if (e.Action == StoreAction.Update)
         {
-            List<ProductType> updatedEntities = new List<ProductType>(productTypes.Count);
-            
-            foreach (ProductType updated in productTypes)
+            foreach (Product updated in products)
             {
-                ProductType pType = data.ProductTypes.Find(updated.Id);
+                /*Product product = data.Products.Find(updated.Id);
+                data.Entry(product).CurrentValues.SetValues(updated);
+                product.Type = updated.Type;*/
                 
-                data.Entry(pType).CurrentValues.SetValues(updated);
-                updatedEntities.Add(pType);
+                data.Entry(updated).State = EntityState.Modified;                
             }
 
             data.SaveChanges();
-            
-            e.ResponseRecords.AddRange(updatedEntities);
+            e.ResponseRecords.AddRange(products);
         }
        
         e.Cancel = true;
@@ -104,7 +114,17 @@
     <title>Ext.NET Demo</title>
 
     <script>
-        var updateProductType = function (form) {
+        var productTypeRenderer = function (value) {
+            var r = App.ProductTypeStore.getById(value);
+
+            if (Ext.isEmpty(r)) {
+                return "";
+            }
+
+            return r.get('Name');
+        };
+
+        var updateProduct = function (form) {
             if (!form.getForm().getBoundRecord()) {
                 Ext.net.Notification.show({
                     iconCls  : "icon-exclamation",
@@ -118,7 +138,7 @@
             if (!form.getForm().isValid()) {
                 Ext.net.Notification.show({
                     iconCls  : "icon-exclamation",
-                    html     : "Product type is invalid",
+                    html     : "Product is invalid",
                     title    : "Error"
                 });
 
@@ -128,25 +148,25 @@
             form.getForm().updateRecord();
         };
 
-        var addProductType = function (form, store) {
+        var addProduct = function (form, store) {
             if (!form.getForm().isValid()) {
                 Ext.net.Notification.show({
                     iconCls  : "icon-exclamation",
-                    html     : "Product type is invalid",
+                    html     : "Product is invalid",
                     title    : "Error"
                 });
             
                 return false;
             }
             
-            store.insert(0, new ProductType(form.getForm().getValues()));
+            store.insert(0, new Product(form.getForm().getValues()));
             form.getForm().reset();
         };
 
         var insertRecord = function (grid, form) {
             var store = grid.store;
 
-            store.insert(0, new ProductType());
+            store.insert(0, new Product());
             grid.getSelectionModel().select(0);
             form.getComponent(0).focus();
         };
@@ -155,30 +175,56 @@
 <body>
     <ext:ResourceManager runat="server" />
 
+    <ext:Store 
+        ID="ProductTypeStore" 
+        runat="server">
+        <Model>
+            <ext:Model runat="server" IDProperty="Id">
+                <Fields>
+                    <ext:ModelField Name="Id" Type="Int" />
+                    <ext:ModelField Name="Name" />
+                </Fields>
+            </ext:Model>
+        </Model>
+    </ext:Store>
+
     <ext:Container runat="server">
         <Items>
             <ext:FormPanel 
                 runat="server"
-                Width="400"
-                Height="90"
+                Width="400"                
                 Frame="true"
                 Layout="FormLayout"
                 MarginSpec="0 0 10 0">
                 <Items>
                     <ext:TextField 
-                        ID="ProductTypeName" 
+                        ID="ProductName" 
                         runat="server"                        
                         Name="Name"
                         AllowBlank="false"
                         MsgTarget="Under"
-                        FieldLabel="Product Type"
-                        IsRemoteValidation="true">
-                        <RemoteValidation 
-                            ShowBusy="true" 
-                            OnValidation="CheckProductType" 
-                            InitValueValidation="Invalid" 
-                            />                   
+                        FieldLabel="Name">
                     </ext:TextField>
+
+                    <ext:TextArea runat="server"
+                        Name="Description"
+                        FieldLabel="Description"
+                        Height="100" />
+
+                    <ext:NumberField runat="server" 
+                        Name="UnitPrice"
+                        FieldLabel="Unit Price"
+                        AllowBlank="false"/>
+
+                    <ext:ComboBox runat="server"
+                        Name="Type"
+                        FieldLabel="Type"
+                        AllowBlank="false"
+                        Editable="true"
+                        StoreID="ProductTypeStore"
+                        DisplayField="Name"
+                        ValueField="Id">                        
+                    </ext:ComboBox>
                 </Items>
                 <Buttons>
                     <ext:Button 
@@ -187,7 +233,7 @@
                             Text="Update"
                             Icon="Disk">
                             <Listeners>
-                                <Click Handler="updateProductType(this.up('form'));" />
+                                <Click Handler="updateProduct(this.up('form'));" />
                             </Listeners>
                         </ext:Button>
                 
@@ -197,7 +243,7 @@
                             Text="Create"
                             Icon="Add">
                             <Listeners>
-                                <Click Handler="addProductType(this.up('form'), this.up('form').next().store);" />
+                                <Click Handler="addProduct(this.up('form'), this.up('form').next().store);" />
                             </Listeners>
                         </ext:Button>
                 
@@ -214,7 +260,7 @@
             <ext:GridPanel 
                 ID="GridPanel1"
                 runat="server"
-                Title="Product Types"
+                Title="Products"
                 MultiSelect="false"
                 Frame="true"
                 Width="400"
@@ -227,13 +273,18 @@
                         ShowWarningOnFailure="false"
                         OnBeforeStoreChanged="HandleChanges">
                         <Model>
-                            <ext:Model Name="ProductType" runat="server" IDProperty="Id">
+                            <ext:Model Name="Product" runat="server" IDProperty="Id">
                                 <Fields>
                                     <ext:ModelField Name="Id" Type="Int" UseNull="true" />
                                     <ext:ModelField Name="Name" />
+                                    <ext:ModelField Name="Description" />
+                                    <ext:ModelField Name="UnitPrice" Type="Float" />
+                                    <ext:ModelField Name="Type" ServerMapping="Type.Id" Type="Int" UseNull="true" />
                                 </Fields>
                                 <Validations>
-                                    <ext:PresenceValidation Field="Name" />                                    
+                                    <ext:PresenceValidation Field="Name" />
+                                    <ext:PresenceValidation Field="UnitPrice" />
+                                    <ext:PresenceValidation Field="Type" />
                                 </Validations>
                             </ext:Model>
                         </Model>
@@ -259,6 +310,14 @@
                 <ColumnModel>
                     <Columns>
                         <ext:Column runat="server" DataIndex="Name" Text="Name" Flex="1" />
+                        <ext:NumberColumn runat="server" DataIndex="UnitPrice" Text="Unit Price">
+                            <Renderer Format="UsMoney" />
+                        </ext:NumberColumn>
+                        <ext:Column runat="server" 
+                            DataIndex="Type" 
+                            Text="Type">
+                            <Renderer Fn="productTypeRenderer" />
+                        </ext:Column>
                     </Columns>
                 </ColumnModel>
                 <Listeners>

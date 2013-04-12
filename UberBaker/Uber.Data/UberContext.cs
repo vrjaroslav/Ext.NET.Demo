@@ -7,7 +7,7 @@ using Uber.Core;
 namespace Uber.Data
 {
     public class UberContext : DbContext
-    {
+    {        
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
 

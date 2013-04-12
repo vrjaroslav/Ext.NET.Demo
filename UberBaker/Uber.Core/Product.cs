@@ -17,7 +17,7 @@ namespace Uber.Core
         [JsonProperty]
         public double UnitPrice { get; set; }
 
-        [JsonProperty]
+        [JsonProperty]        
         public virtual ProductType Type { get; set; }
     }
 }

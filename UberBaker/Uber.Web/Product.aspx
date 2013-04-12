@@ -69,7 +69,6 @@
                 {
                     throw new Exception(string.Format("Product with '{0}' name is already exists", created.Name));
                 }
-
                 created.Type = data.ProductTypes.Find(created.Type.Id);
                 data.Products.Add(created);                
             }
@@ -82,7 +81,6 @@
         {
             foreach (Product deleted in products)
             {
-
                 data.Products.Remove(data.Products.Find(deleted.Id));
             }
             
@@ -91,19 +89,19 @@
 
         if (e.Action == StoreAction.Update)
         {
-            List<Product> updatedEntities = new List<Product>(products.Count);
             foreach (Product updated in products)
             {
                 Product product = data.Products.Find(updated.Id);
                 data.Entry(product).CurrentValues.SetValues(updated);
                 product.Type = data.ProductTypes.Find(updated.Type.Id);
-
-                data.Entry(product).State = EntityState.Modified;
-                updatedEntities.Add(product);
+                
+                data.Entry(product).State = EntityState.Modified;                
             }
 
+            var modified = data.ChangeTracker.Entries<Product>().Where(c => c.State == EntityState.Modified);
+            e.ResponseRecords.AddRange(modified.Select(de=>de.Entity));
+            
             data.SaveChanges();
-            e.ResponseRecords.AddRange(updatedEntities);
         }
        
         e.Cancel = true;

@@ -42,13 +42,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Ext.Net, Version=2.1.1.11828, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\svn.ext.net\trunk\Ext.Net\bin\MVC Debug\Ext.Net.dll</HintPath>
+    <Reference Include="Ext.Net">
+      <HintPath>..\..\..\..\..\..\Documents\vTrunk\Ext.Net\bin\MVC Release\Ext.Net.dll</HintPath>
     </Reference>
-    <Reference Include="Ext.Net.Utilities, Version=2.1.0.0, Culture=neutral, PublicKeyToken=2c34ac34702a3c23, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\svn.ext.net\trunk\Ext.Net\bin\MVC Debug\Ext.Net.Utilities.dll</HintPath>
+    <Reference Include="Ext.Net.Utilities">
+      <HintPath>..\..\..\..\..\..\Documents\vTrunk\Ext.Net\bin\MVC Release\Ext.Net.Utilities.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -75,7 +73,7 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="Transformer.NET">
-      <HintPath>..\packages\Transformer.NET.2.1.1\lib\net35\Transformer.NET.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Documents\vTrunk\Ext.Net\bin\MVC Release\Transformer.NET.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +85,7 @@
     <Content Include="App_Readme\Ext.NET\README.txt" />
     <Content Include="App_Readme\Transformer.NET\LICENSE.txt" />
     <Content Include="App_Readme\Transformer.NET\README.txt" />
+    <Content Include="Product2.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Product.aspx" />
     <Content Include="ProductType.aspx" />

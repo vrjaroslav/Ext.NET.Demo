@@ -179,25 +179,6 @@
 <body>
     <ext:ResourceManager runat="server" />
 
-    <ext:Model Name="Product" runat="server" IDProperty="Id">
-        <Fields>
-            <ext:ModelField Name="Id" Type="Int" UseNull="true" />
-            <ext:ModelField Name="Name" />
-            <ext:ModelField Name="Description" />
-            <ext:ModelField Name="UnitPrice" Type="Float" />
-            <%--<ext:ModelField Name="Type" ModelName="ProductType" Type="Model" />--%>
-            <ext:ModelField Name="Type" ServerMapping="Type.Id" Type="Int" UseNull="true" />
-        </Fields>
-        <%--<Associations>
-            <ext:HasOneAssociation Model="ProductType" 
-        </Associations>--%>
-        <Validations>
-            <ext:PresenceValidation Field="Name" />
-            <ext:PresenceValidation Field="UnitPrice" />
-            <ext:PresenceValidation Field="Type" />
-        </Validations>
-    </ext:Model>
-
     <ext:Container runat="server">
         <Items>
             <ext:FormPanel 
@@ -207,6 +188,9 @@
                 Frame="true"
                 Layout="FormLayout"
                 MarginSpec="0 0 10 0">
+                <Listeners>
+                    
+                </Listeners>
                 <Items>
                     <ext:TextField 
                         ID="ProductName" 
@@ -297,10 +281,53 @@
                     <ext:Store 
                         ID="Store1" 
                         runat="server"
-                        ModelName="Product" 
                         AutoSync="true"
                         ShowWarningOnFailure="false"
                         OnBeforeStoreChanged="HandleChanges">
+                        <Model>
+                            <ext:Model Name="Product" runat="server" IDProperty="Id">
+                                <Fields>
+                                    <ext:ModelField Name="Id" Type="Int" UseNull="true" />
+                                    <ext:ModelField Name="Name" />
+                                    <ext:ModelField Name="Description" />
+                                    <ext:ModelField Name="UnitPrice" Type="Float" />
+                                    
+                                    <ext:ModelField Name="TypeId" ServerMapping="Type">
+                                        <Convert Handler="return (value) ? value.Id : null;" />
+                                    </ext:ModelField>
+
+                                    <%--Works--%>
+                                    <%--<ext:ModelField Name="TypeId" ServerMapping="Type" />--%>
+                                    
+                                    <%--Error: ".Name" is being replaced with "TypeId.Name"--%>
+                                    <%--<ext:ModelField Name="TypeId" ServerMapping="Type" Mapping="TypeId.Name" />--%>
+
+                                    <%--<ext:ModelField Name="TypeId" Type="Int" />--%>
+
+                                    <%--<ext:ModelField Name="PType" IsComplex="true" Mapping="Type" />--%>
+
+                                    <%--Include the Model based on the Field .Name--%>
+                                    <%--<ext:ModelField Name="ProductType" Type="Model" />--%>
+
+                                    <%--Include the Model by explicitly setting the ModelName--%>
+                                    <%--<ext:ModelField Name="Type" ModelName="ProductType" />--%>
+
+                                    <%--Map the nested property server-side--%>
+                                    <%--<ext:ModelField Name="TypeId" ServerMapping="Type.Id" Type="Int" UseNull="true" />--%>
+                                    
+                                    <%--Client-side mapping of included child object--%>
+                                    <%--<ext:ModelField Name="TypeName" IsComplex="true" Mapping="Type.Name" />--%>
+                                </Fields>
+                                <Associations>
+                                    <ext:HasOneAssociation Model="ProductType" /> 
+                                </Associations>
+                                <Validations>
+                                    <ext:PresenceValidation Field="Name" />
+                                    <ext:PresenceValidation Field="UnitPrice" />
+                                    <ext:PresenceValidation Field="Type" />
+                                </Validations>
+                            </ext:Model>
+                        </Model>
                         <Listeners>
                             <Exception Handler="
                                 var error = operation.getError(),
@@ -334,15 +361,15 @@
                             Text="Unit Price">
                             <Renderer Format="UsMoney" />
                         </ext:NumberColumn>
-                        <%--<ext:Column 
-                            runat="server" 
-                            DataIndex="Type.Name" 
-                            Text="Type"
-                            />--%>
                         <ext:Column 
                             runat="server" 
-                            DataIndex="Type" 
-                            Text="Type">
+                            DataIndex="TypeId"
+                            Text="Type Id"
+                            />
+                        <ext:Column 
+                            runat="server" 
+                            DataIndex="TypeId" 
+                            Text="Type Name">
                             <Renderer Fn="productTypeRenderer" />
                         </ext:Column>
                     </Columns>

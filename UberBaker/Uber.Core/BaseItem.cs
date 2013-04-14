@@ -7,7 +7,6 @@ namespace Uber.Core
     [JsonObject(MemberSerialization.OptIn)]
     public abstract class BaseItem
     {
-        //[JsonProperty("id")]
         [JsonProperty]
         public virtual int Id { get; set; }
 

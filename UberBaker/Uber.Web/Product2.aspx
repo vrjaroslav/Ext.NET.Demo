@@ -292,31 +292,34 @@
                                     <ext:ModelField Name="Description" />
                                     <ext:ModelField Name="UnitPrice" Type="Float" />
                                     
-                                    <ext:ModelField Name="TypeId" ServerMapping="Type">
+                                    <%--<ext:ModelField Name="TypeId" ServerMapping="Type">
                                         <Convert Handler="return (value) ? value.Id : null;" />
-                                    </ext:ModelField>
+                                    </ext:ModelField>--%>
 
-                                    <%--Works--%>
-                                    <%--<ext:ModelField Name="TypeId" ServerMapping="Type" />--%>
-                                    
                                     <%--Error: ".Name" is being replaced with "TypeId.Name"--%>
                                     <%--<ext:ModelField Name="TypeId" ServerMapping="Type" Mapping="TypeId.Name" />--%>
 
-                                    <%--<ext:ModelField Name="TypeId" Type="Int" />--%>
+                                    <%--Error: PropertyType object is not being serialized. No 'PType' property on record.--%>
+                                    <ext:ModelField Name="PType" IsComplex="true" Mapping="Type" />
 
-                                    <%--<ext:ModelField Name="PType" IsComplex="true" Mapping="Type" />--%>
+                                    <%--Error: Client-side mapping of included child object--%>
+                                    <%--<ext:ModelField Name="TypeName" IsComplex="true" Mapping="Type.Name" />--%>
 
-                                    <%--Include the Model based on the Field .Name--%>
+                                    <%--New: Include the Model based on the Field .Name--%>
                                     <%--<ext:ModelField Name="ProductType" Type="Model" />--%>
 
-                                    <%--Include the Model by explicitly setting the ModelName--%>
+                                    <%--New: Include the Model by explicitly setting the ModelName--%>
                                     <%--<ext:ModelField Name="Type" ModelName="ProductType" />--%>
 
-                                    <%--Map the nested property server-side--%>
+                                    <%--Ok--%>
+                                    <%--<ext:ModelField Name="TypeId" ServerMapping="Type" />--%>
+
+                                    <%--OK: Map the nested property server-side--%>
                                     <%--<ext:ModelField Name="TypeId" ServerMapping="Type.Id" Type="Int" UseNull="true" />--%>
-                                    
-                                    <%--Client-side mapping of included child object--%>
-                                    <%--<ext:ModelField Name="TypeName" IsComplex="true" Mapping="Type.Name" />--%>
+                                
+                                    <%--Ok: If using PropertyTypeJsonConverter--%>
+                                    <%--<ext:ModelField Name="TypeId" Type="Int" />--%>
+
                                 </Fields>
                                 <Associations>
                                     <ext:HasOneAssociation Model="ProductType" /> 

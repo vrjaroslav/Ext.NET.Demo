@@ -57,9 +57,8 @@
 
     protected void HandleChanges(object sender, BeforeStoreChangedEventArgs e)
     {
-        var converters = new List<Newtonsoft.Json.JsonConverter> { new ProductTypeJsonConverter() };
-        List<Product> products = e.DataHandler.ObjectData<Product>(converters);
-        e.ResponseRecords.Converters = converters;
+        List<Product> products = e.DataHandler.ObjectData<Product>();
+        e.ResponseRecords.Model = ((Store)sender).ModelInstance;
         
         if (e.Action == StoreAction.Create)
         {
@@ -179,6 +178,29 @@
 <body>
     <ext:ResourceManager runat="server" />
 
+    <ext:Model Name="Product" runat="server" IDProperty="Id">
+        <Fields>
+            <ext:ModelField Name="Id" Type="Int" UseNull="true" />
+            <ext:ModelField Name="Name" />
+            <ext:ModelField Name="Description" />
+            <ext:ModelField Name="UnitPrice" Type="Float" />
+            <ext:ModelField Name="Type">
+               <Fields>
+                   <ext:ModelField Name="Id" Type="Int" UseNull="true" />
+                   <ext:ModelField Name="Name" />
+               </Fields>
+            </ext:ModelField>
+        </Fields>
+        <%--<Associations>
+            <ext:HasOneAssociation Model="ProductType" 
+        </Associations>--%>
+        <Validations>
+            <ext:PresenceValidation Field="Name" />
+            <ext:PresenceValidation Field="UnitPrice" />
+            <ext:PresenceValidation Field="Type" />
+        </Validations>
+    </ext:Model>
+
     <ext:Container runat="server">
         <Items>
             <ext:FormPanel 
@@ -188,9 +210,6 @@
                 Frame="true"
                 Layout="FormLayout"
                 MarginSpec="0 0 10 0">
-                <Listeners>
-                    
-                </Listeners>
                 <Items>
                     <ext:TextField 
                         ID="ProductName" 
@@ -223,6 +242,7 @@
                         AllowBlank="false"
                         Editable="false"
                         DisplayField="Name"
+                        DataIndex="Type.Id"
                         ValueField="Id">
                         <Store>
                             <ext:Store ID="ProductTypeStore" runat="server">
@@ -281,56 +301,10 @@
                     <ext:Store 
                         ID="Store1" 
                         runat="server"
+                        ModelName="Product" 
                         AutoSync="true"
                         ShowWarningOnFailure="false"
                         OnBeforeStoreChanged="HandleChanges">
-                        <Model>
-                            <ext:Model Name="Product" runat="server" IDProperty="Id">
-                                <Fields>
-                                    <ext:ModelField Name="Id" Type="Int" UseNull="true" />
-                                    <ext:ModelField Name="Name" />
-                                    <ext:ModelField Name="Description" />
-                                    <ext:ModelField Name="UnitPrice" Type="Float" />
-                                    
-                                    <%--<ext:ModelField Name="TypeId" ServerMapping="Type">
-                                        <Convert Handler="return (value) ? value.Id : null;" />
-                                    </ext:ModelField>--%>
-
-                                    <%--Error: ".Name" is being replaced with "TypeId.Name"--%>
-                                    <%--<ext:ModelField Name="TypeId" ServerMapping="Type" Mapping="TypeId.Name" />--%>
-
-                                    <%--Error: PropertyType object is not being serialized. No 'PType' property on record.--%>
-                                    <ext:ModelField Name="Type2" ServerMapping="Type" />
-
-                                    <%--Error: Client-side mapping of included child object--%>
-                                    <%--<ext:ModelField Name="TypeName" IsComplex="true" Mapping="Type.Name" />--%>
-
-                                    <%--New: Include the Model based on the Field .Name--%>
-                                    <%--<ext:ModelField Name="ProductType" Type="Model" />--%>
-
-                                    <%--New: Include the Model by explicitly setting the ModelName--%>
-                                    <%--<ext:ModelField Name="Type" ModelName="ProductType" />--%>
-
-                                    <%--Ok--%>
-                                    <%--<ext:ModelField Name="TypeId" ServerMapping="Type" />--%>
-
-                                    <%--OK: Map the nested property server-side--%>
-                                    <%--<ext:ModelField Name="TypeId" ServerMapping="Type.Id" Type="Int" UseNull="true" />--%>
-                                
-                                    <%--Ok: If using PropertyTypeJsonConverter--%>
-                                    <%--<ext:ModelField Name="TypeId" Type="Int" />--%>
-
-                                </Fields>
-                                <Associations>
-                                    <ext:HasOneAssociation Model="ProductType" /> 
-                                </Associations>
-                                <Validations>
-                                    <ext:PresenceValidation Field="Name" />
-                                    <ext:PresenceValidation Field="UnitPrice" />
-                                    <ext:PresenceValidation Field="Type" />
-                                </Validations>
-                            </ext:Model>
-                        </Model>
                         <Listeners>
                             <Exception Handler="
                                 var error = operation.getError(),
@@ -366,14 +340,9 @@
                         </ext:NumberColumn>
                         <ext:Column 
                             runat="server" 
-                            DataIndex="TypeId"
-                            Text="Type Id"
-                            />
-                        <ext:Column 
-                            runat="server" 
-                            DataIndex="TypeId" 
-                            Text="Type Name">
-                            <Renderer Fn="productTypeRenderer" />
+                            DataIndex="Type" 
+                            Text="Type">
+                            <Renderer Handler="return value && value.Name;" />
                         </ext:Column>
                     </Columns>
                 </ColumnModel>

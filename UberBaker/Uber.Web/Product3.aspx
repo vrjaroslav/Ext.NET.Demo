@@ -58,7 +58,7 @@
     protected void HandleChanges(object sender, BeforeStoreChangedEventArgs e)
     {
         List<Product> products = e.DataHandler.ObjectData<Product>();
-        e.ResponseRecords.Model = ((Store)sender).ModelInstance;
+        e.ResponseRecords.UseModel = true;
         
         if (e.Action == StoreAction.Create)
         {
@@ -256,7 +256,12 @@
                                 </Model>
                             </ext:Store>
                         </Store>                  
+                        <Listeners>
+                            <Change Handler="this.next().setValue(this.getRawValue());" />
+                        </Listeners>
                     </ext:ComboBox>
+
+                    <ext:Hidden runat="server" DataIndex="Type.Name" />
                 </Items>
                 <Buttons>
                     <ext:Button 

@@ -47,21 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201303211913554_init.cs" />
-    <Compile Include="Migrations\201303211913554_init.Designer.cs">
-      <DependentUpon>201303211913554_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201304100841163_Add-Order-and-OrderItems.cs" />
-    <Compile Include="Migrations\201304100841163_Add-Order-and-OrderItems.Designer.cs">
-      <DependentUpon>201304100841163_Add-Order-and-OrderItems.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201304210542171_Order-OrderItems.cs" />
-    <Compile Include="Migrations\201304210542171_Order-OrderItems.Designer.cs">
-      <DependentUpon>201304210542171_Order-OrderItems.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201304210547329_Add-ShortCode-to-Product-ProductType.cs" />
-    <Compile Include="Migrations\201304210547329_Add-ShortCode-to-Product-ProductType.Designer.cs">
-      <DependentUpon>201304210547329_Add-ShortCode-to-Product-ProductType.cs</DependentUpon>
+    <Compile Include="Migrations\201304210554071_Init.cs" />
+    <Compile Include="Migrations\201304210554071_Init.Designer.cs">
+      <DependentUpon>201304210554071_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="ProductTypeJsonConverter.cs" />
     <Compile Include="UberContext.cs" />
@@ -80,17 +68,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201303211913554_init.resx">
-      <DependentUpon>201303211913554_init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201304100841163_Add-Order-and-OrderItems.resx">
-      <DependentUpon>201304100841163_Add-Order-and-OrderItems.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201304210542171_Order-OrderItems.resx">
-      <DependentUpon>201304210542171_Order-OrderItems.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201304210547329_Add-ShortCode-to-Product-ProductType.resx">
-      <DependentUpon>201304210547329_Add-ShortCode-to-Product-ProductType.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201304210554071_Init.resx">
+      <DependentUpon>201304210554071_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

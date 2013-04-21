@@ -5,13 +5,13 @@ namespace Uber.Data
     using System.Data.Entity.Migrations.Infrastructure;
     using System.Resources;
     
-    public sealed partial class AddShortCodetoProductProductType : IMigrationMetadata
+    public sealed partial class Init : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddShortCodetoProductProductType));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Init));
         
         string IMigrationMetadata.Id
         {
-            get { return "201304210547329_Add-ShortCode-to-Product-ProductType"; }
+            get { return "201304210554071_Init"; }
         }
         
         string IMigrationMetadata.Source

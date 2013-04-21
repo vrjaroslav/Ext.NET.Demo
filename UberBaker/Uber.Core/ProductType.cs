@@ -7,7 +7,9 @@ namespace Uber.Core
     public class ProductType : BaseItem
     {
         [JsonProperty]
-        [DataMember]
         public string Name { get; set; }
+
+        [JsonProperty]
+        public string ShortCode { get; set; }
     }
 }

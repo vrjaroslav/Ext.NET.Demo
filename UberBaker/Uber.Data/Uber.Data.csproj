@@ -55,6 +55,14 @@
     <Compile Include="Migrations\201304100841163_Add-Order-and-OrderItems.Designer.cs">
       <DependentUpon>201304100841163_Add-Order-and-OrderItems.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201304210542171_Order-OrderItems.cs" />
+    <Compile Include="Migrations\201304210542171_Order-OrderItems.Designer.cs">
+      <DependentUpon>201304210542171_Order-OrderItems.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201304210547329_Add-ShortCode-to-Product-ProductType.cs" />
+    <Compile Include="Migrations\201304210547329_Add-ShortCode-to-Product-ProductType.Designer.cs">
+      <DependentUpon>201304210547329_Add-ShortCode-to-Product-ProductType.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProductTypeJsonConverter.cs" />
     <Compile Include="UberContext.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -77,6 +85,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201304100841163_Add-Order-and-OrderItems.resx">
       <DependentUpon>201304100841163_Add-Order-and-OrderItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304210542171_Order-OrderItems.resx">
+      <DependentUpon>201304210542171_Order-OrderItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304210547329_Add-ShortCode-to-Product-ProductType.resx">
+      <DependentUpon>201304210547329_Add-ShortCode-to-Product-ProductType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

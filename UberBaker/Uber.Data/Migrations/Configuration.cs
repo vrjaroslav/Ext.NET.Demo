@@ -14,24 +14,24 @@ namespace Uber.Data
         protected override void Seed(UberContext data)
         {
             var products = new List<Product> { 
-                new Product { Name = "Sour Dough" },
-                new Product { Name = "5 Grain" },
-                new Product { Name = "Baguette" },
-                new Product { Name = "Dark Rye" },
-                new Product { Name = "Pumpernickel" },
-                new Product { Name = "Corn Bread" },
-                new Product { Name = "Brioche" },
-                new Product { Name = "Focaccia" }
+                new Product { Name = "Sour Dough", ShortCode="sourdough" },
+                new Product { Name = "5 Grain", ShortCode="5grain" },
+                new Product { Name = "Baguette", ShortCode="baguette" },
+                new Product { Name = "Dark Rye", ShortCode="darkrye" },
+                new Product { Name = "Pumpernickel", ShortCode="pumpernickel" },
+                new Product { Name = "Corn Bread", ShortCode="cornbread" },
+                new Product { Name = "Brioche", ShortCode="brioche" },
+                new Product { Name = "Focaccia", ShortCode="focaccia" }
             };
 
-            products.ForEach(product => data.Products.AddOrUpdate(item => item.Name, product));
+            products.ForEach(product => data.Products.AddOrUpdate(item => item.ShortCode, product));
 
             var productTypes = new List<ProductType>
             {
-                new ProductType { Name = "Bread" }
+                new ProductType { Name = "Bread", ShortCode="bread" }
             };
 
-            productTypes.ForEach(productType => data.ProductTypes.AddOrUpdate(item => item.Name, productType));
+            productTypes.ForEach(productType => data.ProductTypes.AddOrUpdate(item => item.ShortCode, productType));
 
             // IMPORTANT!!
             data.SaveChanges();

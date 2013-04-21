@@ -9,6 +9,9 @@ namespace Uber.Core
         [JsonProperty]
         public string Name { get; set; }
 
+        [JsonProperty]
+        public string ShortCode { get; set; }
+
         [DefaultValue("")]
         [JsonProperty]
         public string Description { get; set; }

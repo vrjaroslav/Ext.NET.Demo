@@ -129,7 +129,14 @@
             orderId = Convert.ToInt32(filter[0].Value);
         }
 
-        return orderId >= 0 ? data.Orders.Find(orderId).OrderItems : null;
+        if(orderId >= 0) 
+        {
+
+            var items = data.Orders.Include("OrderItems").Include("OrderItems.Product").First(o => o.Id == orderId).OrderItems;
+            return JRawValue.From(ModelSerializer.Serialize(items, Model.Get("OrderItem")));
+        }
+        
+        return null;
     }
     
 </script>

@@ -5,9 +5,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uber.Core", "Uber.Core\Uber
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uber.Data", "Uber.Data\Uber.Data.csproj", "{E2CD674D-A1FD-4632-8828-0B8842520645}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uber.Web", "Uber.Web\Uber.Web.csproj", "{9D592CF6-DFB0-427F-A411-742D8A03F24F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uber.API", "Uber.API\Uber.API.csproj", "{FD8130DE-8D89-4678-B711-01B9771E1AD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uber.WebForms", "Uber.WebForms\Uber.WebForms.csproj", "{9D592CF6-DFB0-427F-A411-742D8A03F24F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uber.Web", "Uber.Web\Uber.Web.csproj", "{AA8799C2-026F-406C-A1C5-22F82D6FED77}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,14 +25,18 @@ Global
 		{E2CD674D-A1FD-4632-8828-0B8842520645}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2CD674D-A1FD-4632-8828-0B8842520645}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2CD674D-A1FD-4632-8828-0B8842520645}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9D592CF6-DFB0-427F-A411-742D8A03F24F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9D592CF6-DFB0-427F-A411-742D8A03F24F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9D592CF6-DFB0-427F-A411-742D8A03F24F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9D592CF6-DFB0-427F-A411-742D8A03F24F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FD8130DE-8D89-4678-B711-01B9771E1AD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FD8130DE-8D89-4678-B711-01B9771E1AD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD8130DE-8D89-4678-B711-01B9771E1AD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD8130DE-8D89-4678-B711-01B9771E1AD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D592CF6-DFB0-427F-A411-742D8A03F24F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D592CF6-DFB0-427F-A411-742D8A03F24F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D592CF6-DFB0-427F-A411-742D8A03F24F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D592CF6-DFB0-427F-A411-742D8A03F24F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA8799C2-026F-406C-A1C5-22F82D6FED77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA8799C2-026F-406C-A1C5-22F82D6FED77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA8799C2-026F-406C-A1C5-22F82D6FED77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA8799C2-026F-406C-A1C5-22F82D6FED77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

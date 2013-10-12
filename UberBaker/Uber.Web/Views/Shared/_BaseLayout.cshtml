@@ -1,0 +1,18 @@
+﻿@using ScriptMode = Ext.Net.ScriptMode
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    @*<link rel="stylesheet" href="@Url.Content("~/resources/css/examples.css")" />*@
+	@RenderSection("headtag", false)
+</head>
+<body>
+    @Html.X().ResourceManager(ViewBag.ManagerConfig as MvcResourceManagerConfig).StartupMask(new StartupMask()).Theme(Theme.Default).SourceFormatting(true).ScriptMode(ScriptMode.Debug)
+    @RenderSection("bodytag", true)
+</body>
+</html>

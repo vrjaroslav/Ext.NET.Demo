@@ -64,6 +64,16 @@
                             X.Panel()
                                 .Items(
                                     X.Panel()
+                                        .Title("Dashboard")
+                                        .ID("DashboardPanel")
+                                        .Layout(LayoutType.Fit)
+                                        .Loader(X.ComponentLoader()
+                                            .Mode(LoadMode.Script)
+                                            .Url(Url.Action("RenderProducts"))
+                                            .Params(new { containerId = "ProductsPanel" })
+                                            .LoadMask(lm => lm.ShowMask = true)
+                                        ),
+                                    X.Panel()
                                         .Title("Products")
                                         .ID("ProductsPanel")
                                         .Layout(LayoutType.Fit)

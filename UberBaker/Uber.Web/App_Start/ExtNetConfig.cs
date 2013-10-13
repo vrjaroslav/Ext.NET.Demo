@@ -16,13 +16,6 @@ namespace Uber.Web
         {
             // Ignore all ext.axd embedded resource paths
             routes.IgnoreRoute("{extnet-root}/{extnet-file}/ext.axd");
-
-            // Add http://example.com/extnet/ Route
-            routes.MapRoute(
-                "ExtNet", // Route name
-                "{controller}/{action}/{id}", // URL with parameters
-                new { controller = "ExtNet", action = "Index", id = UrlParameter.Optional } // Parameter defaults
-            );
         }
 
         // If you use configure forms authentication in your Web.config and 

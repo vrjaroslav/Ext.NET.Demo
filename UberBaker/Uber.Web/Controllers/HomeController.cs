@@ -54,5 +54,15 @@ namespace Uber.Web.Controllers
                 WrapByScriptTag = false // we load the view via Loader with Script mode therefore script tags is not required
             };
 		}
+
+		public ActionResult RenderOrdersChart(string containerId)
+		{
+			return new Ext.Net.MVC.PartialViewResult
+            {
+                RenderMode = RenderMode.AddTo,
+                ContainerId = containerId,
+                WrapByScriptTag = false // we load the view via Loader with Script mode therefore script tags is not required
+            };
+		}
 	}
 }

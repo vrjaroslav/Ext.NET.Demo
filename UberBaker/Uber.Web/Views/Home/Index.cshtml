@@ -1,12 +1,22 @@
 ﻿@{
     var X = Html.X();
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Uber Baker";
     Layout = "~/Views/Shared/_BaseLayout.cshtml";
 }
 
 @section headtag
 {
-
+    <script>
+        var saveChart = function (btn) {
+            Ext.MessageBox.confirm('Confirm Download', 'Would you like to download the chart as an image?', function (choice) {
+                if (choice == 'yes') {
+                    btn.up('panel').down('chart').save({
+                        type: 'image/png'
+                    });
+                }
+            });
+        }
+    </script>
 }
 
 @section bodytag
@@ -63,16 +73,25 @@
                         .Items(
                             X.Panel()
                                 .Items(
-                                    X.Panel()
-                                        .Title("Dashboard")
-                                        .ID("DashboardPanel")
-                                        .Layout(LayoutType.Fit)
-                                        .Loader(X.ComponentLoader()
-                                            .Mode(LoadMode.Script)
-                                            .Url(Url.Action("RenderProducts"))
-                                            .Params(new { containerId = "ProductsPanel" })
-                                            .LoadMask(lm => lm.ShowMask = true)
-                                        ),
+                                    //X.Panel()
+                                    //    .Title("Dashboard")
+                                    //    .ID("DashboardPanel")
+                                    //    .Layout(LayoutType.Fit)
+                                    //    .Items(
+                                    //        X.PortalColumn()
+                                    //            .ColumnWidth(1)
+                                    //            .Items(
+                                    //                X.Portlet()
+                                    //                    .ID("OrdersChartContainer")
+                                    //                    .Title("Orders")
+                                    //                    .Loader(X.ComponentLoader()
+                                    //                        .Mode(LoadMode.Script)
+                                    //                        .Url(Url.Action("RenderOrdersChart"))
+                                    //                        .Params(new { containerId = "OrdersChartContainer" })
+                                    //                        .LoadMask(lm => lm.ShowMask = true)
+                                    //                    )
+                                    //            )
+                                    //    ),
                                     X.Panel()
                                         .Title("Products")
                                         .ID("ProductsPanel")
@@ -111,6 +130,16 @@
                                             .Mode(LoadMode.Script)
                                             .Url(Url.Action("RenderOrderItems"))
                                             .Params(new { containerId = "OrderItemsPanel" })
+                                            .LoadMask(lm => lm.ShowMask = true)
+                                        ),
+                                    X.Panel()
+                                        .Title("Orders Chart")
+                                        .ID("OrdersChartContainer")
+                                        .Layout(LayoutType.Fit)
+                                        .Loader(X.ComponentLoader()
+                                            .Mode(LoadMode.Script)
+                                            .Url(Url.Action("RenderOrdersChart"))
+                                            .Params(new { containerId = "OrdersChartContainer" })
                                             .LoadMask(lm => lm.ShowMask = true)
                                         )
                                 )

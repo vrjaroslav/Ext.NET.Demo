@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Uber.Core;
 using Uber.Data.Abstract;
@@ -47,6 +49,12 @@ namespace Uber.Data.Repositories
 		{
 			var o = Get(id);
 			_db.Orders.Remove(o);
+		}
+
+		public List<OrderChartData> GetChartDataPerMonth()
+		{
+			var data = _db.Orders.GroupBy(o => o.OrderDate.Month).Select(o => new OrderChartData { Month = o.Key, OrdersCount = o.Sum(i => i.OrderItems.Count) }).ToList();
+			return data;
 		}
 	}
 }

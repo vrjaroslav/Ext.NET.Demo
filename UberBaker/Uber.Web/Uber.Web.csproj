@@ -205,7 +205,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\ExtNetModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -275,6 +274,8 @@
     <Content Include="Views\Home\RenderProductTypes.cshtml" />
     <Content Include="Views\Home\RenderOrders.cshtml" />
     <Content Include="Views\Home\RenderOrderItems.cshtml" />
+    <Content Include="Views\Orders\ChartPerMonth.cshtml" />
+    <Content Include="Views\Home\RenderOrdersChart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

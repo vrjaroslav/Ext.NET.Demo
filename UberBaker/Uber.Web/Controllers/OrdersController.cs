@@ -51,5 +51,14 @@ namespace Uber.Web.Controllers
             return View();
         }
 
+		public ActionResult ChartPerMonth()
+		{
+			return View();
+		}
+
+		public ActionResult GetData()
+	    {
+		    return new StoreResult(_ordersRepository.GetChartDataPerMonth());
+	    }
     }
 }

@@ -27,22 +27,22 @@ var X = Html.X();
                 .Data(Model)
                 .Model(X.Model()
                     .Fields(
-                        X.ModelField().Name("Month").Type(ModelFieldType.Int),
+                        X.ModelField().Name("Day").Type(ModelFieldType.Int),
                         X.ModelField().Name("OrdersCount").Type(ModelFieldType.Int)
                     )
                 )
                 .Proxy(X.AjaxProxy()
-                    .Url(Url.Action("GetData", "Orders"))
+                    .Url(Url.Action("GetChartDataForCurrentMonth", "Orders"))
                     .Reader(X.JsonReader().Root("data"))
                 )
             )
             .Axes(
                 X.NumericAxis()
-                    .Fields("Month")
+                    .Fields("Day")
                     .Position(Position.Bottom)
                     .Title("Month")
                     .Minimum(1)
-                    .Maximum(12)
+                    .Maximum(DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month))
                     .MinorTickSteps(1)
                     ,
                 X.NumericAxis()
@@ -53,7 +53,7 @@ var X = Html.X();
             .Series(X.LineSeries()
                 .Axis(Position.Bottom)
                 .Highlight(true)
-                .XField("Month")
+                .XField("Day")
                 .YField("OrdersCount")
                 .Tips(X.ChartTip()
                     .TrackMouse(true)

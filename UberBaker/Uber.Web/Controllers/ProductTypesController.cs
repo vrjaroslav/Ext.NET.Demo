@@ -36,6 +36,12 @@ namespace Uber.Web.Controllers
 			return this.Direct();
 		}
 
+		public ActionResult Delete(int id)
+		{
+			_productsTypesRepository.Delete(id);
+			return this.Direct();
+		}
+
 		public ActionResult Index()
 		{
 			return View();

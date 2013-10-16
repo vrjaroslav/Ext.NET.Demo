@@ -24,8 +24,6 @@ namespace Uber.Data
 			builder.Entity<BaseItem>().Property(item => item.DateCreated).IsRequired();
 			builder.Entity<BaseItem>().Property(item => item.DateUpdated).IsRequired();
 
-
-			
 			builder.Entity<Order>().ToTable("Orders");
 			builder.Entity<OrderItem>().ToTable("OrderItems");
 			builder.Entity<Product>().ToTable("Products");

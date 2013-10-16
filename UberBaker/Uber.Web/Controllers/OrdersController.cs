@@ -56,9 +56,9 @@ namespace Uber.Web.Controllers
 			return View();
 		}
 
-		public ActionResult GetData()
+		public ActionResult GetChartDataForCurrentMonth()
 	    {
-		    return new StoreResult(_ordersRepository.GetChartDataPerMonth());
+		    return new StoreResult(_ordersRepository.GetChartDataForMonth(DateTime.Now.Month));
 	    }
     }
 }

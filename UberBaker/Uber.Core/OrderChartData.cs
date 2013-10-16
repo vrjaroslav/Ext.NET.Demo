@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Uber.Core
 {
-	public class OrderChartData
+	public class OrderChartDataForMonth
 	{
-		public int Month { get; set; }
+		public int Day { get; set; }
 
 		public int OrdersCount { get; set; }
 	}

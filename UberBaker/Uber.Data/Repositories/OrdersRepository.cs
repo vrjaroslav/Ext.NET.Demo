@@ -51,9 +51,9 @@ namespace Uber.Data.Repositories
 			_db.Orders.Remove(o);
 		}
 
-		public List<OrderChartData> GetChartDataPerMonth()
+		public List<OrderChartDataForMonth> GetChartDataForMonth(int month)
 		{
-			var data = _db.Orders.GroupBy(o => o.OrderDate.Month).Select(o => new OrderChartData { Month = o.Key, OrdersCount = o.Sum(i => i.OrderItems.Count) }).ToList();
+			var data = _db.Orders.Where(o => o.OrderDate.Month == month).Select(o => new OrderChartDataForMonth { Day = o.OrderDate.Day, OrdersCount = o.OrderItems.Count }).ToList();
 			return data;
 		}
 	}

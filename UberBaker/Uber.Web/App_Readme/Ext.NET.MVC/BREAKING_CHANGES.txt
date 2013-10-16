@@ -1,4 +1,18 @@
 ﻿**************************************************************************
+*                      2.3.0 BREAKING CHANGES                            *
+**************************************************************************
+
+Release Date     : 2013-03-10
+Current Version  : 2.3.0
+Previous Version : 2.2.0
+
+	NONE
+
+	If you catch any, please report in the forums: http://forums.ext.net.
+
+
+
+**************************************************************************
 *                      2.2.0 BREAKING CHANGES                            *
 **************************************************************************
 
@@ -582,13 +596,14 @@ Current Version  : 2.0.0
 33.  RowSelectionModel JavaScript .getSelected() has been removed.
 	 Use .getSelection().
 
-34.  "Layout" type controls has been removed.
+34.  "Layout" type controls and its satellites have been removed.
 
 	 Use the Layout and LayoutConfig properties of a container.
 
-	 This change affects all the following Layout classes:
+	 This change affects all the following Layout classes and its satellites:
 
 	 - <ext:AbsoluteLayout>
+	 - <ext:Anchor>
 	 - <ext:AccordionLayout>
 	 - <ext:AnchorLayout>
 	 - <ext:BorderLayout>
@@ -596,11 +611,15 @@ Current Version  : 2.0.0
 	 - <ext:CardLayout>
 	 - <ext:CenterLayout> <-- see item #73
 	 - <ext:ColumnLayout>
+	 - <ext:LayoutColumn>
 	 - <ext:FitLayout>
 	 - <ext:FormLayout>
 	 - <ext:HBoxLayout>
+	 - <ext:BoxItem>
 	 - <ext:RowLayout>
+	 - <ext:LayoutRow>
 	 - <ext:TableLayout>
+	 - <ext:Cell>
 	 - <ext:VBoxLayout>
 
 
@@ -875,11 +894,13 @@ Current Version  : 2.0.0
 
 80.  TreePanel client side initChildren method has been removed. Use the setRootNode method.
 
-81.  The TreePanel's drag@drop related properties have been removed: EnableDD, EnableDrag, EnableDrop, AllowLeafDrop, DDAppendOnly, DDGroup, DDScroll, ContainerScroll.
+81.  The TreePanel's drag&drop related properties have been removed: EnableDD, EnableDrag, EnableDrop, AllowLeafDrop, DDAppendOnly, DDGroup, DDScroll, ContainerScroll.
 
 	 Configure a TreeViewDragDrop plugin for a TreePanel's View.
 	 http://examples.ext.net/#/TreePanel/Basic/Reorder_Nodes/
 	 http://docs.sencha.com/ext-js/4-1/#!/api/Ext.tree.plugin.TreeViewDragDrop
+
+	 BeforeDrop and Drop events are available in a TreeView.
 
 82.  The GridPanel's EnableHdMenu property has been removed.
 
@@ -1120,8 +1141,12 @@ Current Version  : 2.0.0
 
 117. The TextField Change event is now fired when a user is typing, not just on blur.
 
-118. The GridPanel "Row..." events like RowClick, RowDblClick, RowContextMenu, etc. 
+118. The GridPanel's "Row..." events like RowClick, RowDblClick, RowContextMenu, etc. 
 	 have been renamed to ItemClick, ItemDblCLick, ItemContextMenu, etc.
+
+	 The GridPanel's mouse events - MouseDown, MouseOut, MouseOver, MouseUp - have been removed. 
+	 The new events - ItemMouseDown, ItemMouseEnter, ItemMouseLeave, ItemMouseUp. They fires in the context of a row.
+	 If you need listen mouse events in the context of a GridPanel itself, please use its events which names contain "...ContainerMouse...".
 
 119. The Server AjaxFormResult has been renamed to FormPanelResult.
 
@@ -1153,7 +1178,7 @@ Current Version  : 2.0.0
 	 Use the Column HeaderItems property.
 	 http://examples.ext.net/#/GridPanel/MultiHeader/Overview/
 
-126. The Checkbox's Change event has been removed. Use the Change one.
+126. The Checkbox's Check event has been removed. Use the Change one.
 
 127. A RowLayout has been removed. Use an AnchorLayout or a VBoxLayout instead.
 	 http://examples.ext.net/#/search/AnchorLayout
@@ -1398,3 +1423,86 @@ Current Version  : 2.0.0
 161. The ResourceManagerProxy control has been removed as it is no longer required. 
 	 
 	 If an instance of the ResrouceManager in code-behind, please use ResourceManager.GetInstance(). 
+
+162. The ButtonBase's NavigateUrl and Target properties have been replaced with the Href and HrefTarget ones.
+
+163. The CompositeField has the ReadOnly property in v1. The v2 FieldContainer doesn't have such a property.
+
+	 Please set up the following for a FieldContainer: 
+	 <FieldDefaults ReadOnly="true" />
+
+164. The TextFieldBase's Truncate property has been removed. Please use the EnforceMaxLength one instead. 
+	 
+	 It is also false by default. If Truncate is explicitly set up to true, then you should also set EnforceMaxLength to true.
+
+165. The Image class doesn't have field-related properties anymore like FieldLabel, LabelStyle, LabelWidth, etc.
+	 
+	 You can wrap an Image in a FieldContainer control and set up those properties for the FieldContainer.
+
+166. The StoreBase's AddRecord and InsertRecord method have been removed. Please use the Add and Insert methods.
+
+167. The MultiCombo's UpdateSelection method has been removed. Please use the UpdateSelectedItems one instead.
+
+168. The TabStripItem class has been renamed to Tab. Its Title property has been renamed to Text.
+
+169. The BoxComponentBase's TabTip property has been removed. Please use the TabConfig's ToolTip of the AbstractPanel class.
+
+	 Example
+
+	 //Old
+	 <ext:Panel runat="server" TabTip="tooltip" />
+
+	 //New
+	 <ext:Panel runat="server">
+		 <TabConfig runat="server" ToolTip="tooltip" />
+	 </ext:Panel>
+
+170. The GridPanelBase's SelectionMemory property is a bool type now instead of SelectionModeMemory enum.
+
+171. The GridPanel's client side getColumnModel method has been removed. To access columns, please use a GridPanel's headerCt.
+
+	 A headerCt is an instance of the Ext.grid.header.Container JavaScript class.
+
+	 Example
+
+	 //Old
+	 GridPanel1.getColumnModel().columns
+
+	 //New
+	 var headerCt = App.GridPanel1.headerCt,
+		 columns = headerCt.getGridColumns();
+
+172. The ColumnModel's HiddenChange event has been removed. Please use its ColumnHide and ColumnShow events. 
+	 Also you can listen the Hide and Show event of a Column itself.
+
+	 The ColumnModel's ColumnMoved event has been renamed to ColumnMove.
+
+173. The Store's getSortState client side method has been removed. Please use its sorters property, it is a MixedCollection instance.
+
+174. The FormPanel's FormID property has been removed. It is not required anymore since a FormPanel doesn't render a form HTML element anymore.
+	 It creates a form element only if needed. To refer a FormPanel, for example, in a DirectEvent's FormID, please use a FormPanel's ID.
+
+175. The MultiSelect's Click and DblClick events have been removed. Please use the ItemClick and ItemDblClick of a MultiSelect's ListConfig.
+
+176. The Button's Type property has been removed. 
+
+	 If you need an equivalent of Type="Submit", please set up a Button's AutoPostBask="true". It will do a PostBack on Button click.
+
+	 There is no a direct equivalent of Type="Reset", but you can use a FormPanel and its reset functionality: 
+	 App.FormPanel1.getForm().reset();
+
+177. The ColumnBase's GroupRenderer has been removed. There is no a direct substitution. Please follow this link to review available options.
+     http://forums.ext.net/showthread.php?20813#post112032
+
+178. The GridPanel's drag&drop related properties have been removed: EnableDragDrop, DDGroup, DDText.
+
+	 Configure a GridDragDrop plugin for a GridPanel's View.
+	 http://examples.ext.net/#/DragDrop/Grid/Rows_Reordering/
+	 http://docs.sencha.com/extjs/4.2.1/#!/api/Ext.grid.plugin.DragDrop
+
+
+179. The KeyMap's StopEvent property has been removed. Please use the KeyMap's DefaultEventAction="StopEvent" option instead.
+
+180. The GridPanelMaintainScrollPositionOnRefresh plugin has been removed. Instead please set up InvalidateScrollerOnRefresh="false" for a GridPanel.
+
+	 

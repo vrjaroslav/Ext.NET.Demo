@@ -1,4 +1,289 @@
 ﻿**************************************************************************
+*                   Version 2.3.0 CHANGELOG                          *
+**************************************************************************
+
+Release Date     : 2013-10-11
+Current Version  : 2.3.0
+Previous Version : 2.2.0
+
+FIX
+	[r5074]	RowExpander mixing up data in IE8
+	[r5075]	Fixed Brazilian Portuguese translation of emailText VType
+	[r5078]	ImageCommand with iconCls starts with # symbol is not resolved correctly (if iconCls was set in PrepareCommand handler)
+	[r5079]	#{} doesn't parse correctly under ASP.NET MVC (WebForm engine)
+	[r5080]	MultiCombo doesn't reset checked css rule during deselecting
+	[r5081]	ModelSerializer incorrectly serializes null value
+	[r5082]	Notification with items raises an exception
+	[r5083]	FileUploadField can raise an exception during XRender
+	[r5084]	InputMask plugin incorrectly handles Cut/ (Delete from context menu) actions
+	[r5085]	removeTask method of TaskManager raises an exception
+	[r5086]	InputMasked: wrong spelled "pastehandler" has been renamed to "pasteHandler" (uppercase H)
+	[r5088]	insertColumn/addColumn/removeColumn/removeAll methods doesn't work in the grid with locking functionality
+	[r5089]	PagingMemoryProxy doesn't check if filter function is defined
+	[r5092]	Notification animation is broken (for some type of animations)
+	[r5093]	Store in Bin collection is not destroyed correctly
+	[r5095]	The FieldSet's FieldDefaults property and FieldValidityChange and FieldErrorChange events were missed.
+	[r5098]	ActiveItemIndex property of CycleButton can produce wrong script
+	[r5099]	Fixed the XTemplate/Dynamic_Template example. It didn't show the kids.
+	[r5105]	Over editor in Component column can raise an exception during focusing
+	[r5106]	EditorOptions is incorrectly handled by TextTransformer
+	[r5108]	Click on commands (CommandColumn/ImageCommandColumn) should not reset a selection
+	[r5112]	ComboBox should not change Value property if posted data collection has no value
+	[r5115]	Buttons functionality of TextField is broken (width of input element is not updated after relayouting)
+	[r5116]	Fixed an issue with IE9 refreshing of an iframe with pdf.
+	[r5117]	ComponentColumn/CommandColumn can raise an exception if quickly move cursor to a tree (due ExtJS bug)
+	[r5120]	TextField with InputWidth and Indicator calculates own width incorrectly
+	[r5125]	PagingStore filtered incorrectly.
+	[r5127]	Corrected the builders for the SpriteAttributes's Rotate, Translate, Scale properties.
+	[r5130]	Ext.view.Table.onUpdate override raise an exception for tree
+	[r5132]	SetTheme generates incorrect script
+	[r5133]	IE6 crashes with Ext.Net
+	[r5134]	destroyStore of PagingStore causes a js error
+	[r5137]	MultiCombo's setValue method used a global "record" variable.
+	[r5139]	Two notifications with closeVisible:true can raise a js exception
+	[r5140]	The TabFx plugin was broken.
+	[r5141]	SelectionMemory plugin can make a grid unstable
+	[r5142]	PartialViewResult has incorrect regexp for parsing items
+	[r5145]	GetFieldValue of Store can raise AmbiguousMatchException if there is shadowed property
+	[r5148]	ToConfig method calls OnPreRender event before OnInit
+	[r5149]	A TriggerField's HideTrigger didn't work during an AJAX request.
+	[r5154]	[#250] TreePanel's getChecked breaks with a locking tree
+	[r5155]	HideBaseTrigger doesn't work for TriggerField
+	[r5156]	MessageBus events must be removed if a widget is destroyed
+	[r5157]	[#258] ToolbarDroppable have to have a destroy method
+	[r5161]	Returning false from or setting cancelFailureWarning to true within a ResourceManager's AjaxRequestException didn't work for a DirectMethod. A bug report is here:
+	[r5162]	TextField and DatePicker "RegExp" properties had been updating incorrectly during an AJAX request.
+	[r5165]	[#260] RowExpander beforeReconfigure breaks if no columns
+	[r5167]	ImageButton uses an undefined "me" variable in the onMouseDown function. Here is a bug report.
+	[r5168]	Notification with "autoHide: true", "closable: true" and "title: 'some title'" causes a JavaScript error.
+	[r5169]	MultiCombo doesn't uncheck items after reset calling
+	[r5170]	[#15] LoadMask's msg is not localized.
+	[r5171]	CommandColumn in TreePanel changes row height on mouser over
+	[r5175]	The project doesn't build due to missing MultiUpload related files. Removed the respective references from the Ext.NET project.
+	[r5176]	Text of disabled button is invisible
+	[r5178]	WebForm35 configuration does not compile
+	[r5186]	HeaderItems widgets are not visible if a column was initially hidden
+	[r5187]	CellEditing doesn't work in the tree
+	[r5188]	NuGet contains Ext.Net.Utilities assembly with not latest code (not include some fixes), updated locally in packages folder
+	[r5190]	[#268] RTL QuickTipManager.init throws an error if call it outside Ext.onReady
+	[r5191]	Viewport with RTL inside ASP.NET form breaks shadow aligning
+	[r5193]	PagingStore reset sorting if local filtering is used
+	[r5194]	[#267] RowEditor doesn't listen to the change event of its fields to manage its disability.
+	[r5196]	LinkButton: only an anchor element should be clickable.
+	[r5197]	CommandColumn and ComponentColumn doesn't work with new grouping logic
+	[r5198]	[#276] Grouping + highlight causes a JavaScript error in the getRowStyleTableEl method
+	[r5200]	Fixed bug in VerticalMarker plugin
+	[r5201]	Notification animation and position are broken if grid is refreshing during animation
+	[r5204]	ResourceManager generated wrong CDN paths for themes.
+	[r5205]	DisabledDate performance improvement according the member's suggestion.
+	[r5206]	#{DirectMethods} token is not parsed correctly inside ContentPlaceholder
+	[r5208]	Hidden ComponentColumn causes js error before component bind
+	[r5209]	Url (from RawUrl) of FormPanel should be encoded to prevent IE10 warning
+	[r5210]	Return false from BeforeBind event still causes saving to record field (should be ignored)
+	[r5211]	Cell editing is broken for hidden column
+	[r5214]	[#45] DateField StartDay is not localized
+	[r5215]	VerticalMarker disable/enable functionality didn't work for initial setting. Here was the bug report.
+	[r5216]	ComponentLoader can add excessive symbols to URL when load an iframe.
+	[r5218]	VerticalMarker doesn't update marker position if one series is shorter than another
+	[r5219]	Grouping feature fix breaks view with buffered store
+	[r5220]	[#286] CycleButton breaks if add a non-CheckItem into its menu
+	[r5221]	Vertical marker incorrectly handles series with gaps
+	[r5222]	Some points are not shown by marker
+	[r5225]	CommandColumn works incorrectly with grouping (group commands are not rerendered)
+	[r5228]	TabMenu raises a js error under IE8
+	[r5229]	FireEvent method generates invalid javascript code
+	[r5231]	Portal throws a JavaScript error if it has no PortalColumns initially. Here was the bug report.
+	[r5233]	RowExpander raises an exception for initially collapsed groups
+	[r5234]	[#293] Spotlight doesn't listen to window resize on second and further shows
+	[r5235]	A TimeField's Format should not be rendered with am/pm if the current locale doesn't support it.
+	[r5236]	RowExpander cannot be collapsed if command column is presented
+	[r5237]	ComponentColumn raises an exception on Tab key
+	[r5238]	Desktop without modules generates an error during dynamic module adding
+	[r5239]	collect method of PagingStore raises an exception
+	[r5240]	MultiUpload: drag drop file doesn't work if drop on button under Firefox
+	[r5241]	LinkButton/ImageButton can raise a js error under IE8
+	[r5247]	TimeAxis's FromDate and ToDate didn't apply hours, minutes, etc.
+	[r5253]	PreserveIndicatorIcon property can cause incorrect field width calculation
+	[r5254]	Examples Explorer: searching functionality can cause duplicating of tree nodes.
+	[r5255]	Ext.net.ResourceMgr setTheme: the wrong URL for the Access theme.
+	[r5256]	[#301] TabCloseMenu is broken
+	[r5257]	[#294] Draw Tiger example: drag&drop didn't work.
+	[r5258]	DropZone: missed a Razor builder for it.
+	[r5259]	RowExpander's isExpanded and isCollapsed methods were broken.
+	[r5260]	Fixed bug in MVC/Form_FileUploadField/Basic example
+	[r5261]	Fixed bug in MVC/Viewport_Basic/Build_in_CodeBehind example
+	[r5262]	Fixed bug in MVC/Layout_CardLayout/Basic/ example
+	[r5263]	MVC Code is not wrapped by #if MVC (WebForm builds are broken)
+	[r5264]	Fixed bug in MVC/GridPanel_ArrayGrid/ArrayWithPaging/ example
+	[r5265]	Fixed bug in MVC/DataView_Advanced/Multi_sort/ example
+	[r5268]	[#294] Element Overview example: corrected the styles.
+	[r5269]	[#294] AJAX Linked ComboBoxes example: removed the SelectOnFocus="true" option since it causes client side exception if Editable="false".
+	[r5270]	[#294] Some corrections in the ComboBox examples.
+	[r5271]	[#294] The DisplayTime examples were broken.
+	[r5272]	[#294] Fixed the GridPanel Meta config example. It broke if edit, then reload.
+	[r5273]	[#294] The Grouping GridPanel example with a total row was broken.
+	[r5275]	In Razor Chart examples DirectResult was replaced with StoreResult
+	[r5276]	In Razor GridPanel ArrayGrid example DirectResult was replaced with StoreResult
+	[r5279]	Fixed bug in Draw/Basic/Pie_Chart/ examples (DrawComponent renders too low)
+	[r5280]	Grouping.GroupHeaderTpl: was missed a Razor builder.
+	[r5282]	BaseControl.Config should define Disabled property instead Enabled
+	[r5284]	Fixed location of MVC/Areas/TabStrip example and fixed default values
+	[r5286]	.NET 3.5 build is broken
+	[r5287]	Ext.NET Visual Studio 2008 build was broken.
+	[r5288]	Config constructor should call default constructor also
+	[r5290]	[#294] MVC Examples Explorer didn't switch to the Neptune theme.
+	[r5292]	[#294] MultiUpload should use url from asp.net form action (if presented) instead window.location
+	[r5293]	If RenderTo is not empty then div element should not be rendered
+	[r5294]	LiveSearchGridPanel plugin should search on  
+	[r5295]	Column should not listen key from header items
+	[r5297]	GroupingFeature fix breaks buffered functionality
+	[r5298]	LiveSearchGridPanel plugin should not search on html speacial symbols
+	[r5299]	Column method have been moved to TablePanel
+	[r5300]	SelectionMemory doesn't clear selection if Mode="Single".
+	[r5303]	Div container is rendered always
+	[r5305]	The DataView Chooser examples were broken.
+	[r5306]	LiveSearchGridPanel plugin doesn't highlight all found text in first group record
+	[r5307]	SourceFormating should not be used during AjaxRequest
+	[r5310]	Updated AbstractSummaryBuilder.cs and meta.xml
+	[r5311]	AutoFocus functionality was broken.
+	[r5312]	LoadPostData is incorrect for DateField/TimeField under MVC
+	[r5315]	PartialViewResult constructor should check that HttpContext.Current is null
+	[r5316]	ResourceManager's GetThemeUrl used this.Theme instead of the theme parameter.
+	[r5317]	[#310] Window DefaultFocus does not work with a string parameter with capital first letter (i.e., id or itemId).
+	[r5318]	AbstractPanel's ShrinkWrapDock was missed in ConfigOptions, so, it was not rendered to client.
+	[r5320]	HBoxAlign Bottom and VBoxAlign Right options were missed.
+	[r5322]	GridPanel raises exception if plugins is not array
+	[r5326]	deselectItem of MultiCombo doesn't uncheck an item in the picker
+	[r5327]	ID for View and ColumnModel should not be rendered if the grid is lockable
+	[r5328]	Initial ComboBox's SelectedItems get reset on a reset call. Now it persists.
+	[r5329]	Desktop module with additional resources is created incorrectly
+	[r5330]	[#321] GridFilters activate and deactivate events are fired inconsistently.
+	[r5332]	[#321] GridFilters ListFilter activate and deactivate events are fired inconsistently
+	[r5333]	Tree and Grid makes extra layouts during records loading
+	[r5334]	[#324] GridFilters StringFilter breaks if define it with listeners. Corrected the initial fix.
+	[r5335]	TreePanel raises a server side exception
+	[r5337]	SelectionSubmit plugin incorrectly suspend events during selection update
+	[r5339]	Button gets clicked on Enter regardless another button is focused.
+	[r5342]	GenericPlugin's Path doesn't work with several paths.
+	[r5344]	Selection is wrong after initiate edit (CellEditing + RowSelectionModel + GroupingSummary with collapsed group)
+	[r5345]	Setting up a DatePicker's SelectedDate during DirectEvent doesn't work.
+	[r5346]	The default value of CellEditorOptions's Alignment has been changed from "tl-tl" to "l-l".
+	[r5349]	RowNumberer column doesn't update indexes after store filter clearing
+	[r5350]	Container's reload method doesn't honor last options are passed to previous load method calling
+	[r5351]	StringFilter breaks after hiding/showing columns.
+	[r5352]	GridFilters BooleanFilter ignores Value="false" for initial filtering.
+	[r5354]	One char ID is not parsed in #{}
+	[r5355]	Read only field with remote validation fires validation on key up
+	[r5356]	Some components doesn't destroy own hidden fields if fields are not rendered yet
+	[r5357]	UserControlLoader doesn't render children from user control in some cases
+	[r5358]	Combobox converts int value to string during submit and ignores it on next hard postback
+	[r5359]	PasswordMask: Char and Messages are not serialized
+	[r5360]	clearValue method doesn't reset checkboxed in MultiCombo picker
+	[r5361]	PasswordMask doesn't hide initial value
+	[r5362]	[#347] FormLayout without items causes an error
+	[r5364]	DragDrop's Groups property didn't work.
+	[r5365]	CellCommands break renderer in specialized columns like DateColumn
+	[r5366]	[#348] PageSize 25 doesn't work with a buffered Store
+	[r5367]	TreeViewDragDrop's SortOnDrop property was missed. Added. Configure as true to sort the target node into the current tree sort order after the dropped node is added. Defaults to false.
+	[r5368]	CommandColumn and ComponentColumn doesn't work with BufferedRenderer plugin
+	[r5369]	Examples Explorers: minor changes/refactoring in some examples.
+	[r5371]	MessageBus incorrectly unsubscribes listeners during widget destroy
+	[r5373]	DateField with Type="Month" didn't show all the months and years in its picker.
+	[r5374]	ResourceMgr's registerPageResources method can throw an exception. At least, in Chrome.
+	[r5379]	Image's loading mask is shown before layouting, hence wrong aligned.
+	[r5381]	Command in DateColumn breaks default renderer
+	[r5383]	removeField method of Store raises an exception
+	[r5384]	suspendEvent/resumeEvent doesn't work with direct events
+	[r5386]	TimePicker's MaxTime didn't work.
+	[r5387]	DirectEventUpdateAttribute doesn't work in MultiUpload OnFileUpload event handler
+	[r5391]	TokenUtils doesn't parse correctly #{ID.Property}
+
+NEW
+	[r5070]	ModelField supports own Model (for serializing complex object with required properties only)
+	[r5094]	Added missing properties from ResourceManager to MvcResourceManager
+	[r5100]	UserControlLoader is supported by Bin collection now
+	[r5101]	Buffered tree examples
+	[r5111]	Added new Installation Video sample to Examples Explorer. /Examples/Getting_Started/Introduction/Installation/
+	[r5113]	Razor Viewport examples
+	[r5118]	Razor XRender examples
+	[r5119]	Razor Dashboard example
+	[r5143]	ProgressBarColumn and example
+	[r5146]	ItemSelector widget and example
+	[r5152]	Razor Draw example
+	[r5166]	Added Drag&Drop Swap Panels MVC example according to a member's request.
+	[r5202]	CustomAttributeBinding collection is added to NodeBinding
+	[r5217]	Initial commit of MultiUpload (not fully tested yet)
+	[r5223]	New MultiUpload samples
+	[r5224]	AbstractComponent's SplitterConfig property to be able to configure a border layout region splitter.
+	[r5251]	PreExtensions configuration mode
+	[r5267]	MVC Examples Explorer: added new GridPanel drag@drop examples.
+	[r5274]	Added new Razor TabPanel and TabStrip examples
+	[r5278]	FilterHeader plugin and examples
+	[r5291]	Now ServerMapping supports methods without arguments(including extension methods) and indexer
+	[r5296]	Added new methods addColumn and removeColumn to TreePanel
+	[r5301]	Added a new MVC example - GridPanel_Selection_Models/Checkbox_Selection.
+	[r5309]	Added new server-method ToggleSummaryRow
+	[r5319]	Added new Razor Associations_HasMany and Associations_HasOne examples
+	[r5336]	GroupPaging plugin for PagingToolbar
+	[r5338]	Ported the GridPanel Marking Records example to Razor.
+	[r5343]	TextField buttons (LeftButtons/RightButtons) supports show mode now (LeftButtonsShowMode/RightButtonsShowMode)
+	[r5347]	RemoveClearTrigger property for TextField (removes IE clear trigger)
+	[r5385]	Minified version for extnet-all.css
+	[r5392]	ResourcesStrategy: allows to control url for standard resources (ExtJS + Ext.Net resources)
+
+UPDATE
+	[r5072]	Encode example page file with UTF-8
+	[r5073]	ResponseRecordsList accept Model for serializing
+	[r5076]	Add UseModel property to ResponseRecordsList
+	[r5077]	Removed /Build/NuGet/ folder and all files. Moved NuGet build responsibility to a separate project.
+	[r5087]	BoxReorderer plugin supports TabStrip now
+	[r5090]	Upgrade to Json.NET 5 release 4
+	[r5109]	Updated BaseControlBuidler with the TemplateWidget and TemplateWidgetFnName properties.
+	[r5121]	Added the Reorderable property for the AbstractComponent and Tab classes. Set this property to false to disallow reordering when a BoxReorderer/TabReorderer plugins are used.
+	[r5122]	AbstractPanel: added the SimpleDrag property. When Draggable is true, specify this as true to cause the Draggable config to work the same as it does in Window. This Panel just becomes movable. No DragDrop instances receive any notifications.
+	[r5123]	Updated the README.txt with the "rtl" Web.config option. Specify true to layout the page in "rtl" (right-to-left) mode. Defaults to false.
+	[r5124]	Examples Explorers: now the Home page scrolls properly.
+	[r5126]	Update Json.Net to 5.0.5
+	[r5128]	AttributesCamelCase property is added to Node class
+	[r5129]	Move Store functionality to separate class (except Listeners/DirectEvents) for support inheritance with own events
+	[r5131]	Move Features from GridPanelBase to TablePanel class
+	[r5136]	MultiCombo: added the new SortByValueField property. It behaves like the SortByDisplayField property, just sorts by ValueField.
+	[r5147]	SpriteType enum: added the Ellipse option.
+	[r5150]	Added Ext JS 4.2.1 .zip package
+	[r5153]	ExtJS 4.2.1 release is added
+	[r5159]	[#195] NodeHighlightOnDrop="false" was added as a workaround for Sencha bug. So, reverted the change back since highlighting on drop is a nice feature.
+	[r5160]	[#199] A Surface's getGroup method doesn't extract a group. Sencha fixed it, so, we rollback our fix.
+	[r5164]	[#221] Ext.destroy() doesn't destroy Stores. Rolled back our fix, because Sencha fixed it itself.
+	[r5192]	Some code improvements
+	[r5199]	Added methods enable and disable to VerticalMarker plugin
+	[r5207]	Infinite_Scrolling/Tuner/ example update
+	[r5212]	ResourceManager's CDNPath is now not hardcoded, it builds according to the assembly's version. Here was the suggestion.
+	[r5227]	Now SelectionMemory plugin removes records from memory if a record is absent in the store (if no paging only)
+	[r5230]	The MultiSelect's Items and SelectedItems: added some convenient builders.
+	[r5244]	Updated Factory templates with new Version and Timestamp info
+	[r5249]	Added new field AllowExponential to NumberFieldBase
+	[r5252]	DataView: added new and updated existing selection-related events.
+	[r5281]	ClearButton plugin now automatically deactivates IE10 clear button
+	[r5283]	Custom_Field example update
+	[r5302]	Now a TimeField can apply a DateTime property from a Model (related to FormPanelFor and TimeFieldFor helpers).
+	[r5308]	Some columns classes have no events properties
+	[r5314]	Update Ext.Net.Utilities.dll
+	[r5321]	Added minified version for each UX js file
+	[r5331]	MultiSelect ShowCheckbox property: specify true to show checkboxes with items. Defaults to false.
+	[r5340]	Ext.net.GridPrint supports column width also (columnsWidth flag)
+	[r5341]	New extension methods for Controller, support ModelSerializer now
+	[r5363]	TabStrip Tab: added the Href and HrefTarget properties.
+	[r5372]	Calendar MonthView: added the MoreText property. The template text used to indicate events which overflow the day box, defaults to "+ {0} more...". The "{0}" thing is replaced with amount of events.
+	[r5375]	[XNET:#4] SwfUploader has been renamed to MultiUpload.
+	[r5378]	Rename Advanced_TabControllerController.cs to Advanced_TabController.cs
+	[r5382]	Upgrade to Ext.Net.Utilities 2.3.0
+	[r5388]	TriggerField: added the new TriggerIndexOnEnter property. The index of a trigger to be "clicked" (the TriggerClick event fires) on Enter key by default if that trigger exists and visible. Defaults to -1, which means no one.
+	[r5389]	Toolbar/Menu/Controls_In_Menu example: removed an iframe since it caused an issue in some browsers.
+	[r5390]	VTypes password: now an initialPassField config can be a component instance as well as its id.
+
+
+
+**************************************************************************
 *                   Version 2.2.0 CHANGELOG                          *
 **************************************************************************
 

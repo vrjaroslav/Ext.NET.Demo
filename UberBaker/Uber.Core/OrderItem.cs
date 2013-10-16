@@ -1,4 +1,5 @@
-﻿using Ext.Net.MVC;
+﻿using Ext.Net;
+using Ext.Net.MVC;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace Uber.Core
 
         [JsonProperty]
 		[ForeignKey("ProductId")]
+		[ModelField(Type = ModelFieldType.Object)]
         public Product Product { get; set; }
 
 		[Field(Ignore = true)]

@@ -93,7 +93,7 @@
                     .Text("Save")
                     .Icon(Icon.Disk)
                     .DirectEvents(de => {
-                        de.Click.Action = "Save";
+                        de.Click.Url = Url.Action("Save", "Products");
                         de.Click.Before = "return true; ";
                         de.Click.FormID = "ProductForm";
                         de.Click.Success = "if (#{ProductsSpot}.active) #{ProductsSpot}.hide(); #{ProductsGrid}.getStore().reload();";

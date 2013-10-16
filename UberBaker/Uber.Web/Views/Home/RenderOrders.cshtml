@@ -70,7 +70,7 @@
                     .Text("Save")
                     .Icon(Icon.Disk)
                     .DirectEvents(de => {
-                        de.Click.Action = "Save";
+                        de.Click.Url = Url.Action("Save", "Orders");
                         de.Click.Before = "return true; ";
                         de.Click.FormID = "OrdersForm";
                         de.Click.Success = "if (#{OrdersSpot}.active) #{OrdersSpot}.hide(); #{OrdersGrid}.getStore().reload();";

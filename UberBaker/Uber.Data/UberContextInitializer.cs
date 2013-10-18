@@ -13,9 +13,7 @@ namespace Uber.Data
         {
             var products = SeedProducts(data);
 
-			var orderItems = SeedOrderItems(data, products);
-
-			SeedOrders(data, orderItems);
+			SeedOrders(data, products);
 
 			// IMPORTANT!!
             data.SaveChanges();
@@ -56,38 +54,18 @@ namespace Uber.Data
 			return products;
 		}
 
-		private static List<OrderItem> SeedOrderItems(UberContext data, List<Product> products)
-		{
-			Random r = new Random(10);
-
-			var orderItems = new List<OrderItem>();
-
-			foreach (var product in products)
-				orderItems.Add(new OrderItem
-					{
-						UnitPrice = r.Next(0, 500),
-						Quantity = r.Next(1, 100),
-						Product = product
-					});
-
-			orderItems.ForEach(orderItem => data.OrderItems.AddOrUpdate(orderItem));
-			return orderItems;
-		}
-
-		private static void SeedOrders(UberContext data, List<OrderItem> orderItems)
+		private static void SeedOrders(UberContext data, List<Product> products)
 		{
 			Random r = new Random(20);
 
 			var orders = new List<Order>();
 
-			foreach (var orderItem in orderItems)
+			foreach (var product in products)
 				orders.Add(new Order
 					{
 						OrderDate = DateTime.Now.AddDays(r.Next(-15, 15)),
-						OrderItems = new List<OrderItem>
-							{
-								orderItem
-							}
+						Product = product,
+						Quantity = r.Next(1, 50)
 					});
 
 			orders.ForEach(order => data.Orders.AddOrUpdate(order));

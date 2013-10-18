@@ -39,9 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ext.Net, Version=2.3.0.0, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
+    <Reference Include="Ext.Net, Version=2.3.1.41064, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Ext.NET.MVC.2.3.0\lib\net40\Ext.Net.dll</HintPath>
+      <HintPath>..\packages\Ext.NET.MVC.2.3.1\lib\net40\Ext.Net.dll</HintPath>
     </Reference>
     <Reference Include="Ext.Net.Utilities, Version=2.3.0.0, Culture=neutral, PublicKeyToken=2c34ac34702a3c23, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -50,7 +50,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -200,7 +200,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ExtNetController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\OrderItemsController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\ProductTypesController.cs" />
@@ -210,6 +209,7 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\ExtNetModel.cs" />
+    <Compile Include="Models\OrderChartData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -278,7 +278,6 @@
     <Content Include="Views\Home\RenderProducts.cshtml" />
     <Content Include="Views\Home\RenderProductTypes.cshtml" />
     <Content Include="Views\Home\RenderOrders.cshtml" />
-    <Content Include="Views\Home\RenderOrderItems.cshtml" />
     <Content Include="Views\Orders\ChartPerMonth.cshtml" />
     <Content Include="Views\Home\RenderOrdersChart.cshtml" />
     <Content Include="Views\ExtNet\Index.cshtml" />

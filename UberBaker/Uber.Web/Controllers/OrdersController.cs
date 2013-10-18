@@ -7,6 +7,7 @@ using Ext.Net.MVC;
 using Uber.Core;
 using Uber.Data.Abstract;
 using Uber.Data.Repositories;
+using Uber.Web.Models;
 
 namespace Uber.Web.Controllers
 {
@@ -56,9 +57,10 @@ namespace Uber.Web.Controllers
 			return View();
 		}
 
-		public ActionResult GetChartDataForCurrentMonth()
+		public ActionResult GetChartDataForCurrentMonth(int month = 10)
 	    {
-		    return new StoreResult(_ordersRepository.GetChartDataForMonth(DateTime.Now.Month));
+			var data = _ordersRepository.GetAll().Where(o => o.OrderDate.Month == month).Select(o => new OrderChartDataForMonth { Day = o.OrderDate.Day, OrdersCount = o.Quantity }).ToList();
+		    return new StoreResult(data);
 	    }
     }
 }

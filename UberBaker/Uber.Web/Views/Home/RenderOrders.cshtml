@@ -1,5 +1,5 @@
 ﻿@using Uber.Core
-@model List<Order>
+@model Order
 @{
     var X = Html.X();
 }
@@ -10,8 +10,24 @@
         X.GridPanel()
             .Region(Region.Center)
             .ID("OrdersGrid")
-            .Store(X.StoreFor<Order>()
+            .Store(X.Store()
                 .ID("OrdersStore")
+                .Model(X.Model()
+                    .ClientIdProperty("PhantomId")
+                    .IDProperty("Id")
+                    .Name("Order")
+                    .Fields(
+                        X.ModelFieldFor(m => m.Id)
+                            .UseNull(true),
+                        X.ModelFieldFor(m => m.PhantomId),
+                        X.ModelFieldFor(m => m.OrderDate),
+                        X.ModelFieldFor(m => m.Quantity),
+                        X.ModelFieldFor(m => m.GrossTotal),
+                        X.ModelFieldFor(m => m.ProductId),
+                        X.ModelFieldFor(m => m.Product)
+                            .Mapping("Product.Name")
+                    )
+                )
                 .Proxy(X.AjaxProxy()
                     .Url(Url.Action("GetAll", "Orders"))
                     .Reader(X.JsonReader().Root("data"))
@@ -19,12 +35,24 @@
                 .PageSize(25)
             )
             .ColumnModel(
-                X.ColumnFor(Model, m => m.Id)
-                    .ToBuilder<Column.Builder>(),
-                X.ColumnFor(Model, m => m.OrderDate)
-                    .ToBuilder<Column.Builder>(),
-                X.ColumnFor(Model, m => m.GrossTotal)
+                X.ColumnFor(m => m.Id)
                     .ToBuilder<Column.Builder>()
+                    .Text("Id"),
+                X.DateColumn()
+                    .DataIndex("OrderDate")
+                    .Text("Date")
+                    .Format("dd-m-yyyy"),
+                X.ColumnFor(m => m.Product)
+                    .ToBuilder<Column.Builder>()
+                    .Text("Product")
+                    .Width(100),
+                X.ColumnFor(m => m.Quantity)
+                    .ToBuilder<Column.Builder>()
+                    .Text("Quantity")
+                    .Width(100),
+                X.ColumnFor(m => m.GrossTotal)
+                    .ToBuilder<Column.Builder>()
+                    .Text("Gross Total")
                     .Width(100)
             )
             .TopBar(
@@ -56,13 +84,29 @@
                     })
             ),
                 
-        X.FormPanelForModel()
+        X.FormPanel()
             .ID("OrdersForm")
             .Region(Region.East)
             .Width(400)
             .FieldDefaults(fd => {
                 fd.LabelAlign = LabelAlign.Top;
             })
+            .Items(
+                X.HiddenFor(m => m.Id)
+                    .ID("OrdersId"),
+                X.DateFieldFor(m => m.OrderDate)
+                    .ID("OrdersOrderDate")
+                    .FieldLabel("Order Date")
+                    .AllowBlank(false),
+                X.NumberFieldFor(m => m.Quantity)
+                    .ID("OrdersQuantity")
+                    .FieldLabel("Quantity")
+                    .AllowBlank(false),
+                X.NumberFieldFor(m => m.GrossTotal)
+                    .ID("OrdersGrossTotal")
+                    .FieldLabel("Gross Total")
+                    .ReadOnly(true)
+            )
             .BodyPadding(5)
             .DefaultAnchor("95%")
             .ButtonAlign(Alignment.Center)

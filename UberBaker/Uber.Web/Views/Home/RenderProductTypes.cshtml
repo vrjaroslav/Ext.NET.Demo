@@ -1,5 +1,5 @@
 ﻿@using Uber.Core
-@model List<ProductType>
+@model ProductType
 @{
     var X = Html.X();
 }
@@ -10,8 +10,20 @@
         X.GridPanel()
             .Region(Region.Center)
             .ID("ProductTypesGrid")
-            .Store(X.StoreFor<ProductType>()
+            .Store(X.Store()
                 .ID("ProductTypesStore")
+                .Model(X.Model()
+                    .ClientIdProperty("PhantomId")
+                    .IDProperty("Id")
+                    .Name("ProductType")
+                    .Fields(
+                        X.ModelFieldFor(m => m.Id)
+                            .UseNull(true),
+                        X.ModelFieldFor(m => m.PhantomId),
+                        X.ModelFieldFor(m => m.Name),
+                        X.ModelFieldFor(m => m.ShortCode)
+                    )
+                )
                 .Proxy(X.AjaxProxy()
                     .Url(Url.Action("GetAll", "ProductTypes"))
                     .Reader(X.JsonReader().Root("data"))
@@ -19,12 +31,17 @@
                 .PageSize(25)
             )
             .ColumnModel(
-                X.ColumnFor(Model, m => m.Id)
-                    .ToBuilder<Column.Builder>(),
-                X.ColumnFor(Model, m => m.Name)
-                    .ToBuilder<Column.Builder>(),
-                X.ColumnFor(Model, m => m.ShortCode)
+                X.ColumnFor(m => m.Id)
                     .ToBuilder<Column.Builder>()
+                    .Text("Id")
+                    .Width(50),
+                X.ColumnFor(m => m.Name)
+                    .ToBuilder<Column.Builder>()
+                    .Text("Name")
+                    .Width(150),
+                X.ColumnFor(m => m.ShortCode)
+                    .ToBuilder<Column.Builder>()
+                    .Text("Short Code")
                     .Width(100)
             )
             .TopBar(
@@ -56,13 +73,27 @@
                     })
             ),
                 
-        X.FormPanelForModel()
+        X.FormPanel()
             .ID("ProductTypesForm")
             .Region(Region.East)
             .Width(400)
             .FieldDefaults(fd => {
                 fd.LabelAlign = LabelAlign.Top;
             })
+            .Items(
+                X.HiddenFor(m => m.Id)
+                    .ID("ProductTypesId")
+                    .Name("Id"),
+                X.TextFieldFor(m => m.Name)
+                    .ID("ProductTypesName")
+                    .Name("Name")
+                    .AllowBlank(false),
+                X.TextFieldFor(m => m.ShortCode)
+                    .ID("ProductTypesShortCode")
+                    .Name("ShortCode")
+                    .FieldLabel("Short Code")
+                    .AllowBlank(false)
+            )
             .BodyPadding(5)
             .DefaultAnchor("95%")
             .ButtonAlign(Alignment.Center)

@@ -1,8 +1,22 @@
 ﻿**************************************************************************
+*                      2.3.1 BREAKING CHANGES                            *
+**************************************************************************
+
+Release Date     : 2013-10-17
+Current Version  : 2.3.1
+Previous Version : 2.3.0
+
+	NONE
+
+	If you catch any, please report in the forums: http://forums.ext.net.
+
+
+
+**************************************************************************
 *                      2.3.0 BREAKING CHANGES                            *
 **************************************************************************
 
-Release Date     : 2013-03-10
+Release Date     : 2013-10-11
 Current Version  : 2.3.0
 Previous Version : 2.2.0
 

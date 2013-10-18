@@ -1,7 +1,7 @@
 ﻿Product          : Ext.NET.Pro
-Release Date     : 2013-10-11
-Current Version  : 2.3.0
-Previous Version : 2.2.0
+Release Date     : 2013-10-17
+Current Version  : 2.3.1
+Previous Version : 2.3.0
 
 
 --------------------------------------------------------------------------
@@ -100,11 +100,11 @@ IV. SAMPLE WEB.CONFIG
 		<assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
 		  <dependentAssembly>
 			<assemblyIdentity name="Newtonsoft.Json" publicKeyToken="30ad4fe6b2a6aeed" />
-			<bindingRedirect oldVersion="1.0.0.0-5.0.5" newVersion="5.0.6.16206" />
+			<bindingRedirect oldVersion="1.0.0.0-5.0.7" newVersion="5.0.8" />
 		  </dependentAssembly>
 		  <dependentAssembly>
 			<assemblyIdentity name="Ext.Net.Utilities" publicKeyToken="2c34ac34702a3c23" />
-			<bindingRedirect oldVersion="0.0.0.0-2.2.1.0" newVersion="2.3.0.0" />
+			<bindingRedirect oldVersion="0.0.0.0-2.2.1" newVersion="2.3.0" />
 		  </dependentAssembly>
 		  <dependentAssembly>
 			<assemblyIdentity name="Transformer.NET" publicKeyToken="e274d618e7c603a7" />

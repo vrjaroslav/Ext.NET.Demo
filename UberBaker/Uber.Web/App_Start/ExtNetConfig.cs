@@ -9,7 +9,7 @@ namespace Uber.Web
     {
         public static void Start() 
         {
-            //ExtNetConfig.RegisterRoutes(RouteTable.Routes);
+            ExtNetConfig.RegisterRoutes(RouteTable.Routes);
         }
  
         public static void RegisterRoutes(RouteCollection routes)

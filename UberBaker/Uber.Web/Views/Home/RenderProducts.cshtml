@@ -1,5 +1,5 @@
 ﻿@using Uber.Core
-@model List<Product>
+@model Product
 @{
     var X = Html.X();
 }
@@ -10,8 +10,27 @@
         X.GridPanel()
             .Region(Region.Center)
             .ID("ProductsGrid")
-            .Store(X.StoreFor<Product>()
+            .Store(X.Store()
                 .ID("ProductsStore")
+                .Model(X.Model()
+                    .ClientIdProperty("PhantomId")
+                    .IDProperty("Id")
+                    .Name("Product")
+                    .Fields(
+                        X.ModelFieldFor(m => m.Id)
+                            .UseNull(true),
+                        X.ModelFieldFor(m => m.PhantomId),
+                        X.ModelFieldFor(m => m.Name),
+                        X.ModelFieldFor(m => m.ShortCode),
+                        X.ModelFieldFor(m => m.Description),
+                        X.ModelFieldFor(m => m.UnitPrice),
+                        X.ModelFieldFor(m => m.ProductType)
+                            .Mapping("ProductType.Name"),
+                        X.ModelFieldFor(m => m.ProductTypeId)
+                            .Mapping("ProductType.Id")
+                            .NullConvert(true)
+                    )
+                )
                 .Proxy(X.AjaxProxy()
                     .Url(Url.Action("GetAll", "Products"))
                     .Reader(X.JsonReader().Root("data"))
@@ -19,18 +38,25 @@
                 .PageSize(25)
             )
             .ColumnModel(
-                X.ColumnFor(Model, m => m.Id)
-                    .ToBuilder<Column.Builder>(),
-                X.ColumnFor(Model, m => m.Name)
-                    .ToBuilder<Column.Builder>(),
-                X.ColumnFor(Model, m => m.ShortCode)
-                    .ToBuilder<Column.Builder>()
+                X.Column()
+                    .DataIndex("Id")
+                    .Text("Id")
+                    .Width(50),
+                X.Column()
+                    .DataIndex("Name")
+                    .Text("Name")
+                    .Width(150),
+                X.Column()
+                    .DataIndex("ShortCode")
+                    .Text("Short Code")
                     .Width(100),
-                X.ColumnFor(Model, m => m.Description)
-                    .ToBuilder<Column.Builder>()
+                X.Column()
+                    .DataIndex("Description")
+                    .Text("Description")
                     .Flex(1),
-                X.ColumnFor(Model, m => m.UnitPrice)
-                    .ToBuilder<Column.Builder>()
+                X.Column()
+                    .DataIndex("UnitPrice")
+                    .Text("Price")
                     .Width(100),
                 X.Column()
                     .DataIndex("ProductType")
@@ -43,7 +69,7 @@
                         Html.X().Button()
                             .Text("Add")
                             .Icon(Icon.Add)
-                            .Handler("#{ProductsSpot}.show(#{ProductForm}); #{ProductForm}.getForm().loadRecord(new Product());"),
+                            .Handler("#{ProductsSpot}.show(#{ProductsForm}); #{ProductsForm}.getForm().loadRecord(new Product({ ProductType: null, ProductTypeId: null }));"),
 
                         Html.X().Button()
                             .Text("Delete")
@@ -62,12 +88,12 @@
                     .Mode(SelectionMode.Single)
                     .Listeners(l =>
                     {
-                        l.Select.Handler = "#{ProductForm}.getForm().loadRecord(record);";
+                        l.Select.Handler = "#{ProductsForm}.getForm().loadRecord(record);";
                     })
             ),
                 
-        X.FormPanelForModel()
-            .ID("ProductForm")
+        X.FormPanel()
+            .ID("ProductsForm")
             .Region(Region.East)
             .Width(400)
             .FieldDefaults(fd => {
@@ -76,6 +102,19 @@
             .BodyPadding(5)
             .DefaultAnchor("95%")
             .Items(
+                X.HiddenFor(m => m.Id)
+                    .ID("ProductsId"),
+                X.TextFieldFor(m => m.Name)
+                    .ID("ProductsName")
+                    .AllowBlank(false),
+                X.TextFieldFor(m => m.ShortCode)
+                    .ID("ProductsShortCode")
+                    .FieldLabel("Short Code")
+                    .AllowBlank(false),
+                X.TextAreaFor(m => m.Description)
+                    .ID("ProductsDescription"),
+                X.NumberFieldFor(m => m.UnitPrice)
+                    .ID("ProductsUnitPrice"),
                 X.ComboBox()
                     .FieldLabel("Type")
                     .Name("ProductTypeId")
@@ -96,14 +135,14 @@
                     .DirectEvents(de => {
                         de.Click.Url = Url.Action("Save", "Products");
                         de.Click.Before = "return true; ";
-                        de.Click.FormID = "ProductForm";
+                        de.Click.FormID = "ProductsForm";
                         de.Click.Success = "if (#{ProductsSpot}.active) #{ProductsSpot}.hide(); #{ProductsGrid}.getStore().reload();";
                     }),
                 X.Button()
                     .Text("Cancel")
                     .Icon(Icon.Cross)
                     .Listeners(l => {
-                        l.Click.Handler = "if (#{ProductsSpot}.active) #{ProductsSpot}.hide(); #{ProductForm}.reset();";
+                        l.Click.Handler = "if (#{ProductsSpot}.active) #{ProductsSpot}.hide(); #{ProductsForm}.reset();";
                     })
             )
     )

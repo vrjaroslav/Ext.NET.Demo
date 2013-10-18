@@ -1,28 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using Ext.Net.MVC;
-using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Uber.Core
 {
-    [JsonObject(MemberSerialization.OptIn)]
     public abstract class BaseItem
 	{
 		#region Properties
 
-		[JsonProperty]
-		[ModelField(IDProperty=true, UseNull=true)]
-        [Field(FieldType = typeof(Ext.Net.Hidden) )]
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public virtual int Id { get; set; }
 
-		[Field(Ignore=true)]
 		public string PhantomId { get; set; }
 
-		[Field(Ignore=true)]
-		[ModelField(Ignore = true)]
         public virtual bool IsNew
         {
             get
@@ -33,8 +24,6 @@ namespace Uber.Core
 
 		private DateTime dateCreated = DateTime.Now;
 
-        [JsonProperty]
-		[ModelField(Ignore = true)]
         public DateTime DateCreated
         {
             get
@@ -49,8 +38,6 @@ namespace Uber.Core
 
         private DateTime dateUpdated = DateTime.Now;
 
-        [JsonProperty]
-		[ModelField(Ignore = true)]
         public DateTime DateUpdated
         {
             get

@@ -1,4 +1,36 @@
 ﻿**************************************************************************
+*                   Version 2.3.1 CHANGELOG                          *
+**************************************************************************
+
+Release Date     : 2013-10-17
+Current Version  : 2.3.1
+Previous Version : 2.3.0
+
+FIX
+	[r5407]	Store ServerMapping functionality could throw an exception invoking methods via Reflection.
+	[r5408]	WebForm Examples Explorer: corrected the tree nodes' font. It was too small.
+	[r5416]	MultiSelect's ShowCheckbox didn't work causing "404 not found" errors regarding required images.
+	[r5417]	Combobox should not submit additional state if SimpleSubmit=true
+	[r5421]	RegisterClientScriptInclude doesn't use passed type argument
+	[r5422]	RemoteValidation doesn't restore old indicator properties
+	[r5427]	ResourceManager's ResourcesStrategyType cannot accept a string in markup.
+	[r5428]	SelectBox key searching didn't work.
+	[r5429]	"fixTitle" rule for Transformer doesn't work in all cases (temporary disabled)
+
+NEW	
+	[r5402]	WebForm Examples Explorer: added the new example "Form/Miscellaneous/Data_Binding". Demonstrates how to bind the data to the FormPanel.
+	[r5418]	WebForm Examples Explorer: added new GridPanel/Miscellaneous/Custom_Data_Binding. Demonstrates using a ModelField's Model.
+	[r5419]	MVC Examples Explorer: added the ModelSerializer example.
+
+UPDATE
+	[r5420]	ServerMapping supports object methods now (not properties methods only)
+	[r5423]	SelectBox Editable: now a server exception is thrown if set to true, because a SelectBox doesn't support it.
+	[r5426]	Added ComboBox's FireChangeOnLoad property. Set up for false to prevent firing of the Change event for SelectedItems. Defaults to true.
+	[r5430]	Upgrade to Json.NET 5.0.8.
+
+
+
+**************************************************************************
 *                   Version 2.3.0 CHANGELOG                          *
 **************************************************************************
 

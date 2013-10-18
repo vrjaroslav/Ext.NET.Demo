@@ -47,11 +47,6 @@ namespace Uber.Data.Repositories
 		{
 			var p = Get(id);
 
-			foreach (var item in _db.OrderItems.Where(o => o.ProductId == id))
-			{
-				_db.OrderItems.Remove(item);
-			}
-
 			_db.Products.Remove(p);
 			_db.SaveChanges();
 		}

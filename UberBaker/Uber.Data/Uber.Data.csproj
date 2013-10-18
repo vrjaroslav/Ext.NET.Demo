@@ -47,12 +47,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstract\IOrderItemsRepository.cs" />
     <Compile Include="Abstract\IOrdersRepository.cs" />
     <Compile Include="Abstract\IProductsRepository.cs" />
     <Compile Include="Abstract\IProductTypesRepository.cs" />
     <Compile Include="ProductTypeJsonConverter.cs" />
-    <Compile Include="Repositories\OrderItemsRepository.cs" />
     <Compile Include="Repositories\OrdersRepository.cs" />
     <Compile Include="Repositories\ProductsRepository.cs" />
     <Compile Include="Repositories\ProductTypesRepository.cs" />

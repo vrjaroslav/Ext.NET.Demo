@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Linq;
 using Uber.Core;
 using Uber.Data.Abstract;
@@ -28,7 +26,7 @@ namespace Uber.Data.Repositories
 
 		public IQueryable<Order> GetAll()
 		{
-			return _db.Orders.Include("OrderItems");
+			return _db.Orders;
 		}
 
 		public Order Add(Order order)
@@ -49,12 +47,6 @@ namespace Uber.Data.Repositories
 		{
 			var o = Get(id);
 			_db.Orders.Remove(o);
-		}
-
-		public List<OrderChartDataForMonth> GetChartDataForMonth(int month)
-		{
-			var data = _db.Orders.Where(o => o.OrderDate.Month == month).Select(o => new OrderChartDataForMonth { Day = o.OrderDate.Day, OrdersCount = o.OrderItems.Count }).ToList();
-			return data;
 		}
 	}
 }

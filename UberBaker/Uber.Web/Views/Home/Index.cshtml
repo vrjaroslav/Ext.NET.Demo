@@ -37,12 +37,6 @@
         .Easing(Easing.EaseIn)
         .Duration(1)
     )
-    
-    @(X.Spotlight()
-        .ID("OrderItemsSpot")
-        .Easing(Easing.EaseIn)
-        .Duration(1)
-    )
 
     @(X.Viewport()
         .Layout(LayoutType.Fit)
@@ -120,16 +114,6 @@
                                             .Mode(LoadMode.Script)
                                             .Url(Url.Action("RenderOrders"))
                                             .Params(new { containerId = "OrdersPanel" })
-                                            .LoadMask(lm => lm.ShowMask = true)
-                                        ),
-                                    X.Panel()
-                                        .Title("Order Items")
-                                        .ID("OrderItemsPanel")
-                                        .Layout(LayoutType.Fit)
-                                        .Loader(X.ComponentLoader()
-                                            .Mode(LoadMode.Script)
-                                            .Url(Url.Action("RenderOrderItems"))
-                                            .Params(new { containerId = "OrderItemsPanel" })
                                             .LoadMask(lm => lm.ShowMask = true)
                                         ),
                                     X.Panel()

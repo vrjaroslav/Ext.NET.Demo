@@ -18,7 +18,5 @@ namespace Uber.Data.Abstract
 		Order Update(Order order);
 
 		void Delete(int id);
-
-		List<OrderChartDataForMonth> GetChartDataForMonth(int month);
 	}
 }

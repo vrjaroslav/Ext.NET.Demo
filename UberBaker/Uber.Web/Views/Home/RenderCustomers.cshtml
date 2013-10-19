@@ -52,13 +52,11 @@
                 X.Column()
                     .DataIndex("Company")
                     .Text("Company")
-                    .Width(150),
+                    .Width(100),
                 X.Column()
-                    .Text("Mailing Address")
+                    .Text("Address")
                     .Flex(1)
-                    .Renderer(@"
-                    return Ext.String.format('{0}, {1}, {2}, {3}', record.get('StreetAddress'), record.get('City'), record.get('ZipCode'), record.get('Country'));
-                    "),
+                    .Renderer("return Ext.String.format('{0}, {1}, {2}, {3}', record.get('StreetAddress'), record.get('City'), record.get('ZipCode'), record.get('Country'));"),
                 X.Column()
                     .DataIndex("ContactPhone")
                     .Text("Contact Phone")

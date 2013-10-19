@@ -57,13 +57,12 @@
                 X.ColumnFor(m => m.Product)
                     .ToBuilder<Column.Builder>()
                     .Text("Product")
-                    .Renderer("return record.get('Name');")
+                    .Renderer("return record.data.Product.Name;")
                     .Width(100),
                 X.ColumnFor(m => m.Customer)
                     .ToBuilder<Column.Builder>()
                     .Text("Customer")
-                    .Renderer(@"
-return Ext.String.format('{0}, {1}', record.get('FullName'), record.get('Company'));")
+                    .Renderer("return Ext.String.format('{0}, {1}', record.data.Customer.FullName, record.data.Customer.Company);")
                     .Flex(1),
                 X.ColumnFor(m => m.Quantity)
                     .ToBuilder<Column.Builder>()

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Ext.Net;
-using Ext.Net.MVC;
 
 namespace Uber.Web.Controllers
 {
@@ -14,6 +9,8 @@ namespace Uber.Web.Controllers
 		{
 			return View();
 		}
+
+		#region PartialViewsRenderingActions
 
 		public ActionResult RenderProducts(string containerId)
 		{
@@ -64,5 +61,17 @@ namespace Uber.Web.Controllers
                 WrapByScriptTag = false // we load the view via Loader with Script mode therefore script tags is not required
             };
 		}
+
+		public ActionResult RenderCustomers(string containerId)
+		{
+			return new Ext.Net.MVC.PartialViewResult
+            {
+                RenderMode = RenderMode.AddTo,
+                ContainerId = containerId,
+                WrapByScriptTag = false // we load the view via Loader with Script mode therefore script tags is not required
+            };
+		}
+
+		#endregion
 	}
 }

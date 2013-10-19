@@ -198,6 +198,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\ExtNetController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
@@ -262,8 +263,6 @@
     <Content Include="Images\orderedList9.png" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
@@ -273,14 +272,14 @@
     <Content Include="Views\Products\Index.cshtml" />
     <Content Include="Views\ProductTypes\Index.cshtml" />
     <Content Include="Views\Orders\Index.cshtml" />
-    <Content Include="Views\OrderItems\Index.cshtml" />
-    <Content Include="Views\Home\GroupPanelTabs.cshtml" />
     <Content Include="Views\Home\RenderProducts.cshtml" />
     <Content Include="Views\Home\RenderProductTypes.cshtml" />
     <Content Include="Views\Home\RenderOrders.cshtml" />
     <Content Include="Views\Orders\ChartPerMonth.cshtml" />
     <Content Include="Views\Home\RenderOrdersChart.cshtml" />
     <Content Include="Views\ExtNet\Index.cshtml" />
+    <Content Include="Views\Customers\Index.cshtml" />
+    <Content Include="Views\Home\RenderCustomers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

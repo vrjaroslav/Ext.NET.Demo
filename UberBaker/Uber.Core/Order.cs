@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Uber.Core
@@ -7,8 +8,10 @@ namespace Uber.Core
 	{
 		#region Properties
 
+		[Required]
         public DateTime OrderDate { get; set; }
 
+		[Required]
         public int Quantity { get; set; }
 
 		public double GrossTotal
@@ -19,11 +22,16 @@ namespace Uber.Core
 			}
 		}
 
+		public virtual int? ProductId { get; set; }
+
 		[ForeignKey("ProductId")]
         public virtual Product Product { get; set; }
 
-		public virtual int? ProductId { get; set; }
+		public int CustomerId { get; set; }
 
+		[ForeignKey("CustomerId")]
+		public Customer Customer { get; set; }
+		
 		#endregion
 	}
 }

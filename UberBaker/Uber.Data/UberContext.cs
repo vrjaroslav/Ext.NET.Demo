@@ -11,6 +11,7 @@ namespace Uber.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
+        public DbSet<Customer> Customers { get; set; }
 
 
 		public UberContext() : base("UberContext")
@@ -26,6 +27,7 @@ namespace Uber.Data
 			builder.Entity<Order>().ToTable("Orders");
 			builder.Entity<Product>().ToTable("Products");
 			builder.Entity<ProductType>().ToTable("ProductTypes");
+			builder.Entity<Customer>().ToTable("Customers");
 		}
 
 		public override int SaveChanges()

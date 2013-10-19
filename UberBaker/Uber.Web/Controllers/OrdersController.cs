@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using System.Web.Mvc;
 using Ext.Net.MVC;
 using Uber.Core;
@@ -13,38 +10,41 @@ namespace Uber.Web.Controllers
 {
     public class OrdersController : Controller
     {
-        private IOrdersRepository _ordersRepository { get; set; }
+        private IOrdersRepository repository { get; set; }
+
+		#region Constructors
 
 		public OrdersController()
 		{
-			_ordersRepository = new OrdersRepository();
+			repository = new OrdersRepository();
 		}
 		
-		public OrdersController(IOrdersRepository _ordersRepository)
+		public OrdersController(IOrdersRepository repository)
 		{
 			// TODO Rewite with IoC
-			this._ordersRepository = new OrdersRepository();
+			this.repository = new OrdersRepository();
 		}
+
+		#endregion
+
+		#region Actions
 
 		public ActionResult Save(Order order)
 		{
-			if (order.Id > 0)
-				_ordersRepository.Update(order);
-			else
-				_ordersRepository.Add(order);
+			repository.AddOrUpdate(order);
 
 			return this.Direct();
 		}
 
 		public ActionResult Delete(int id)
 		{
-			_ordersRepository.Delete(id);
+			repository.Delete(id);
 			return this.Direct();
 		}
 
 		public ActionResult GetAll()
 		{
-			return this.Store(_ordersRepository.GetAll());
+			return this.Store(repository.GetAll());
 		}
 
         public ActionResult Index()
@@ -59,8 +59,10 @@ namespace Uber.Web.Controllers
 
 		public ActionResult GetChartDataForCurrentMonth(int month = 10)
 	    {
-			var data = _ordersRepository.GetAll().Where(o => o.OrderDate.Month == month).Select(o => new OrderChartDataForMonth { Day = o.OrderDate.Day, OrdersCount = o.Quantity }).ToList();
+			var data = repository.GetAll().Where(o => o.OrderDate.Month == month).Select(o => new OrderChartDataForMonth { Day = o.OrderDate.Day, OrdersCount = o.Quantity }).ToList();
 		    return new StoreResult(data);
 	    }
+
+		#endregion
     }
 }

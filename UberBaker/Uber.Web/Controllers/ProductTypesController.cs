@@ -8,37 +8,40 @@ namespace Uber.Web.Controllers
 {
     public class ProductTypesController : Controller
     {
-		private ProductTypesRepository _productsTypesRepository { get; set; }
+		private ProductTypesRepository repository { get; set; }
+
+		#region Constructors
 
 		public ProductTypesController()
 		{
-			_productsTypesRepository = new ProductTypesRepository();
+			repository = new ProductTypesRepository();
 		}
 		
-		public ProductTypesController(IProductTypesRepository productsTypesRepository)
+		public ProductTypesController(IProductTypesRepository repository)
 		{
 			// TODO Rewite with IoC
-			this._productsTypesRepository = new ProductTypesRepository();
+			this.repository = new ProductTypesRepository();
 		}
+
+		#endregion
+
+		#region Actions
 
         public ActionResult GetAll()
         {
-	        return this.Store(_productsTypesRepository.GetAll());
+	        return this.Store(repository.GetAll());
         } 
 
 		public ActionResult Save(ProductType productType)
 		{
-			if (productType.Id > 0)
-				_productsTypesRepository.Update(productType);
-			else
-				_productsTypesRepository.Add(productType);
+			repository.AddOrUpdate(productType);
 
 			return this.Direct();
 		}
 
 		public ActionResult Delete(int id)
 		{
-			_productsTypesRepository.Delete(id);
+			repository.Delete(id);
 			return this.Direct();
 		}
 
@@ -46,5 +49,7 @@ namespace Uber.Web.Controllers
 		{
 			return View();
 		}
+
+		#endregion
     }
 }

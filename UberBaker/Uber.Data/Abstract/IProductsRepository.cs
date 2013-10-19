@@ -14,5 +14,7 @@ namespace Uber.Data.Abstract
 		Product Update(Product product);
 
 		void Delete(int id);
+
+		Product AddOrUpdate(Product product);
 	}
 }

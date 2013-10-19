@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using Uber.Core;
@@ -13,11 +12,51 @@ namespace Uber.Data
         {
             var products = SeedProducts(data);
 
-			SeedOrders(data, products);
+			var customers = SeedCustomers();
+
+			SeedOrders(data, products, customers);
 
 			// IMPORTANT!!
             data.SaveChanges();
         }
+
+		private List<Customer> SeedCustomers()
+		{
+			const int citiesCount = 7;
+			string[] firstNames = new[] { "Aaron", "Abdul", "Bob", "Cindy", "Daniel", "Evan", "George", "Ivan", "Karl", "Yann"};
+			string[] lastNames = new[] { "Abbott", "Black", "Norriss", "King", "Smith", "White" };
+			string[] cities = new string[citiesCount] { "New York", "Toronto", "Jacksonville", "Columbus", "Montreal", "Edmonton", "Vancouver" };
+			string[] states = new string[citiesCount] { "NY", "ON", "FL", "OH", "QC", "AB", "BC" };
+			string[] zipCodes = new string[citiesCount] { "10001", "M4B 1C2", "32218", "43085", "H1A 5J4", "T5A 0E2", "V5K 1A8" };
+			string[] countries = new string[citiesCount] { "U.S.", "Canada", "U.S.", "U.S.", "Canada", "Canada", "Canada" };
+			var customers = new List<Customer>();
+
+			var r = new Random(30);
+
+			foreach (var lastName in lastNames)
+			{
+				foreach (var firstName in firstNames)
+				{
+					var cityNumber = r.Next(0, 6);
+					customers.Add(new Customer
+					{
+						FirstName = firstName,
+						LastName = lastName,
+						Company = lastName + " Inc.",
+						ContactPhone = "111-222-3444",
+						CellPhone = "555-666-7777",
+						StreetAddress = string.Format("{0} {1} Av.", r.Next(1, 999), r.Next(1, 30)),
+						City = cities[cityNumber],
+						State = states[cityNumber],
+						ZipCode = zipCodes[cityNumber],
+						Country = countries[cityNumber],
+						Email = string.Format("{0}@{1}.com", firstName.ToLowerInvariant(), lastName.ToLowerInvariant())
+					});
+				}
+			}
+
+			return customers;
+		}
 
 		private static List<Product> SeedProducts(UberContext data)
 		{
@@ -27,47 +66,49 @@ namespace Uber.Data
 			var glutenfree = new ProductType {Name = "Gluten Free", ShortCode = "glutenfree"};
 
 			var productTypes = new List<ProductType>
-				{
-					bread,
-					pastry,
-					pita,
-					glutenfree
-				};
+			{
+				bread,
+				pastry,
+				pita,
+				glutenfree
+			};
 
 			productTypes.ForEach(productType => data.ProductTypes.AddOrUpdate(item => item.ShortCode, productType));
 
 			var products = new List<Product>
-				{
-					new Product {Name = "Sour Dough", UnitPrice = 2.22, ShortCode = "sourdough", ProductType = glutenfree},
-					new Product {Name = "5 Grain", UnitPrice = 3.33, ShortCode = "5grain", ProductType = glutenfree},
-					new Product {Name = "Baguette", ShortCode = "baguette", ProductType = bread},
-					new Product {Name = "Dark Rye", UnitPrice = 4.44, ShortCode = "darkrye", ProductType = bread},
-					new Product {Name = "Pumpernickel", ShortCode = "pumpernickel", ProductType = bread},
-					new Product {Name = "Corn Bread", UnitPrice = 5.55, ShortCode = "cornbread", ProductType = bread},
-					new Product {Name = "Brioche", ShortCode = "brioche", ProductType = pastry},
-					new Product {Name = "Focaccia", ShortCode = "focaccia", ProductType = bread},
-					new Product {Name = "Croissant", ShortCode = "croissant", ProductType = pastry},
-					new Product {Name = "Pain au Chocolat", UnitPrice = 1.11, ShortCode = "painauchocolat", ProductType = pastry},
-				};
+			{
+				new Product {Name = "Sour Dough", UnitPrice = 2.22, ShortCode = "sourdough", ProductType = glutenfree},
+				new Product {Name = "5 Grain", UnitPrice = 3.33, ShortCode = "5grain", ProductType = glutenfree},
+				new Product {Name = "Baguette", ShortCode = "baguette", ProductType = bread},
+				new Product {Name = "Dark Rye", UnitPrice = 4.44, ShortCode = "darkrye", ProductType = bread},
+				new Product {Name = "Pumpernickel", ShortCode = "pumpernickel", ProductType = bread},
+				new Product {Name = "Corn Bread", UnitPrice = 5.55, ShortCode = "cornbread", ProductType = bread},
+				new Product {Name = "Brioche", ShortCode = "brioche", ProductType = pastry},
+				new Product {Name = "Focaccia", ShortCode = "focaccia", ProductType = bread},
+				new Product {Name = "Croissant", ShortCode = "croissant", ProductType = pastry},
+				new Product {Name = "Pain au Chocolat", UnitPrice = 1.11, ShortCode = "painauchocolat", ProductType = pastry},
+			};
 
 			products.ForEach(product => data.Products.AddOrUpdate(item => item.ShortCode, product));
 			return products;
 		}
 
-		private static void SeedOrders(UberContext data, List<Product> products)
+		private static void SeedOrders(UberContext data, List<Product> products, List<Customer> customers)
 		{
 			Random r = new Random(20);
 
 			var orders = new List<Order>();
 
 			foreach (var product in products)
+			{
 				orders.Add(new Order
 					{
 						OrderDate = DateTime.Now.AddDays(r.Next(-15, 15)),
 						Product = product,
-						Quantity = r.Next(1, 50)
+						Quantity = r.Next(1, 50),
+						Customer = customers[r.Next(0, customers.Count - 1)]
 					});
-
+			}
 			orders.ForEach(order => data.Orders.AddOrUpdate(order));
 		}
 	}

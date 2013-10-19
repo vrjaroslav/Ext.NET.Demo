@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using System.Linq;
-using System.Reflection;
 using Uber.Core;
 using Uber.Data.Abstract;
 
@@ -8,7 +7,9 @@ namespace Uber.Data.Repositories
 {
 	public class ProductsRepository : IProductsRepository
 	{
-		private UberContext _db { get; set; }
+		private UberContext DbContext { get; set; }
+
+		#region Constructors
 
 		public ProductsRepository() : this(new UberContext())
 		{
@@ -16,39 +17,49 @@ namespace Uber.Data.Repositories
 
 		public ProductsRepository(UberContext db)
 		{
-			this._db = db;
+			this.DbContext = db;
 		}
+
+		#endregion
+
+		#region Methods
 
 		public Product Get(int id)
 		{
-			return _db.Products.SingleOrDefault(p => p.Id == id);
+			return DbContext.Products.SingleOrDefault(p => p.Id == id);
 		}
 
 		public IQueryable<Product> GetAll()
 		{
-			return _db.Products.Include("ProductType");
+			return DbContext.Products.Include("ProductType");
 		}
 
 		public Product Add(Product product)
 		{
-			_db.Products.Add(product);
-			_db.SaveChanges();
+			DbContext.Products.Add(product);
+			DbContext.SaveChanges();
 			return product;
 		}
 
 		public Product Update(Product product)
 		{
-			_db.Entry(product).State = EntityState.Modified;
-			_db.SaveChanges();
+			DbContext.Entry(product).State = EntityState.Modified;
+			DbContext.SaveChanges();
 			return product;
 		}
 	
 		public void Delete(int id)
 		{
 			var p = Get(id);
-
-			_db.Products.Remove(p);
-			_db.SaveChanges();
+			DbContext.Products.Remove(p);
+			DbContext.SaveChanges();
 		}
+
+		public Product AddOrUpdate(Product product)
+		{
+			return product.IsNew ? this.Add(product) : this.Update(product);
+		}
+
+		#endregion
 	}
 }

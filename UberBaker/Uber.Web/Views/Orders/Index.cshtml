@@ -1,5 +1,5 @@
 ﻿@using Uber.Core
-@model List<Order>
+@model Order
 @{
     var X = Html.X();
     ViewBag.Title = "Index";
@@ -14,84 +14,138 @@
         .Duration(1)
     )
 
+    
     @(X.Viewport()
-        .Layout(LayoutType.Border)
-        .Items(
-            X.GridPanel()
-                .Region(Region.Center)
-                .ID("OrdersGrid")
-                .Store(X.StoreFor<Order>()
-                    .ID("OrdersStore")
-                    .Proxy(X.AjaxProxy()
-                        .Url(Url.Action("GetAll"))
-                        .Reader(X.JsonReader().Root("data"))
+    .Layout(LayoutType.Border)
+    .Items(
+        X.GridPanel()
+            .Region(Region.Center)
+            .ID("OrdersGrid")
+            .Store(X.Store()
+                .ID("OrdersStore")
+                .Model(X.Model()
+                    .ClientIdProperty("PhantomId")
+                    .IDProperty("Id")
+                    .Name("Order")
+                    .Fields(
+                        X.ModelFieldFor(m => m.Id)
+                            .UseNull(true),
+                        X.ModelFieldFor(m => m.PhantomId),
+                        X.ModelFieldFor(m => m.OrderDate),
+                        X.ModelFieldFor(m => m.Quantity),
+                        X.ModelFieldFor(m => m.GrossTotal),
+                        X.ModelFieldFor(m => m.Customer),
+                        X.ModelFieldFor(m => m.CustomerId),
+                        X.ModelFieldFor(m => m.Product),
+                        X.ModelFieldFor(m => m.ProductId)
                     )
-                    .PageSize(25)
                 )
-                .ColumnModel(
-                    X.ColumnFor(Model, m => m.Id)
-                        .ToBuilder<Column.Builder>(),
-                    X.ColumnFor(Model, m => m.OrderDate)
-                        .ToBuilder<Column.Builder>(),
-                    X.ColumnFor(Model, m => m.GrossTotal)
-                        .ToBuilder<Column.Builder>()
-                        .Width(100)
+                .Proxy(X.AjaxProxy()
+                    .Url(Url.Action("GetAll", "Orders"))
+                    .Reader(X.JsonReader().Root("data"))
                 )
-                .TopBar(
-                    Html.X().Toolbar()
-                        .Items(
-                            Html.X().Button()
-                                .Text("Add")
-                                .Icon(Icon.Add)
-                                .Handler("#{OrdersSpot}.show(#{OrdersForm}); #{OrdersForm}.getForm().loadRecord(new ProductType());"),
+                .PageSize(25)
+            )
+            .ColumnModel(
+                X.ColumnFor(m => m.Id)
+                    .ToBuilder<Column.Builder>()
+                    .Text("Id"),
+                X.DateColumn()
+                    .DataIndex("OrderDate")
+                    .Text("Date")
+                    .Format("dd-m-yyyy"),
+                X.ColumnFor(m => m.Product)
+                    .ToBuilder<Column.Builder>()
+                    .Text("Product")
+                    .Renderer("return record.get('Name');")
+                    .Width(100),
+                X.ColumnFor(m => m.Customer)
+                    .ToBuilder<Column.Builder>()
+                    .Text("Customer")
+                    .Renderer(@"
+return Ext.String.format('{0}, {1}', record.get('FullName'), record.get('Company'));")
+                    .Flex(1),
+                X.ColumnFor(m => m.Quantity)
+                    .ToBuilder<Column.Builder>()
+                    .Text("Quantity")
+                    .Width(100),
+                X.ColumnFor(m => m.GrossTotal)
+                    .ToBuilder<Column.Builder>()
+                    .Text("Gross Total")
+                    .Width(100)
+            )
+            .TopBar(
+                Html.X().Toolbar()
+                    .Items(
+                        Html.X().Button()
+                            .Text("Add")
+                            .Icon(Icon.Add)
+                            .Handler("#{OrdersSpot}.show(#{OrdersForm}); #{OrdersForm}.getForm().loadRecord(new ProductType());"),
 
-                            Html.X().Button()
-                                .Text("Delete")
-                                .Icon(Icon.Exclamation)
-                                .DirectEvents(de => {
-                                    de.Click.Action = "Delete";
-                                    de.Click.Confirmation.Message = "Are you sure you want to delete this record?";
-                                    de.Click.Confirmation.ConfirmRequest = true;
-                                    de.Click.ExtraParams.Add(new Parameter("id", "this.up('grid').getSelectionModel().getSelection()[0].data.Id", ParameterMode.Raw));
-                                })
-                        )
-                )
-                .SelectionModel(
-                    Html.X().RowSelectionModel()
-                        .Mode(SelectionMode.Single)
-                        .Listeners(l =>
-                        {
-                            l.Select.Handler = "#{OrdersForm}.getForm().loadRecord(record);";
-                        })
-                ),
+                        Html.X().Button()
+                            .Text("Delete")
+                            .Icon(Icon.Exclamation)
+                            .DirectEvents(de => {
+                                de.Click.Url = Url.Action("Delete", "Orders");
+                                de.Click.Confirmation.Message = "Are you sure you want to delete this record?";
+                                de.Click.Confirmation.ConfirmRequest = true;
+                                de.Click.ExtraParams.Add(new Parameter("id", "this.up('grid').getSelectionModel().getSelection()[0].data.Id", ParameterMode.Raw));
+                                de.Click.Success = "#{OrdersGrid}.getStore().reload();";
+                            })
+                    )
+            )
+            .SelectionModel(
+                Html.X().RowSelectionModel()
+                    .Mode(SelectionMode.Single)
+                    .Listeners(l =>
+                    {
+                        l.Select.Handler = "#{OrdersForm}.getForm().loadRecord(record);";
+                    })
+            ),
                 
-            X.FormPanelForModel()
-                .ID("OrdersForm")
-                .Region(Region.East)
-                .Width(400)
-                .FieldDefaults(fd => {
-                    fd.LabelAlign = LabelAlign.Top;
-                })
-                .BodyPadding(5)
-                .DefaultAnchor("95%")
-                .ButtonAlign(Alignment.Center)
-                .Buttons(
-                    X.Button()
-                        .Text("Save")
-                        .Icon(Icon.Disk)
-                        .DirectEvents(de => {
-                            de.Click.Action = "Save";
-                            de.Click.Before = "return true; ";
-                            de.Click.FormID = "OrdersForm";
-                            de.Click.Success = "if (#{OrdersSpot}.active) #{OrdersSpot}.hide(); #{OrdersGrid}.getStore().reload();";
-                        }),
-                    X.Button()
-                        .Text("Cancel")
-                        .Icon(Icon.Cross)
-                        .Listeners(l => {
-                            l.Click.Handler = "if (#{OrdersSpot}.active) #{OrdersSpot}.show(#{OrdersGrid}); #{OrdersForm}.reset();";
-                        })
-                )
-        )
+        X.FormPanel()
+            .ID("OrdersForm")
+            .Region(Region.East)
+            .Width(400)
+            .FieldDefaults(fd => {
+                fd.LabelAlign = LabelAlign.Top;
+            })
+            .Items(
+                X.HiddenFor(m => m.Id)
+                    .ID("OrdersId"),
+                X.DateFieldFor(m => m.OrderDate)
+                    .ID("OrdersOrderDate")
+                    .FieldLabel("Order Date")
+                    .AllowBlank(false),
+                X.NumberFieldFor(m => m.Quantity)
+                    .ID("OrdersQuantity")
+                    .FieldLabel("Quantity")
+                    .AllowBlank(false),
+                X.NumberFieldFor(m => m.GrossTotal)
+                    .ID("OrdersGrossTotal")
+                    .FieldLabel("Gross Total")
+                    .ReadOnly(true)
+            )
+            .BodyPadding(5)
+            .DefaultAnchor("95%")
+            .ButtonAlign(Alignment.Center)
+            .Buttons(
+                X.Button()
+                    .Text("Save")
+                    .Icon(Icon.Disk)
+                    .DirectEvents(de => {
+                        de.Click.Url = Url.Action("Save", "Orders");
+                        de.Click.Before = "return true; ";
+                        de.Click.FormID = "OrdersForm";
+                        de.Click.Success = "if (#{OrdersSpot}.active) #{OrdersSpot}.hide(); #{OrdersGrid}.getStore().reload();";
+                    }),
+                X.Button()
+                    .Text("Cancel")
+                    .Icon(Icon.Cross)
+                    .Listeners(l => {
+                        l.Click.Handler = "if (#{OrdersSpot}.active) #{OrdersSpot}.show(#{OrdersGrid}); #{OrdersForm}.reset();";
+                    })
+            )
     )
+)
 }

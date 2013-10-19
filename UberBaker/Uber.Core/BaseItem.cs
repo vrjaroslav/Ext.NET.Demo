@@ -10,6 +10,7 @@ namespace Uber.Core
 
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		[Required]
         public virtual int Id { get; set; }
 
 		public string PhantomId { get; set; }

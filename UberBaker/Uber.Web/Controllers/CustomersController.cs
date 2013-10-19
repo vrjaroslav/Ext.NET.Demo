@@ -6,30 +6,35 @@ using Uber.Data.Repositories;
 
 namespace Uber.Web.Controllers
 {
-    public class ProductsController : Controller
+    public class CustomersController : Controller
     {
-		private ProductsRepository repository { get; set; }
+		private CustomersRepository repository { get; set; }
 
 		#region Constructors
 
-		public ProductsController()
+		public CustomersController()
 		{
-			repository = new ProductsRepository();
+			repository = new CustomersRepository();
 		}
-		
-		public ProductsController(IProductsRepository repository)
+
+		public CustomersController(ICustomersRepository repository)
 		{
 			// TODO Rewite with IoC
-			this.repository = new ProductsRepository();
+			this.repository = new CustomersRepository();
 		}
 
 		#endregion
 
 		#region Actions
 
-		public ActionResult Save(Product product)
+		public ActionResult Index()
+        {
+            return View();
+        }
+
+	    public ActionResult Save(Customer customer)
 		{
-			repository.AddOrUpdate(product);
+			repository.AddOrUpdate(customer);
 
 			return this.Direct();
 		}
@@ -45,11 +50,6 @@ namespace Uber.Web.Controllers
 			return this.Store(repository.GetAll());
 		}
 
-        public ActionResult Index()
-        {
-            return View();
-        }
-
 		#endregion
-    }
+	}
 }

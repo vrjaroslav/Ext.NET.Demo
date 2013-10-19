@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Uber.Core;
 using Uber.Data.Abstract;
 
@@ -11,7 +7,9 @@ namespace Uber.Data.Repositories
 {
 	public class ProductTypesRepository : IProductTypesRepository
 	{
-		private UberContext _db { get; set; }
+		private UberContext DbContext { get; set; }
+
+		#region Constructors
 
 		public ProductTypesRepository() : this(new UberContext())
 		{
@@ -19,37 +17,48 @@ namespace Uber.Data.Repositories
 
 		public ProductTypesRepository(UberContext db)
 		{
-			this._db = db;
+			this.DbContext = db;
 		}
+
+		#endregion
+
+		#region Methods
 
 		public ProductType Get(int id)
 		{
-			return _db.ProductTypes.SingleOrDefault(p => p.Id == id);
+			return DbContext.ProductTypes.SingleOrDefault(p => p.Id == id);
 		}
 
 		public IQueryable<ProductType> GetAll()
 		{
-			return _db.ProductTypes;
+			return DbContext.ProductTypes;
 		}
 
 		public ProductType Add(ProductType productType)
 		{
-			_db.ProductTypes.Add(productType);
-			_db.SaveChanges();
+			DbContext.ProductTypes.Add(productType);
+			DbContext.SaveChanges();
 			return productType;
 		}
 
 		public ProductType Update(ProductType productType)
 		{
-			_db.Entry(productType).State = EntityState.Modified;
-			_db.SaveChanges();
+			DbContext.Entry(productType).State = EntityState.Modified;
+			DbContext.SaveChanges();
 			return productType;
 		}
 
 		public void Delete(int id)
 		{
 			var p = Get(id);
-			_db.ProductTypes.Remove(p);
+			DbContext.ProductTypes.Remove(p);
 		}
+
+		public ProductType AddOrUpdate(ProductType productType)
+		{
+			return productType.IsNew ? this.Add(productType) : this.Update(productType);
+		}
+
+		#endregion
 	}
 }

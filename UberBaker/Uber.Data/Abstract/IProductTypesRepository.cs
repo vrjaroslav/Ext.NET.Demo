@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Uber.Core;
 
 namespace Uber.Data.Abstract
@@ -18,5 +14,7 @@ namespace Uber.Data.Abstract
 		ProductType Update(ProductType productType);
 
 		void Delete(int id);
+
+		ProductType AddOrUpdate(ProductType productType);
 	}
 }

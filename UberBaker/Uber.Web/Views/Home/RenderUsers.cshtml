@@ -1,0 +1,107 @@
+﻿@using Uber.Core
+@model Uber.Core.User
+@{
+    var X = Html.X();
+}
+
+@(X.Panel()
+    .Layout(LayoutType.Border)
+    .Items(
+        X.GridPanel()
+            .Region(Region.Center)
+            .ID("UsersGrid")
+            .Store(X.StoreFor<User>()
+                .ID("UsersStore")
+                .Proxy(X.AjaxProxy()
+                    .Url(Url.Action("GetAll", "Account"))
+                    .Reader(X.JsonReader().Root("data"))
+                )
+                .PageSize(25)
+            )
+            .ColumnModel(
+                X.ColumnFor(Model, m => m.Id)
+                    .ToBuilder<Column.Builder>(),
+                X.ColumnFor(Model, m => m.UserName)
+                    .ToBuilder<Column.Builder>(),
+                X.ColumnFor(Model, m => m.FirstName)
+                    .ToBuilder<Column.Builder>(),
+                X.ColumnFor(Model, m => m.LastName)
+                    .ToBuilder<Column.Builder>()
+                    .Width(100)
+            )
+            .TopBar(
+                Html.X().Toolbar()
+                    .Items(
+                        Html.X().Button()
+                            .Text("Add")
+                            .Icon(Icon.Add)
+                            .Disabled(true)
+                            //.Handler("#{UsersSpot}.show(#{UsersForm}); #{UsersForm}.getForm().loadRecord(new Product());")
+                            ,
+
+                        Html.X().Button()
+                            .Disabled(true)
+                            .Text("Disable account")
+                            .Icon(Icon.Exclamation)
+                            .DirectEvents(de => {
+                                de.Click.Url = Url.Action("Disable", "Account");
+                                de.Click.Confirmation.Message = "Are you sure you want to disable this account?";
+                                de.Click.Confirmation.ConfirmRequest = true;
+                                de.Click.ExtraParams.Add(new Parameter("id", "this.up('grid').getSelectionModel().getSelection()[0].data.Id", ParameterMode.Raw));
+                            })
+                    )
+            )
+            .SelectionModel(
+                Html.X().RowSelectionModel()
+                    .Mode(SelectionMode.Single)
+                    .Listeners(l =>
+                    {
+                        l.Select.Handler = "#{UsersForm}.getForm().loadRecord(record);";
+                    })
+            ),
+                
+        X.FormPanel()
+            .ID("UsersForm")
+            .Region(Region.East)
+            .Width(400)
+            .FieldDefaults(fd => {
+                fd.LabelAlign = LabelAlign.Top;
+            })
+            .BodyPadding(5)
+            .DefaultAnchor("95%")
+            .Items(
+                X.HiddenFor(m => m.Id)
+                    .ID("UsersId"),
+                X.TextFieldFor(m => m.FirstName)
+                    .ID("UsersFirstName")
+                    .FieldLabel("First Name")
+                    .AllowBlank(false),
+                X.TextFieldFor(m => m.UserName)
+                    .ID("UsersUserName")
+                    .FieldLabel("UserName")
+                    .AllowBlank(false),
+                X.TextFieldFor(m => m.LastName)
+                    .ID("UsersLastName")
+                    .FieldLabel("Last Name")
+                    .AllowBlank(false)
+            )
+            .ButtonAlign(Alignment.Center)
+            .Buttons(
+                X.Button()
+                    .Text("Save")
+                    .Icon(Icon.Disk)
+                    .DirectEvents(de => {
+                        de.Click.Url = Url.Action("Save", "Account");
+                        de.Click.Before = "return true; ";
+                        de.Click.FormID = "UsersForm";
+                        de.Click.Success = "if (#{UsersSpot}.active) #{UsersSpot}.hide(); #{UsersGrid}.getStore().reload();";
+                    }),
+                X.Button()
+                    .Text("Cancel")
+                    .Icon(Icon.Cross)
+                    .Listeners(l => {
+                        l.Click.Handler = "if (#{UsersSpot}.active) #{UsersSpot}.hide(); #{UsersForm}.reset();";
+                    })
+            )
+    )
+)

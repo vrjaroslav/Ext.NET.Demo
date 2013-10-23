@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Threading;
 using System.Web.Mvc;
+using Uber.Data;
 using WebMatrix.WebData;
 using Uber.Web.Models;
 
@@ -25,11 +26,11 @@ namespace Uber.Web.Filters
 		{
 			public SimpleMembershipInitializer()
 			{
-				Database.SetInitializer<UsersContext>(null);
+				Database.SetInitializer<UberContext>(null);
 
 				try
 				{
-					using (var context = new UsersContext())
+					using (var context = new UberContext())
 					{
 						if (!context.Database.Exists())
 						{
@@ -38,7 +39,20 @@ namespace Uber.Web.Filters
 						}
 					}
 
-					WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+					WebSecurity.InitializeDatabaseConnection("UberContext", "Users", "Id", "UserName", autoCreateTables: true);
+
+					if (!WebSecurity.UserExists("admin"))
+					{
+						WebSecurity.CreateUserAndAccount("admin", "qwerty", new { FirstName = "Administrator", LastName = "" });
+					}
+					if (!WebSecurity.UserExists("manager"))
+					{
+						WebSecurity.CreateUserAndAccount("manager", "qwerty", new { FirstName = "Manager", LastName = "" });
+					}
+					if (!WebSecurity.UserExists("user"))
+					{
+						WebSecurity.CreateUserAndAccount("user", "qwerty", new { FirstName = "User", LastName = "" });
+					}
 				}
 				catch (Exception ex)
 				{

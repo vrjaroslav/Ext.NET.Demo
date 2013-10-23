@@ -6,7 +6,7 @@ using Uber.Core;
 
 namespace Uber.Data
 {
-	public class UberContextInitializer : DropCreateDatabaseAlways<UberContext>
+	public class UberContextInitializer : DropCreateDatabaseIfModelChanges<UberContext>
 	{
 		protected override void Seed(UberContext data)
         {

@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Transactions;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using DotNetOpenAuth.AspNet;
+using Ext.Net.MVC;
 using Microsoft.Web.WebPages.OAuth;
+using Uber.Core;
+using Uber.Data.Abstract;
+using Uber.Data.Repositories;
 using WebMatrix.WebData;
 using Uber.Web.Filters;
 using Uber.Web.Models;
@@ -17,8 +17,44 @@ namespace Uber.Web.Controllers
 	[InitializeSimpleMembership]
 	public class AccountController : Controller
 	{
-		//
-		// GET: /Account/Login
+		private UsersRepository repository { get; set; }
+
+		#region Constructors
+
+		public AccountController()
+		{
+			repository = new UsersRepository();
+		}
+
+		public AccountController(IUsersRepository repository)
+		{
+			// TODO Rewite with IoC
+			this.repository = new UsersRepository();
+		}
+
+		#endregion
+
+		public ActionResult Index()
+		{
+			return View();
+		}
+
+		public ActionResult GetAll()
+		{
+			return this.Store(repository.GetAll());
+		}
+
+		public ActionResult Save(User user)
+		{
+			repository.AddOrUpdate(user);
+
+			return this.Direct();
+		}
+
+		public ActionResult Disable()
+		{
+			return this.Direct();
+		}
 
 		[AllowAnonymous]
 		public ActionResult Login(string returnUrl)
@@ -32,17 +68,13 @@ namespace Uber.Web.Controllers
 
 		[HttpPost]
 		[AllowAnonymous]
-		//[ValidateAntiForgeryToken]
+		[ValidateAntiForgeryToken]
 		public ActionResult Login(LoginModel model, string returnUrl)
 		{
-			//if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
-			if (ModelState.IsValid)
+			if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
 			{
 				return this.RedirectToAction("Index", "Home");
 			}
-
-			// If we got this far, something failed, redisplay form
-			ModelState.AddModelError("", "The user name or password provided is incorrect.");
 			return View(model);
 		}
 
@@ -199,134 +231,6 @@ namespace Uber.Web.Controllers
 
 			// If we got this far, something failed, redisplay form
 			return View(model);
-		}
-
-		//
-		// POST: /Account/ExternalLogin
-
-		[HttpPost]
-		[AllowAnonymous]
-		[ValidateAntiForgeryToken]
-		public ActionResult ExternalLogin(string provider, string returnUrl)
-		{
-			return new ExternalLoginResult(provider, Url.Action("ExternalLoginCallback", new { ReturnUrl = returnUrl }));
-		}
-
-		//
-		// GET: /Account/ExternalLoginCallback
-
-		[AllowAnonymous]
-		public ActionResult ExternalLoginCallback(string returnUrl)
-		{
-			AuthenticationResult result = OAuthWebSecurity.VerifyAuthentication(Url.Action("ExternalLoginCallback", new { ReturnUrl = returnUrl }));
-			if (!result.IsSuccessful)
-			{
-				return RedirectToAction("ExternalLoginFailure");
-			}
-
-			if (OAuthWebSecurity.Login(result.Provider, result.ProviderUserId, createPersistentCookie: false))
-			{
-				return RedirectToLocal(returnUrl);
-			}
-
-			if (User.Identity.IsAuthenticated)
-			{
-				// If the current user is logged in add the new account
-				OAuthWebSecurity.CreateOrUpdateAccount(result.Provider, result.ProviderUserId, User.Identity.Name);
-				return RedirectToLocal(returnUrl);
-			}
-			else
-			{
-				// User is new, ask for their desired membership name
-				string loginData = OAuthWebSecurity.SerializeProviderUserId(result.Provider, result.ProviderUserId);
-				ViewBag.ProviderDisplayName = OAuthWebSecurity.GetOAuthClientData(result.Provider).DisplayName;
-				ViewBag.ReturnUrl = returnUrl;
-				return View("ExternalLoginConfirmation", new RegisterExternalLoginModel { UserName = result.UserName, ExternalLoginData = loginData });
-			}
-		}
-
-		//
-		// POST: /Account/ExternalLoginConfirmation
-
-		[HttpPost]
-		[AllowAnonymous]
-		[ValidateAntiForgeryToken]
-		public ActionResult ExternalLoginConfirmation(RegisterExternalLoginModel model, string returnUrl)
-		{
-			string provider = null;
-			string providerUserId = null;
-
-			if (User.Identity.IsAuthenticated || !OAuthWebSecurity.TryDeserializeProviderUserId(model.ExternalLoginData, out provider, out providerUserId))
-			{
-				return RedirectToAction("Manage");
-			}
-
-			if (ModelState.IsValid)
-			{
-				// Insert a new user into the database
-				using (UsersContext db = new UsersContext())
-				{
-					UserProfile user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == model.UserName.ToLower());
-					// Check if user already exists
-					if (user == null)
-					{
-						// Insert name into the profile table
-						db.UserProfiles.Add(new UserProfile { UserName = model.UserName });
-						db.SaveChanges();
-
-						OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);
-						OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: false);
-
-						return RedirectToLocal(returnUrl);
-					}
-					else
-					{
-						ModelState.AddModelError("UserName", "User name already exists. Please enter a different user name.");
-					}
-				}
-			}
-
-			ViewBag.ProviderDisplayName = OAuthWebSecurity.GetOAuthClientData(provider).DisplayName;
-			ViewBag.ReturnUrl = returnUrl;
-			return View(model);
-		}
-
-		//
-		// GET: /Account/ExternalLoginFailure
-
-		[AllowAnonymous]
-		public ActionResult ExternalLoginFailure()
-		{
-			return View();
-		}
-
-		[AllowAnonymous]
-		[ChildActionOnly]
-		public ActionResult ExternalLoginsList(string returnUrl)
-		{
-			ViewBag.ReturnUrl = returnUrl;
-			return PartialView("_ExternalLoginsListPartial", OAuthWebSecurity.RegisteredClientData);
-		}
-
-		[ChildActionOnly]
-		public ActionResult RemoveExternalLogins()
-		{
-			ICollection<OAuthAccount> accounts = OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name);
-			List<ExternalLogin> externalLogins = new List<ExternalLogin>();
-			foreach (OAuthAccount account in accounts)
-			{
-				AuthenticationClientData clientData = OAuthWebSecurity.GetOAuthClientData(account.Provider);
-
-				externalLogins.Add(new ExternalLogin
-				{
-					Provider = account.Provider,
-					ProviderDisplayName = clientData.DisplayName,
-					ProviderUserId = account.ProviderUserId,
-				});
-			}
-
-			ViewBag.ShowRemoveButton = externalLogins.Count > 1 || OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
-			return PartialView("_RemoveExternalLoginsPartial", externalLogins);
 		}
 
 		#region Helpers

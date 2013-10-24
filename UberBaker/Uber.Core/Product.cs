@@ -6,8 +6,6 @@ namespace Uber.Core
 {
     public class Product : BaseItem
 	{
-		#region Properties
-
 		[Required]
         public string Name { get; set; }
 
@@ -25,7 +23,5 @@ namespace Uber.Core
 		[ForeignKey("ProductTypeId")]
 		[DefaultValue(null)]
 		public virtual ProductType ProductType { get; set; }
-
-		#endregion
 	}
 }

@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using Ext.Net.MVC;
+using System.Linq;
 using System.Web.Mvc;
-using Ext.Net.MVC;
 using Uber.Core;
 using Uber.Data.Abstract;
 using Uber.Data.Repositories;
@@ -39,6 +39,7 @@ namespace Uber.Web.Controllers
 		public ActionResult Delete(int id)
 		{
 			repository.Delete(id);
+
 			return this.Direct();
 		}
 
@@ -49,17 +50,18 @@ namespace Uber.Web.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            return this.View();
         }
 
 		public ActionResult ChartPerMonth()
 		{
-			return View();
+            return this.View();
 		}
 
 		public ActionResult GetChartDataForCurrentMonth(int month = 10)
 	    {
 			var data = repository.GetAll().Where(o => o.OrderDate.Month == month).Select(o => new OrderChartDataForMonth { Day = o.OrderDate.Day, OrdersCount = o.Quantity }).ToList();
+
 		    return new StoreResult(data);
 	    }
 

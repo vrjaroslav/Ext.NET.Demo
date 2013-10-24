@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Uber.Core
 {
-
 	public class Customer : BaseItem
 	{
 		[Required]
@@ -14,7 +13,10 @@ namespace Uber.Core
 
 		public string FullName
 		{
-			get { return string.Format("{0} {1}", FirstName, LastName); }
+            get
+            {
+                return string.Format("{0} {1}", FirstName, LastName);
+            }
 		}
 	
 		[Required]
@@ -24,6 +26,8 @@ namespace Uber.Core
 		[EmailAddress]
 		public string Email { get; set; }
 
+        /// TODO: Need to separate into an Address object.
+        /// Need BillingAddress and ShippingAddress properties
 		[Required]
 		public string StreetAddress { get; set; }
 

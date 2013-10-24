@@ -8,7 +8,7 @@ namespace Uber.Web.Controllers
 	{
 		public ActionResult Index()
 		{
-			return View();
+            return this.View();
 		}
 
 		#region PartialViewsRenderingActions

@@ -27,33 +27,35 @@ namespace Uber.Data.Repositories
 
 		public Order Get(int id)
 		{
-			return DbContext.Orders.SingleOrDefault(p => p.Id == id);
+			return this.DbContext.Orders.SingleOrDefault(p => p.Id == id);
 		}
 
 
 		public IQueryable<Order> GetAll()
 		{
-			return DbContext.Orders.Include("Customer");
+			return this.DbContext.Orders.Include("Customer");
 		}
 
 		public Order Add(Order order)
 		{
-			DbContext.Orders.Add(order);
-			DbContext.SaveChanges();
-			return order;
+			this.DbContext.Orders.Add(order);
+			this.DbContext.SaveChanges();
+			
+            return order;
 		}
 
 		public Order Update(Order order)
 		{
-			DbContext.Entry(order).State = EntityState.Modified;
-			DbContext.SaveChanges();
-			return order;
+			this.DbContext.Entry(order).State = EntityState.Modified;
+			this.DbContext.SaveChanges();
+			
+            return order;
 		}
 
 		public void Delete(int id)
 		{
 			var o = Get(id);
-			DbContext.Orders.Remove(o);
+			this.DbContext.Orders.Remove(o);
 		}
 
 		public Order AddOrUpdate(Order order)

@@ -10,11 +10,10 @@ namespace Uber.Data
 	{
 		protected override void Seed(UberContext data)
         {
-            var products = SeedProducts(data);
+            var products = this.SeedProducts(data);
+			var customers = this.SeedCustomers();
 
-			var customers = SeedCustomers();
-
-			SeedOrders(data, products, customers);
+			this.SeedOrders(data, products, customers);
 
 			// IMPORTANT!!
             data.SaveChanges();
@@ -23,12 +22,14 @@ namespace Uber.Data
 		private List<Customer> SeedCustomers()
 		{
 			const int citiesCount = 7;
+
 			string[] firstNames = new[] { "Aaron", "Abdul", "Bob", "Cindy", "Daniel", "Evan", "George", "Ivan", "Karl", "Yann"};
 			string[] lastNames = new[] { "Abbott", "Black", "Norriss", "King", "Smith", "White" };
 			string[] cities = new string[citiesCount] { "New York", "Toronto", "Jacksonville", "Columbus", "Montreal", "Edmonton", "Vancouver" };
 			string[] states = new string[citiesCount] { "NY", "ON", "FL", "OH", "QC", "AB", "BC" };
 			string[] zipCodes = new string[citiesCount] { "10001", "M4B 1C2", "32218", "43085", "H1A 5J4", "T5A 0E2", "V5K 1A8" };
 			string[] countries = new string[citiesCount] { "U.S.", "Canada", "U.S.", "U.S.", "Canada", "Canada", "Canada" };
+
 			var customers = new List<Customer>();
 
 			var r = new Random(30);
@@ -38,6 +39,7 @@ namespace Uber.Data
 				foreach (var firstName in firstNames)
 				{
 					var cityNumber = r.Next(0, 6);
+
 					customers.Add(new Customer
 					{
 						FirstName = firstName,
@@ -58,19 +60,19 @@ namespace Uber.Data
 			return customers;
 		}
 
-		private static List<Product> SeedProducts(UberContext data)
+		private List<Product> SeedProducts(UberContext data)
 		{
 			var bread = new ProductType {Name = "Bread", ShortCode = "bread"};
 			var pastry = new ProductType {Name = "Pastry", ShortCode = "pastry"};
-			var pita = new ProductType {Name = "Pita", ShortCode = "pita"};
-			var glutenfree = new ProductType {Name = "Gluten Free", ShortCode = "glutenfree"};
+            var glutenfree = new ProductType { Name = "Gluten Free", ShortCode = "glutenfree" };
+            var chocolate = new ProductType { Name = "Chocolate", ShortCode = "chocolate" };
 
 			var productTypes = new List<ProductType>
 			{
 				bread,
 				pastry,
-				pita,
-				glutenfree
+				glutenfree,
+                chocolate
 			};
 
 			productTypes.ForEach(productType => data.ProductTypes.AddOrUpdate(item => item.ShortCode, productType));
@@ -90,10 +92,11 @@ namespace Uber.Data
 			};
 
 			products.ForEach(product => data.Products.AddOrUpdate(item => item.ShortCode, product));
+
 			return products;
 		}
 
-		private static void SeedOrders(UberContext data, List<Product> products, List<Customer> customers)
+		private void SeedOrders(UberContext data, List<Product> products, List<Customer> customers)
 		{
 			Random r = new Random(20);
 
@@ -109,6 +112,7 @@ namespace Uber.Data
 						Customer = customers[r.Next(0, customers.Count - 1)]
 					});
 			}
+
 			orders.ForEach(order => data.Orders.AddOrUpdate(order));
 		}
 	}

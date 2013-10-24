@@ -6,8 +6,6 @@ namespace Uber.Core
 {
     public class Order : BaseItem
 	{
-		#region Properties
-
 		[Required]
         public DateTime OrderDate { get; set; }
 
@@ -31,7 +29,5 @@ namespace Uber.Core
 
 		[ForeignKey("CustomerId")]
 		public Customer Customer { get; set; }
-		
-		#endregion
 	}
 }

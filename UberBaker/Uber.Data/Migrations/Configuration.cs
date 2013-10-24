@@ -8,8 +8,8 @@ namespace Uber.Data
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
-			AutomaticMigrationDataLossAllowed = true;
+            this.AutomaticMigrationsEnabled = false;
+			this.AutomaticMigrationDataLossAllowed = true;
         }
     }
 }

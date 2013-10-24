@@ -26,32 +26,35 @@ namespace Uber.Data.Repositories
 
 		public ProductType Get(int id)
 		{
-			return DbContext.ProductTypes.SingleOrDefault(p => p.Id == id);
+            return this.DbContext.ProductTypes.SingleOrDefault(p => p.Id == id);
 		}
 
 		public IQueryable<ProductType> GetAll()
 		{
-			return DbContext.ProductTypes;
+            return this.DbContext.ProductTypes;
 		}
 
 		public ProductType Add(ProductType productType)
 		{
-			DbContext.ProductTypes.Add(productType);
-			DbContext.SaveChanges();
-			return productType;
+            this.DbContext.ProductTypes.Add(productType);
+            this.DbContext.SaveChanges();
+			
+            return productType;
 		}
 
 		public ProductType Update(ProductType productType)
 		{
-			DbContext.Entry(productType).State = EntityState.Modified;
-			DbContext.SaveChanges();
-			return productType;
+            this.DbContext.Entry(productType).State = EntityState.Modified;
+            this.DbContext.SaveChanges();
+			
+            return productType;
 		}
 
 		public void Delete(int id)
 		{
 			var p = Get(id);
-			DbContext.ProductTypes.Remove(p);
+
+            this.DbContext.ProductTypes.Remove(p);
 		}
 
 		public ProductType AddOrUpdate(ProductType productType)

@@ -5,8 +5,7 @@ namespace Uber.Web.Models
 {
 	public class UsersContext : DbContext
 	{
-		public UsersContext()
-			: base("UsersContext")
+		public UsersContext() : base("UsersContext")
 		{
 		}
 	}

@@ -26,33 +26,36 @@ namespace Uber.Data.Repositories
 
 		public User Get(int id)
 		{
-			return DbContext.Users.SingleOrDefault(c => c.Id == id);
+            return this.DbContext.Users.SingleOrDefault(c => c.Id == id);
 		}
 
 		public IQueryable<User> GetAll()
 		{
-			return DbContext.Users;
+            return this.DbContext.Users;
 		}
 
 		public User Add(User user)
 		{
-			DbContext.Users.Add(user);
-			DbContext.SaveChanges();
-			return user;
+            this.DbContext.Users.Add(user);
+            this.DbContext.SaveChanges();
+			
+            return user;
 		}
 
 		public User Update(User user)
 		{
-			DbContext.Entry(user).State = EntityState.Modified;
-			DbContext.SaveChanges();
-			return user;
+            this.DbContext.Entry(user).State = EntityState.Modified;
+            this.DbContext.SaveChanges();
+			
+            return user;
 		}
 
 		public void Delete(int id)
 		{
 			var c = Get(id);
-			DbContext.Users.Remove(c);
-			DbContext.SaveChanges();
+
+            this.DbContext.Users.Remove(c);
+            this.DbContext.SaveChanges();
 		}
 
 		public User AddOrUpdate(User user)

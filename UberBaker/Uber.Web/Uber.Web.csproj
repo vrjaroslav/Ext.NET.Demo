@@ -199,7 +199,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
-    <Compile Include="Controllers\ExtNetController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
@@ -209,7 +208,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\ExtNetModel.cs" />
     <Compile Include="Models\OrderChartData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -274,7 +272,6 @@
     <Content Include="Views\Home\RenderOrders.cshtml" />
     <Content Include="Views\Orders\ChartPerMonth.cshtml" />
     <Content Include="Views\Home\RenderOrdersChart.cshtml" />
-    <Content Include="Views\ExtNet\Index.cshtml" />
     <Content Include="Views\Customers\Index.cshtml" />
     <Content Include="Views\Home\RenderCustomers.cshtml" />
   </ItemGroup>

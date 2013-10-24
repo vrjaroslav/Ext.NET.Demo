@@ -5,7 +5,6 @@ using System.Threading;
 using System.Web.Mvc;
 using Uber.Data;
 using WebMatrix.WebData;
-using Uber.Web.Models;
 
 namespace Uber.Web.Filters
 {
@@ -43,15 +42,17 @@ namespace Uber.Web.Filters
 
 					if (!WebSecurity.UserExists("admin"))
 					{
-						WebSecurity.CreateUserAndAccount("admin", "qwerty", new { FirstName = "Administrator", LastName = "" });
+						WebSecurity.CreateUserAndAccount("admin", "demo", new { FirstName = "Administrator", LastName = "" });
 					}
+
 					if (!WebSecurity.UserExists("manager"))
 					{
-						WebSecurity.CreateUserAndAccount("manager", "qwerty", new { FirstName = "Manager", LastName = "" });
+						WebSecurity.CreateUserAndAccount("manager", "demo", new { FirstName = "Manager", LastName = "" });
 					}
-					if (!WebSecurity.UserExists("user"))
+					
+                    if (!WebSecurity.UserExists("user"))
 					{
-						WebSecurity.CreateUserAndAccount("user", "qwerty", new { FirstName = "User", LastName = "" });
+						WebSecurity.CreateUserAndAccount("user", "demo", new { FirstName = "User", LastName = "" });
 					}
 				}
 				catch (Exception ex)

@@ -55,7 +55,7 @@ namespace Uber.Core
 
 		#region Methods
 
-		public virtual void SetDateCreated()
+	    public virtual void SetDateCreated()
         {
             if (this.IsNew)
             {

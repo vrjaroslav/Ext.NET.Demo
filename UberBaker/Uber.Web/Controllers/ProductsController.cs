@@ -37,6 +37,7 @@ namespace Uber.Web.Controllers
 		public ActionResult Delete(int id)
 		{
 			repository.Delete(id);
+
 			return this.Direct();
 		}
 
@@ -47,7 +48,7 @@ namespace Uber.Web.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            return this.View();
         }
 
 		#endregion

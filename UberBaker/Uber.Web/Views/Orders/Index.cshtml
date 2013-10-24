@@ -1,5 +1,7 @@
 ﻿@using Uber.Core
+
 @model Order
+
 @{
     var X = Html.X();
     ViewBag.Title = "Index";
@@ -13,7 +15,6 @@
         .Easing(Easing.EaseIn)
         .Duration(1)
     )
-
     
     @(X.Viewport()
     .Layout(LayoutType.Border)

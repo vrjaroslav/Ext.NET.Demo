@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Ext.Net.MVC;
+using Microsoft.Web.WebPages.OAuth;
+using System;
 using System.Transactions;
 using System.Web.Mvc;
 using System.Web.Security;
-using Ext.Net.MVC;
-using Microsoft.Web.WebPages.OAuth;
 using Uber.Core;
 using Uber.Data.Abstract;
 using Uber.Data.Repositories;
-using WebMatrix.WebData;
 using Uber.Web.Filters;
 using Uber.Web.Models;
+using WebMatrix.WebData;
 
 namespace Uber.Web.Controllers
 {
@@ -36,7 +36,7 @@ namespace Uber.Web.Controllers
 
 		public ActionResult Index()
 		{
-			return View();
+            return this.View();
 		}
 
 		public ActionResult GetAll()
@@ -59,8 +59,9 @@ namespace Uber.Web.Controllers
 		[AllowAnonymous]
 		public ActionResult Login(string returnUrl)
 		{
-			ViewBag.ReturnUrl = returnUrl;
-			return View();
+            this.ViewBag.ReturnUrl = returnUrl;
+
+            return this.View();
 		}
 
 		//
@@ -75,7 +76,8 @@ namespace Uber.Web.Controllers
 			{
 				return this.RedirectToAction("Index", "Home");
 			}
-			return View(model);
+
+            return this.View(model);
 		}
 
 		//
@@ -87,7 +89,7 @@ namespace Uber.Web.Controllers
 		{
 			WebSecurity.Logout();
 
-			return RedirectToAction("Index", "Home");
+            return this.RedirectToAction("Index", "Home");
 		}
 
 		//
@@ -96,7 +98,7 @@ namespace Uber.Web.Controllers
 		[AllowAnonymous]
 		public ActionResult Register()
 		{
-			return View();
+            return this.View();
 		}
 
 		//
@@ -114,16 +116,17 @@ namespace Uber.Web.Controllers
 				{
 					WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
 					WebSecurity.Login(model.UserName, model.Password);
-					return RedirectToAction("Index", "Home");
+
+                    return this.RedirectToAction("Index", "Home");
 				}
 				catch (MembershipCreateUserException e)
 				{
-					ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
+                    this.ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
 				}
 			}
 
 			// If we got this far, something failed, redisplay form
-			return View(model);
+            return this.View(model);
 		}
 
 		//
@@ -143,6 +146,7 @@ namespace Uber.Web.Controllers
 				using (var scope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = IsolationLevel.Serializable }))
 				{
 					bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+
 					if (hasLocalAccount || OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name).Count > 1)
 					{
 						OAuthWebSecurity.DeleteAccount(provider, providerUserId);
@@ -160,14 +164,15 @@ namespace Uber.Web.Controllers
 
 		public ActionResult Manage(ManageMessageId? message)
 		{
-			ViewBag.StatusMessage =
+            this.ViewBag.StatusMessage =
 				message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
 				: message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
 				: message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
 				: "";
-			ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
-			ViewBag.ReturnUrl = Url.Action("Manage");
-			return View();
+            this.ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+            this.ViewBag.ReturnUrl = Url.Action("Manage");
+
+            return this.View();
 		}
 
 		//
@@ -178,8 +183,9 @@ namespace Uber.Web.Controllers
 		public ActionResult Manage(LocalPasswordModel model)
 		{
 			bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
-			ViewBag.HasLocalPassword = hasLocalAccount;
-			ViewBag.ReturnUrl = Url.Action("Manage");
+            this.ViewBag.HasLocalPassword = hasLocalAccount;
+            this.ViewBag.ReturnUrl = Url.Action("Manage");
+
 			if (hasLocalAccount)
 			{
 				if (ModelState.IsValid)
@@ -197,11 +203,11 @@ namespace Uber.Web.Controllers
 
 					if (changePasswordSucceeded)
 					{
-						return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
+                        return this.RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
 					}
 					else
 					{
-						ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
+                        this.ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
 					}
 				}
 			}
@@ -215,34 +221,35 @@ namespace Uber.Web.Controllers
 					state.Errors.Clear();
 				}
 
-				if (ModelState.IsValid)
+                if (this.ModelState.IsValid)
 				{
 					try
 					{
 						WebSecurity.CreateAccount(User.Identity.Name, model.NewPassword);
-						return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
+
+						return this.RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
 					}
 					catch (Exception)
 					{
-						ModelState.AddModelError("", String.Format("Unable to create local account. An account with the name \"{0}\" may already exist.", User.Identity.Name));
+						this.ModelState.AddModelError("", String.Format("Unable to create local account. An account with the name \"{0}\" may already exist.", User.Identity.Name));
 					}
 				}
 			}
 
 			// If we got this far, something failed, redisplay form
-			return View(model);
+			return this.View(model);
 		}
 
 		#region Helpers
 		private ActionResult RedirectToLocal(string returnUrl)
 		{
-			if (Url.IsLocalUrl(returnUrl))
+			if (this.Url.IsLocalUrl(returnUrl))
 			{
-				return Redirect(returnUrl);
+				return this.Redirect(returnUrl);
 			}
 			else
 			{
-				return RedirectToAction("Index", "Home");
+				return this.RedirectToAction("Index", "Home");
 			}
 		}
 
@@ -257,8 +264,8 @@ namespace Uber.Web.Controllers
 		{
 			public ExternalLoginResult(string provider, string returnUrl)
 			{
-				Provider = provider;
-				ReturnUrl = returnUrl;
+				this.Provider = provider;
+				this.ReturnUrl = returnUrl;
 			}
 
 			public string Provider { get; private set; }
@@ -266,7 +273,7 @@ namespace Uber.Web.Controllers
 
 			public override void ExecuteResult(ControllerContext context)
 			{
-				OAuthWebSecurity.RequestAuthentication(Provider, ReturnUrl);
+				OAuthWebSecurity.RequestAuthentication(this.Provider, this.ReturnUrl);
 			}
 		}
 

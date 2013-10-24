@@ -29,7 +29,7 @@ namespace Uber.Web.Controllers
 
 		public ActionResult Index()
         {
-            return View();
+            return this.View();
         }
 
 	    public ActionResult Save(Customer customer)
@@ -42,6 +42,7 @@ namespace Uber.Web.Controllers
 		public ActionResult Delete(int id)
 		{
 			repository.Delete(id);
+
 			return this.Direct();
 		}
 

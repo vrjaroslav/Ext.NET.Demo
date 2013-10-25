@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Uber.Core
@@ -26,21 +27,17 @@ namespace Uber.Core
 		[EmailAddress]
 		public string Email { get; set; }
 
-        /// TODO: Need to separate into an Address object.
-        /// Need BillingAddress and ShippingAddress properties
-		[Required]
-		public string StreetAddress { get; set; }
+		public virtual int? BillingAddressId { get; set; }
 
-		[Required]
-		public string City { get; set; }
+		[ForeignKey("BillingAddressId")]
+		[DefaultValue(null)]
+		public virtual Address BillingAddress { get; set; }
 
-		public string State { get; set; }
+		public virtual int? ShippingAddressId { get; set; }
 
-		[Required]
-		public string Country { get; set; }
-
-		[Required]
-		public string ZipCode { get; set; }
+		[ForeignKey("ShippingAddressId")]
+		[DefaultValue(null)]
+		public virtual Address ShippingAddress { get; set; }
 
 		[Required]
 		public string ContactPhone { get; set; }

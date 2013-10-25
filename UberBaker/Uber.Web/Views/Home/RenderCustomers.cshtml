@@ -1,4 +1,5 @@
-﻿@model Uber.Core.Customer
+﻿@using Uber.Core
+@model Uber.Core.Customer
 @{
     var X = Html.X();
 }
@@ -24,11 +25,8 @@
                         X.ModelFieldFor(m => m.LastName),
                         X.ModelFieldFor(m => m.Company),
                         X.ModelFieldFor(m => m.Email),
-                        X.ModelFieldFor(m => m.StreetAddress),
-                        X.ModelFieldFor(m => m.City),
-                        X.ModelFieldFor(m => m.State),
-                        X.ModelFieldFor(m => m.Country),
-                        X.ModelFieldFor(m => m.ZipCode),
+                        X.ModelFieldFor(m => m.BillingAddress),
+                        X.ModelFieldFor(m => m.ShippingAddress),
                         X.ModelFieldFor(m => m.ContactPhone),
                         X.ModelFieldFor(m => m.CellPhone),
                         X.ModelFieldFor(m => m.Fax)
@@ -56,7 +54,7 @@
                 X.Column()
                     .Text("Address")
                     .Flex(1)
-                    .Renderer("return Ext.String.format('{0}, {1}, {2}, {3}', record.get('StreetAddress'), record.get('City'), record.get('ZipCode'), record.get('Country'));"),
+                    .Renderer("return Ext.String.format('{0}, {1}, {2}, {3}', record.data.BillingAddress.StreetAddress, record.data.BillingAddress.City, record.data.BillingAddress.ZipCode, record.data.BillingAddress.Country.Name);"),
                 X.Column()
                     .DataIndex("ContactPhone")
                     .Text("Contact Phone")
@@ -105,6 +103,7 @@
         X.FormPanel()
             .ID("CustomersForm")
             .Region(Region.East)
+            .AutoScroll(true)
             .Width(400)
             .FieldDefaults(fd => {
                 fd.LabelAlign = LabelAlign.Top;
@@ -112,7 +111,8 @@
             .BodyPadding(5)
             .DefaultAnchor("95%")
             .Items(
-                X.HiddenFor(m => m.Id)
+                X.TextFieldFor(m => m.Id)
+                    .ReadOnly(true)
                     .ID("CustomersId"),
                 X.TextFieldFor(m => m.FirstName)
                     .ID("CustomersFirstName")
@@ -131,18 +131,67 @@
                     .FieldLabel("Email")
                     .StandardVtype(ValidationType.Email)
                     .AllowBlank(false),
-                 X.TextFieldFor(m => m.StreetAddress)
-                    .ID("CustomersStreetAddress")
-                    .AllowBlank(false),
-                X.TextFieldFor(m => m.City)
-                    .ID("CustomersCity")
-                    .AllowBlank(false),
-                X.TextFieldFor(m => m.State)
-                    .ID("CustomersState"),
-                X.TextFieldFor(m => m.Country)
-                    .AllowBlank(false),
-                X.TextFieldFor(m => m.ZipCode)
-                    .AllowBlank(false),
+                X.FieldSet()
+                    .Title("Billing Address")
+                    .DefaultAnchor("95%")
+                    .Items(
+                        X.TextFieldFor(m => m.BillingAddress.StreetAddress)
+                            .DataIndex("BillingAddress.StreetAddress")
+                            .ID("CustomersBillingStreetAddress")
+                            .AllowBlank(false),
+                        X.TextFieldFor(m => m.BillingAddress.City)
+                            .DataIndex("BillingAddress.City")
+                            .ID("CustomersBillingCity")
+                            .AllowBlank(false),
+                        X.TextFieldFor(m => m.BillingAddress.State)
+                            .DataIndex("BillingAddress.State")
+                            .ID("CustomersBillingState"),
+                        //X.TextFieldFor(m => m.BillingAddress.Country)
+                        //    .DataIndex("BillingAddress.Country")
+                        //    .AllowBlank(false),
+                        //X.ComboBox()
+                        //    .ID("CustomersBillingCountry")
+                        //    .FieldLabel("Country")
+                        //    .DataIndex("BillingAddress.Country.Id")
+                        //    .Name("BillingAddress.CountryId")
+                        //    .DisplayField("Name")
+                        //    .ValueField("Id")
+                        //    .Store(X.StoreFor<Country>()
+                        //        .Proxy(Html.X().AjaxProxy()
+                        //            .Url(Url.Action("GetCountries", "Customers"))
+                        //            .Reader(Html.X().JsonReader().Root("data"))
+                        //        )
+                        //    ),
+                        X.TextFieldFor(m => m.BillingAddress.ZipCode)
+                            .DataIndex("BillingAddress.ZipCode")
+                            .AllowBlank(false)
+                            .ID("CustomersBillingZipCode")
+                    )
+                ,
+                X.FieldSet()
+                    .Title("Shipping Address")
+                    .DefaultAnchor("95%")
+                    .Items(
+                        X.TextFieldFor(m => m.ShippingAddress.StreetAddress)
+                            .DataIndex("ShippingAddress.StreetAddress")
+                            .ID("CustomersShippingStreetAddress")
+                            .AllowBlank(false),
+                        X.TextFieldFor(m => m.ShippingAddress.City)
+                            .DataIndex("ShippingAddress.City")
+                            .ID("CustomersShippingCity")
+                            .AllowBlank(false),
+                        X.TextFieldFor(m => m.ShippingAddress.State)
+                            .DataIndex("ShippingAddress.State")
+                            .ID("CustomersShippingState"),
+                        //X.TextFieldFor(m => m.BillingAddress.Country)
+                        //    .DataIndex("BillingAddress.Country")
+                        //    .AllowBlank(false),
+                        X.TextFieldFor(m => m.ShippingAddress.ZipCode)
+                            .DataIndex("ShippingAddress.ZipCode")
+                            .AllowBlank(false)
+                            .ID("CustomersShippingZipCode")
+                    )
+                ,
                 X.TextFieldFor(m => m.ContactPhone)
                     .ID("CustomersContactPhone"),
                 X.TextFieldFor(m => m.CellPhone)

@@ -77,13 +77,14 @@
             .ID("ProductTypesForm")
             .Region(Region.East)
             .Width(400)
+            .AutoScroll(true)
             .FieldDefaults(fd => {
                 fd.LabelAlign = LabelAlign.Top;
             })
             .Items(
-                X.HiddenFor(m => m.Id)
-                    .ID("ProductTypesId")
-                    .Name("Id"),
+                X.TextFieldFor(m => m.Id)
+                    .ReadOnly(true)
+                    .ID("ProductTypesId"),
                 X.TextFieldFor(m => m.Name)
                     .ID("ProductTypesName")
                     .Name("Name")

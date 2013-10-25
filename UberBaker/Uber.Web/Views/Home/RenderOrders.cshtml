@@ -97,11 +97,13 @@
             .ID("OrdersForm")
             .Region(Region.East)
             .Width(400)
+            .AutoScroll(true)
             .FieldDefaults(fd => {
                 fd.LabelAlign = LabelAlign.Top;
             })
             .Items(
-                X.HiddenFor(m => m.Id)
+                X.TextFieldFor(m => m.Id)
+                    .ReadOnly(true)
                     .ID("OrdersId"),
                 X.DateFieldFor(m => m.OrderDate)
                     .ID("OrdersOrderDate")

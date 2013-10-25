@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using System.Linq;
 using Uber.Core;
 using Uber.Data.Abstract;
@@ -45,7 +44,24 @@ namespace Uber.Data.Repositories
 
 		public Customer Update(Customer customer)
 		{
-            this.DbContext.Entry(customer).State = EntityState.Modified;
+			var entry = this.DbContext.Entry(customer);
+			if (entry.State == EntityState.Detached)
+			{
+				var set = DbContext.Set<Customer>();
+				var attached = set.Local.SingleOrDefault(o => o.Id == customer.Id);
+
+				if (attached != null)
+				{
+					var attachedEntry = DbContext.Entry(attached);
+					attachedEntry.CurrentValues.SetValues(customer);
+				}
+				else
+				{
+					entry.State = EntityState.Modified;
+				}
+			}
+			this.DbContext.Entry(customer).CurrentValues.SetValues(customer);
+            //this.DbContext.Entry(customer).State = EntityState.Modified;
             this.DbContext.SaveChanges();
 			
             return customer;
@@ -62,6 +78,11 @@ namespace Uber.Data.Repositories
 		public Customer AddOrUpdate(Customer customer)
 		{
 			return customer.IsNew ? this.Add(customer) : this.Update(customer);
+		}
+
+		public IQueryable<Country> GetCountries()
+		{
+			return DbContext.Countries;
 		}
 
 		#endregion

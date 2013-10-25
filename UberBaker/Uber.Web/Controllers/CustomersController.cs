@@ -51,6 +51,11 @@ namespace Uber.Web.Controllers
 			return this.Store(repository.GetAll());
 		}
 
+		public ActionResult GetCountries()
+		{
+			return this.Store(repository.GetCountries());
+		}
+
 		#endregion
 	}
 }

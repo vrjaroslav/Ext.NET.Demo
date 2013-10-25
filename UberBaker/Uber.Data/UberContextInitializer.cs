@@ -11,15 +11,35 @@ namespace Uber.Data
 		protected override void Seed(UberContext data)
         {
             var products = this.SeedProducts(data);
-			var customers = this.SeedCustomers();
 
-			this.SeedOrders(data, products, customers);
+			var countries = SeedCountries();
+
+			var customers = SeedCustomers(countries);
+
+			SeedOrders(data, products, customers);
 
 			// IMPORTANT!!
             data.SaveChanges();
         }
 
-		private List<Customer> SeedCustomers()
+		private List<Country> SeedCountries()
+		{
+			string[] countries = new string[] { "U.S.", "Canada", "Russia", "UK", "Kazakhstan", "China" };
+			
+			var result = new List<Country>();
+
+			foreach (var country in countries)
+			{
+				result.Add(new Country
+				{
+					Name = country
+				});
+			}
+
+			return result;
+		}
+
+		private List<Customer> SeedCustomers(List<Country> countries)
 		{
 			const int citiesCount = 7;
 
@@ -28,8 +48,6 @@ namespace Uber.Data
 			string[] cities = new string[citiesCount] { "New York", "Toronto", "Jacksonville", "Columbus", "Montreal", "Edmonton", "Vancouver" };
 			string[] states = new string[citiesCount] { "NY", "ON", "FL", "OH", "QC", "AB", "BC" };
 			string[] zipCodes = new string[citiesCount] { "10001", "M4B 1C2", "32218", "43085", "H1A 5J4", "T5A 0E2", "V5K 1A8" };
-			string[] countries = new string[citiesCount] { "U.S.", "Canada", "U.S.", "U.S.", "Canada", "Canada", "Canada" };
-
 			var customers = new List<Customer>();
 
 			var r = new Random(30);
@@ -38,8 +56,6 @@ namespace Uber.Data
 			{
 				foreach (var firstName in firstNames)
 				{
-					var cityNumber = r.Next(0, 6);
-
 					customers.Add(new Customer
 					{
 						FirstName = firstName,
@@ -47,11 +63,22 @@ namespace Uber.Data
 						Company = lastName + " Inc.",
 						ContactPhone = "111-222-3444",
 						CellPhone = "555-666-7777",
-						StreetAddress = string.Format("{0} {1} Av.", r.Next(1, 999), r.Next(1, 30)),
-						City = cities[cityNumber],
-						State = states[cityNumber],
-						ZipCode = zipCodes[cityNumber],
-						Country = countries[cityNumber],
+						BillingAddress = new Address
+						{
+							Country = countries[r.Next(0, countries.Count - 1)],
+							City = cities[r.Next(0, 6)],
+							State = states[citiesCount - 1],
+							StreetAddress = string.Format("{0} {1} Av.", r.Next(1, 999), r.Next(1, 30)),
+							ZipCode = zipCodes[citiesCount - 1]
+						},
+						ShippingAddress = new Address
+						{
+							Country = countries[r.Next(0, countries.Count - 1)],
+							City = cities[r.Next(0, 6)],
+							State = states[citiesCount - 1],
+							StreetAddress = string.Format("{0} {1} Av.", r.Next(1, 999), r.Next(1, 30)),
+							ZipCode = zipCodes[citiesCount - 1]
+						},
 						Email = string.Format("{0}@{1}.com", firstName.ToLowerInvariant(), lastName.ToLowerInvariant())
 					});
 				}

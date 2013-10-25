@@ -20,5 +20,7 @@ namespace Uber.Data.Abstract
 		void Delete(int id);
 
 		Customer AddOrUpdate(Customer customer);
+
+		IQueryable<Country> GetCountries();
 	}
 }

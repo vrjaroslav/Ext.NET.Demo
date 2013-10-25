@@ -64,13 +64,15 @@
             .ID("UsersForm")
             .Region(Region.East)
             .Width(400)
+            .AutoScroll(true)
             .FieldDefaults(fd => {
                 fd.LabelAlign = LabelAlign.Top;
             })
             .BodyPadding(5)
             .DefaultAnchor("95%")
             .Items(
-                X.HiddenFor(m => m.Id)
+                X.TextFieldFor(m => m.Id)
+                    .ReadOnly(true)
                     .ID("UsersId"),
                 X.TextFieldFor(m => m.FirstName)
                     .ID("UsersFirstName")

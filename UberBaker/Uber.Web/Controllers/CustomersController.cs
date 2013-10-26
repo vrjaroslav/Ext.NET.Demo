@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using Ext.Net.MVC;
 using Uber.Core;
 using Uber.Data.Abstract;
@@ -8,19 +9,25 @@ namespace Uber.Web.Controllers
 {
     public class CustomersController : Controller
     {
-		private CustomersRepository repository { get; set; }
+		private ICustomersRepository repository { get; set; }
+		private IAddressesRepository addressesRepository { get; set; }
+		private ICountriesRepository countriesRepository { get; set; }
 
 		#region Constructors
 
 		public CustomersController()
 		{
-			repository = new CustomersRepository();
+			this.repository = new CustomersRepository();
+			this.addressesRepository = new AddressesRepository();
+			this.countriesRepository = new CountriesRepository();
 		}
 
-		public CustomersController(ICustomersRepository repository)
+		public CustomersController(ICustomersRepository repository, IAddressesRepository addressesRepository, ICountriesRepository countriesRepository)
 		{
 			// TODO Rewite with IoC
 			this.repository = new CustomersRepository();
+			this.addressesRepository = new AddressesRepository();
+			this.countriesRepository = new CountriesRepository();
 		}
 
 		#endregion
@@ -34,7 +41,34 @@ namespace Uber.Web.Controllers
 
 	    public ActionResult Save(Customer customer)
 		{
-			repository.AddOrUpdate(customer);
+			if (customer.IsNew)
+			{
+				repository.Add(customer);
+			}
+			else
+			{
+				Address sa, ba;
+				if (customer.BillingAddressId != null)
+				{
+					customer.BillingAddress.Id = customer.BillingAddressId.Value;
+					ba = addressesRepository.Update(customer.BillingAddress);
+				}
+				else
+					throw new ApplicationException("Customer's BillingAddress' Id was not sent");
+
+				if (customer.ShippingAddressId != null)
+				{
+					customer.ShippingAddress.Id = customer.ShippingAddressId.Value;
+					sa = addressesRepository.Update(customer.ShippingAddress);
+				}
+				else
+					throw new ApplicationException("Customer's ShippingAddress' Id was not sent");
+
+				customer.BillingAddress = ba;
+				customer.ShippingAddress = sa;
+
+				repository.Update(customer);
+			}
 
 			return this.Direct();
 		}

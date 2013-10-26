@@ -44,27 +44,9 @@ namespace Uber.Data.Repositories
 
 		public Customer Update(Customer customer)
 		{
-			var entry = this.DbContext.Entry(customer);
-			if (entry.State == EntityState.Detached)
-			{
-				var set = DbContext.Set<Customer>();
-				var attached = set.Local.SingleOrDefault(o => o.Id == customer.Id);
-
-				if (attached != null)
-				{
-					var attachedEntry = DbContext.Entry(attached);
-					attachedEntry.CurrentValues.SetValues(customer);
-				}
-				else
-				{
-					entry.State = EntityState.Modified;
-				}
-			}
-			this.DbContext.Entry(customer).CurrentValues.SetValues(customer);
-            //this.DbContext.Entry(customer).State = EntityState.Modified;
-            this.DbContext.SaveChanges();
-			
-            return customer;
+			this.DbContext.Entry(customer).State = EntityState.Modified;
+			this.DbContext.SaveChanges();
+			return customer;
 		}
 
 		public void Delete(int id)

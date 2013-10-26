@@ -11,7 +11,7 @@
 	@RenderSection("headtag", false)
 </head>
 <body>
-    @Html.X().ResourceManager(ViewBag.ManagerConfig as MvcResourceManagerConfig).StartupMask(new StartupMask()).Theme(Theme.Default)
+    @Html.X().ResourceManager(ViewBag.ManagerConfig as MvcResourceManagerConfig).StartupMask(new StartupMask()).Theme(Theme.Default).SourceFormatting(true).ScriptMode(ScriptMode.Development)
     @RenderSection("bodytag", true)
 </body>
 </html>

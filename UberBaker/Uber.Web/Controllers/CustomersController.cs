@@ -47,11 +47,10 @@ namespace Uber.Web.Controllers
 			}
 			else
 			{
-				Address sa, ba;
 				if (customer.BillingAddressId != null)
 				{
 					customer.BillingAddress.Id = customer.BillingAddressId.Value;
-					ba = addressesRepository.Update(customer.BillingAddress);
+					customer.BillingAddress = addressesRepository.Update(customer.BillingAddress);
 				}
 				else
 					throw new ApplicationException("Customer's BillingAddress' Id was not sent");
@@ -59,13 +58,10 @@ namespace Uber.Web.Controllers
 				if (customer.ShippingAddressId != null)
 				{
 					customer.ShippingAddress.Id = customer.ShippingAddressId.Value;
-					sa = addressesRepository.Update(customer.ShippingAddress);
+					customer.ShippingAddress = addressesRepository.Update(customer.ShippingAddress);
 				}
 				else
 					throw new ApplicationException("Customer's ShippingAddress' Id was not sent");
-
-				customer.BillingAddress = ba;
-				customer.ShippingAddress = sa;
 
 				repository.Update(customer);
 			}

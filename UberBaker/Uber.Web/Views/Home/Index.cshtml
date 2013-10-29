@@ -54,7 +54,7 @@
         .Layout(LayoutType.Fit)
         .Items(
             X.Panel()
-                .Layout(LayoutType.Fit)
+                .Layout(LayoutType.Border)
                 .TopBar(
                     X.Toolbar()
                         .Items(i => i.Add(
@@ -75,75 +75,178 @@
                         )
                 )
                 .Items(
-                    X.GroupTabPanel()
-                        .ID("UberMainTabPanel")
-                        .Items(
-                            X.Panel()
-                                .Items(
-                                    X.Panel()
-                                        .Title("Products")
-                                        .ID("ProductsPanel")
-                                        .Layout(LayoutType.Fit)
-                                        .Loader(X.ComponentLoader()
-                                            .Mode(LoadMode.Script)
-                                            .Url(Url.Action("RenderProducts"))
-                                            .Params(new { containerId = "ProductsPanel" })
-                                            .LoadMask(lm => lm.ShowMask = true)
-                                        ),
-                                    X.Panel()
-                                        .Title("Product Types")
-                                        .ID("ProductTypesPanel")
-                                        .Layout(LayoutType.Fit)
-                                        .Loader(X.ComponentLoader()
-                                            .Mode(LoadMode.Script)
-                                            .Url(Url.Action("RenderProductTypes"))
-                                            .Params(new { containerId = "ProductTypesPanel" })
-                                            .LoadMask(lm => lm.ShowMask = true)
-                                        ),
-                                    X.Panel()
-                                        .Title("Orders")
-                                        .ID("OrdersPanel")
-                                        .Layout(LayoutType.Fit)
-                                        .Loader(X.ComponentLoader()
-                                            .Mode(LoadMode.Script)
-                                            .Url(Url.Action("RenderOrders"))
-                                            .Params(new { containerId = "OrdersPanel" })
-                                            .LoadMask(lm => lm.ShowMask = true)
-                                        ),
-                                    X.Panel()
-                                        .Title("Customers")
-                                        .ID("CustomersPanel")
-                                        .Layout(LayoutType.Fit)
-                                        .Loader(X.ComponentLoader()
-                                            .Mode(LoadMode.Script)
-                                            .Url(Url.Action("RenderCustomers"))
-                                            .Params(new { containerId = "CustomersPanel" })
-                                            .LoadMask(lm => lm.ShowMask = true)
-                                        ),
-                                    X.Panel()
-                                        .Title("Orders Chart")
-                                        .ID("OrdersChartContainer")
-                                        .Layout(LayoutType.Fit)
-                                        .Loader(X.ComponentLoader()
-                                            .Mode(LoadMode.Script)
-                                            .Url(Url.Action("RenderOrdersChart"))
-                                            .Params(new { containerId = "OrdersChartContainer" })
-                                            .LoadMask(lm => lm.ShowMask = true)
-                                        ),
-                                    X.Panel()
-                                        .Title("Users")
-                                        .ID("UsersContainer")
-                                        .Layout(LayoutType.Fit)
-                                        .Loader(X.ComponentLoader()
-                                            .Mode(LoadMode.Script)
-                                            .Url(Url.Action("RenderUsers"))
-                                            .Params(new { containerId = "UsersContainer" })
-                                            .LoadMask(lm => lm.ShowMask = true)
-                                        )
+                    X.MenuPanel()
+                        .Region(Region.West)
+                        .Width(350)
+                        .Icon(Icon.ArrowSwitch)
+                        .Title("Actions")
+                        .Menu(m =>
+                        {
+                            m.Add(X.MenuItem()
+                                .Text("Products")
+                                .DirectEvents(
+                                    de =>
+                                    {
+                                        de.Click.Action = "RenderTab";
+                                        de.Click.ExtraParams.Add(new {containerId = "MainTabPanel"});
+                                        de.Click.ExtraParams.Add(new { tabId = "ProductsPanel" });
+                                        de.Click.EventMask.ShowMask = true;
+                                        de.Click.EventMask.Msg = "Loading...";
+                                        de.Click.Before = "var tab = #{MainTabPanel}.getComponent(extraParams['tabId']); if (tab) { #{MainTabPanel}.setActiveTab(tab); return false; }";
+                                    }
                                 )
-                                
-                        )
+                            );
+
+                            m.Add(X.MenuItem()
+                                .Text("ProductTypes")
+                                .DirectEvents(
+                                    de =>
+                                    {
+                                        de.Click.Action = "RenderTab";
+                                        de.Click.ExtraParams.Add(new {containerId = "MainTabPanel"});
+                                        de.Click.ExtraParams.Add(new { tabId = "ProductTypesPanel" });
+                                        de.Click.EventMask.ShowMask = true;
+                                        de.Click.EventMask.Msg = "Loading...";
+                                        de.Click.Before = "var tab = #{MainTabPanel}.getComponent(extraParams['tabId']); if (tab) { #{MainTabPanel}.setActiveTab(tab); return false; }";
+                                    }
+                                )
+                            );
+
+                            m.Add(X.MenuItem()
+                                .Text("Customers")
+                                .DirectEvents(
+                                    de =>
+                                    {
+                                        de.Click.Action = "RenderTab";
+                                        de.Click.ExtraParams.Add(new {containerId = "MainTabPanel"});
+                                        de.Click.ExtraParams.Add(new { tabId = "CustomersPanel" });
+                                        de.Click.EventMask.ShowMask = true;
+                                        de.Click.EventMask.Msg = "Loading...";
+                                        de.Click.Before = "var tab = #{MainTabPanel}.getComponent(extraParams['tabId']); if (tab) { #{MainTabPanel}.setActiveTab(tab); return false; }";
+                                    }
+                                )
+                            );
+
+                            m.Add(X.MenuItem()
+                                .Text("Orders")
+                                .DirectEvents(
+                                    de =>
+                                    {
+                                        de.Click.Action = "RenderTab";
+                                        de.Click.ExtraParams.Add(new { containerId = "MainTabPanel" });
+                                        de.Click.ExtraParams.Add(new { tabId = "OrdersPanel" });
+                                        de.Click.EventMask.ShowMask = true;
+                                        de.Click.EventMask.Msg = "Loading...";
+                                        de.Click.Before = "var tab = #{MainTabPanel}.getComponent(extraParams['tabId']); if (tab) { #{MainTabPanel}.setActiveTab(tab); return false; }";
+                                    }
+                                )
+                            );
+
+                            m.Add(X.MenuItem()
+                                .Text("Orders Chart")
+                                .DirectEvents(
+                                    de =>
+                                    {
+                                        de.Click.Action = "RenderTab";
+                                        de.Click.ExtraParams.Add(new {containerId = "MainTabPanel"});
+                                        de.Click.ExtraParams.Add(new { tabId = "OrdersChartPanel" });
+                                        de.Click.EventMask.ShowMask = true;
+                                        de.Click.EventMask.Msg = "Loading...";
+                                        de.Click.Before = "var tab = #{MainTabPanel}.getComponent(extraParams['tabId']); if (tab) { #{MainTabPanel}.setActiveTab(tab); return false; }";
+                                    }
+                                )
+                            );
+                            
+                            m.Add(X.MenuItem()
+                                .Text("Users")
+                                .DirectEvents(
+                                    de =>
+                                    {
+                                        de.Click.Action = "RenderTab";
+                                        de.Click.ExtraParams.Add(new {containerId = "MainTabPanel"});
+                                        de.Click.ExtraParams.Add(new { tabId = "UsersPanel" });
+                                        de.Click.EventMask.ShowMask = true;
+                                        de.Click.EventMask.Msg = "Loading...";
+                                        de.Click.Before = "var tab = #{MainTabPanel}.getComponent(extraParams['tabId']); if (tab) { #{MainTabPanel}.setActiveTab(tab); return false; }";
+                                    }
+                                )
+                            );
+                        }),
+                        
+                    X.TabPanel()
+                        .Region(Region.Center)
+                        .ID("MainTabPanel")
                 )
+                //.Items(
+                //    X.GroupTabPanel()
+                //        .ID("UberMainTabPanel")
+                //        .Items(
+                //            X.Panel()
+                //                .Items(
+                //                    X.Panel()
+                //                        .Title("Products")
+                //                        .ID("ProductsPanel")
+                //                        .Layout(LayoutType.Fit)
+                //                        .Loader(X.ComponentLoader()
+                //                            .Mode(LoadMode.Script)
+                //                            .Url(Url.Action("RenderProducts"))
+                //                            .Params(new { containerId = "ProductsPanel" })
+                //                            .LoadMask(lm => lm.ShowMask = true)
+                //                        ),
+                //                    X.Panel()
+                //                        .Title("Product Types")
+                //                        .ID("ProductTypesPanel")
+                //                        .Layout(LayoutType.Fit)
+                //                        .Loader(X.ComponentLoader()
+                //                            .Mode(LoadMode.Script)
+                //                            .Url(Url.Action("RenderProductTypes"))
+                //                            .Params(new { containerId = "ProductTypesPanel" })
+                //                            .LoadMask(lm => lm.ShowMask = true)
+                //                        ),
+                //                    X.Panel()
+                //                        .Title("Orders")
+                //                        .ID("OrdersPanel")
+                //                        .Layout(LayoutType.Fit)
+                //                        .Loader(X.ComponentLoader()
+                //                            .Mode(LoadMode.Script)
+                //                            .Url(Url.Action("RenderOrders"))
+                //                            .Params(new { containerId = "OrdersPanel" })
+                //                            .LoadMask(lm => lm.ShowMask = true)
+                //                        ),
+                //                    X.Panel()
+                //                        .Title("Customers")
+                //                        .ID("CustomersPanel")
+                //                        .Layout(LayoutType.Fit)
+                //                        .Loader(X.ComponentLoader()
+                //                            .Mode(LoadMode.Script)
+                //                            .Url(Url.Action("RenderCustomers"))
+                //                            .Params(new { containerId = "CustomersPanel" })
+                //                            .LoadMask(lm => lm.ShowMask = true)
+                //                        ),
+                //                    X.Panel()
+                //                        .Title("Orders Chart")
+                //                        .ID("OrdersChartContainer")
+                //                        .Layout(LayoutType.Fit)
+                //                        .Loader(X.ComponentLoader()
+                //                            .Mode(LoadMode.Script)
+                //                            .Url(Url.Action("RenderOrdersChart"))
+                //                            .Params(new { containerId = "OrdersChartContainer" })
+                //                            .LoadMask(lm => lm.ShowMask = true)
+                //                        ),
+                //                    X.Panel()
+                //                        .Title("Users")
+                //                        .ID("UsersContainer")
+                //                        .Layout(LayoutType.Fit)
+                //                        .Loader(X.ComponentLoader()
+                //                            .Mode(LoadMode.Script)
+                //                            .Url(Url.Action("RenderUsers"))
+                //                            .Params(new { containerId = "UsersContainer" })
+                //                            .LoadMask(lm => lm.ShowMask = true)
+                //                        )
+                //                )
+                                
+                //        )
+                //)
         )
     )
 }

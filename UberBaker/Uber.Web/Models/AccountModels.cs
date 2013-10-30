@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using Ext.Net.MVC;
 
 namespace Uber.Web.Models
 {
@@ -41,6 +42,7 @@ namespace Uber.Web.Models
 		public string Password { get; set; }
 
 		[Display(Name = "Remember me?")]
+        [Field(LabelSeparator="")]
 		public bool RememberMe { get; set; }
 	}
 

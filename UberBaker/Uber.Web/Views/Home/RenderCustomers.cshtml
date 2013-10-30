@@ -8,6 +8,7 @@
     .ID("CustomersPanel")
     .Title("Customers")
     .Layout(LayoutType.Border)
+    .Closable(true)
     .Items(
         X.GridPanel()
             .Region(Region.Center)
@@ -47,7 +48,7 @@
                     .Width(50),
                 X.Column()
                     .DataIndex("FullName")
-                    .Text("Full Name")
+                    .Text("Name")
                     .Width(100),
                 X.Column()
                     .DataIndex("Company")
@@ -59,15 +60,11 @@
                     .Renderer("return Ext.String.format('{0}, {1}, {2}, {3}', record.data.BillingAddress.StreetAddress, record.data.BillingAddress.City, record.data.BillingAddress.ZipCode, record.data.BillingAddress.Country.Name);"),
                 X.Column()
                     .DataIndex("ContactPhone")
-                    .Text("Contact Phone")
+                    .Text("Phone")
                     .Width(100),
                 X.Column()
                     .DataIndex("CellPhone")
-                    .Text("Cell Phone")
-                    .Width(100),
-                X.Column()
-                    .DataIndex("Fax")
-                    .Text("Fax")
+                    .Text("Mobile")
                     .Width(100)
             )
             .TopBar(
@@ -107,14 +104,10 @@
             .Region(Region.East)
             .AutoScroll(true)
             .Width(400)
-            .FieldDefaults(fd => {
-                fd.LabelAlign = LabelAlign.Top;
-            })
-            .BodyPadding(5)
-            .DefaultAnchor("95%")
+            .BodyPaddingSummary("0 10")
+            .DefaultAnchor("100%")
             .Items(
-                X.TextFieldFor(m => m.Id)
-                    .ReadOnly(true)
+                X.DisplayFieldFor(m => m.Id)
                     .ID("CustomersId"),
                 X.TextFieldFor(m => m.FirstName)
                     .ID("CustomersFirstName")
@@ -133,6 +126,13 @@
                     .FieldLabel("Email")
                     .StandardVtype(ValidationType.Email)
                     .AllowBlank(false),
+                X.TextFieldFor(m => m.ContactPhone)
+                    .ID("CustomersContactPhone"),
+                X.TextFieldFor(m => m.CellPhone)
+                    .Icon(Icon.None)
+                    .ID("CustomersCellPhone"),
+                X.TextFieldFor(m => m.Fax)
+                    .ID("CustomersFax"),
                 X.FieldSet()
                     .Title("Billing Address")
                     .DefaultAnchor("95%")
@@ -214,32 +214,27 @@
                             .AllowBlank(false)
                             .ID("CustomersShippingZipCode")
                     )
-                ,
-                X.TextFieldFor(m => m.ContactPhone)
-                    .ID("CustomersContactPhone"),
-                X.TextFieldFor(m => m.CellPhone)
-                    .Icon(Icon.None)
-                    .ID("CustomersCellPhone"),
-                X.TextFieldFor(m => m.Fax)
-                    .ID("CustomersFax")
             )
-            .ButtonAlign(Alignment.Center)
-            .Buttons(
-                X.Button()
-                    .Text("Save")
-                    .Icon(Icon.Disk)
-                    .DirectEvents(de => {
-                        de.Click.Url = Url.Action("Save", "Customers");
-                        de.Click.Before = "return true; ";
-                        de.Click.FormID = "CustomersForm";
-                        de.Click.Success = "if (#{CustomersSpot}.active) #{CustomersSpot}.hide(); #{CustomersGrid}.getStore().reload();";
-                    }),
-                X.Button()
-                    .Text("Cancel")
-                    .Icon(Icon.Cross)
-                    .Listeners(l => {
-                        l.Click.Handler = "if (#{CustomersSpot}.active) #{CustomersSpot}.hide(); #{CustomersForm}.reset();";
-                    })
+            .TopBar(
+                X.Toolbar()
+                    .Items(
+                        X.ToolbarFill(),
+                        X.Button()
+                            .Text("Save")
+                            .Icon(Icon.Disk)
+                            .DirectEvents(de => {
+                                de.Click.Url = Url.Action("Save", "Customers");
+                                de.Click.Before = "return true; ";
+                                de.Click.FormID = "CustomersForm";
+                                de.Click.Success = "if (#{CustomersSpot}.active) #{CustomersSpot}.hide(); #{CustomersGrid}.getStore().reload();";
+                            }),
+                        X.Button()
+                            .Text("Cancel")
+                            .Icon(Icon.Cross)
+                            .Listeners(l => {
+                                l.Click.Handler = "if (#{CustomersSpot}.active) #{CustomersSpot}.hide(); #{CustomersForm}.reset();";
+                            })
+                    )
             )
     )
 )

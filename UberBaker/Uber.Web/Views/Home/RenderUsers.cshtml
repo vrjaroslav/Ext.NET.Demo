@@ -8,6 +8,7 @@
     .ID("UsersPanel")
     .Title("Users")
     .Layout(LayoutType.Border)
+    .Closable(true)
     .Items(
         X.GridPanel()
             .Region(Region.Center)
@@ -24,28 +25,31 @@
                 X.ColumnFor(Model, m => m.Id)
                     .ToBuilder<Column.Builder>(),
                 X.ColumnFor(Model, m => m.UserName)
-                    .ToBuilder<Column.Builder>(),
+                    .ToBuilder<Column.Builder>()
+                    .Flex(1),
                 X.ColumnFor(Model, m => m.FirstName)
-                    .ToBuilder<Column.Builder>(),
+                    .ToBuilder<Column.Builder>()
+                    .Flex(1),
                 X.ColumnFor(Model, m => m.LastName)
                     .ToBuilder<Column.Builder>()
-                    .Width(100)
+                    .Flex(1)
             )
             .TopBar(
-                Html.X().Toolbar()
+                X.Toolbar()
                     .Items(
-                        Html.X().Button()
+                        X.Button()
                             .Text("Add")
                             .Icon(Icon.Add)
                             .Disabled(true)
-                            //.Handler("#{UsersSpot}.show(#{UsersForm}); #{UsersForm}.getForm().loadRecord(new Product());")
+        //.Handler("#{UsersSpot}.show(#{UsersForm}); #{UsersForm}.getForm().loadRecord(new Product());")
                             ,
 
-                        Html.X().Button()
+                        X.Button()
                             .Disabled(true)
                             .Text("Disable account")
                             .Icon(Icon.Exclamation)
-                            .DirectEvents(de => {
+                            .DirectEvents(de =>
+                            {
                                 de.Click.Url = Url.Action("Disable", "Account");
                                 de.Click.Confirmation.Message = "Are you sure you want to disable this account?";
                                 de.Click.Confirmation.ConfirmRequest = true;
@@ -54,27 +58,23 @@
                     )
             )
             .SelectionModel(
-                Html.X().RowSelectionModel()
+                X.RowSelectionModel()
                     .Mode(SelectionMode.Single)
                     .Listeners(l =>
                     {
                         l.Select.Handler = "#{UsersForm}.getForm().loadRecord(record);";
                     })
             ),
-                
+
         X.FormPanel()
             .ID("UsersForm")
             .Region(Region.East)
             .Width(400)
             .AutoScroll(true)
-            .FieldDefaults(fd => {
-                fd.LabelAlign = LabelAlign.Top;
-            })
-            .BodyPadding(5)
-            .DefaultAnchor("95%")
+            .BodyPaddingSummary("0 10")
+            .DefaultAnchor("100%")
             .Items(
-                X.TextFieldFor(m => m.Id)
-                    .ReadOnly(true)
+                X.DisplayFieldFor(m => m.Id)
                     .ID("UsersId"),
                 X.TextFieldFor(m => m.FirstName)
                     .ID("UsersFirstName")
@@ -89,23 +89,26 @@
                     .FieldLabel("Last Name")
                     .AllowBlank(false)
             )
-            .ButtonAlign(Alignment.Center)
-            .Buttons(
-                X.Button()
-                    .Text("Save")
-                    .Icon(Icon.Disk)
-                    .DirectEvents(de => {
-                        de.Click.Url = Url.Action("Save", "Account");
-                        de.Click.Before = "return true; ";
-                        de.Click.FormID = "UsersForm";
-                        de.Click.Success = "if (#{UsersSpot}.active) #{UsersSpot}.hide(); #{UsersGrid}.getStore().reload();";
-                    }),
-                X.Button()
-                    .Text("Cancel")
-                    .Icon(Icon.Cross)
-                    .Listeners(l => {
-                        l.Click.Handler = "if (#{UsersSpot}.active) #{UsersSpot}.hide(); #{UsersForm}.reset();";
-                    })
+            .TopBar(
+                X.Toolbar()
+                    .Items(
+                        X.ToolbarFill(),
+                        X.Button()
+                            .Text("Save")
+                            .Icon(Icon.Disk)
+                            .DirectEvents(de => {
+                                de.Click.Url = Url.Action("Save", "Account");
+                                de.Click.Before = "return true; ";
+                                de.Click.FormID = "UsersForm";
+                                de.Click.Success = "if (#{UsersSpot}.active) #{UsersSpot}.hide(); #{UsersGrid}.getStore().reload();";
+                            }),
+                        X.Button()
+                            .Text("Cancel")
+                            .Icon(Icon.Cross)
+                            .Listeners(l => {
+                                l.Click.Handler = "if (#{UsersSpot}.active) #{UsersSpot}.hide(); #{UsersForm}.reset();";
+                            })
+                )
             )
     )
 )

@@ -10,6 +10,7 @@
     .ID("OrdersPanel")
     .Title("Orders")
     .Layout(LayoutType.Border)
+    .Closable(true)
     .Items(
         X.GridPanel()
             .Region(Region.Center)
@@ -42,11 +43,12 @@
             .ColumnModel(
                 X.ColumnFor(m => m.Id)
                     .ToBuilder<Column.Builder>()
-                    .Text("Id"),
+                    .Text("Id")
+                    .Width(50),
                 X.DateColumn()
                     .DataIndex("OrderDate")
                     .Text("Date")
-                    .Format("dd-m-yyyy"),
+                    .Format("yyyy-MM-dd"),
                 X.ColumnFor(m => m.Product)
                     .ToBuilder<Column.Builder>()
                     .Text("Product")
@@ -65,6 +67,7 @@
                     .ToBuilder<Column.Builder>()
                     .Text("Gross Total")
                     .Width(100)
+                    .Renderer(RendererFormat.UsMoney)
             )
             .TopBar(
                 Html.X().Toolbar()
@@ -100,12 +103,10 @@
             .Region(Region.East)
             .Width(400)
             .AutoScroll(true)
-            .FieldDefaults(fd => {
-                fd.LabelAlign = LabelAlign.Top;
-            })
+            .DefaultAnchor("100%")
+            .BodyPaddingSummary("0 10")            
             .Items(
-                X.TextFieldFor(m => m.Id)
-                    .ReadOnly(true)
+                X.DisplayFieldFor(m => m.Id)
                     .ID("OrdersId"),
                 X.DateFieldFor(m => m.OrderDate)
                     .ID("OrdersOrderDate")
@@ -120,25 +121,26 @@
                     .FieldLabel("Gross Total")
                     .ReadOnly(true)
             )
-            .BodyPadding(5)
-            .DefaultAnchor("95%")
-            .ButtonAlign(Alignment.Center)
-            .Buttons(
-                X.Button()
-                    .Text("Save")
-                    .Icon(Icon.Disk)
-                    .DirectEvents(de => {
-                        de.Click.Url = Url.Action("Save", "Orders");
-                        de.Click.Before = "return true; ";
-                        de.Click.FormID = "OrdersForm";
-                        de.Click.Success = "if (#{OrdersSpot}.active) #{OrdersSpot}.hide(); #{OrdersGrid}.getStore().reload();";
-                    }),
-                X.Button()
-                    .Text("Cancel")
-                    .Icon(Icon.Cross)
-                    .Listeners(l => {
-                        l.Click.Handler = "if (#{OrdersSpot}.active) #{OrdersSpot}.show(#{OrdersGrid}); #{OrdersForm}.reset();";
-                    })
+            .TopBar(
+                X.Toolbar()
+                    .Items(
+                        X.ToolbarFill(),
+                        X.Button()
+                            .Text("Save")
+                            .Icon(Icon.Disk)
+                            .DirectEvents(de => {
+                                de.Click.Url = Url.Action("Save", "Orders");
+                                de.Click.Before = "return true; ";
+                                de.Click.FormID = "OrdersForm";
+                                de.Click.Success = "if (#{OrdersSpot}.active) #{OrdersSpot}.hide(); #{OrdersGrid}.getStore().reload();";
+                            }),
+                        X.Button()
+                            .Text("Cancel")
+                            .Icon(Icon.Cross)
+                            .Listeners(l => {
+                                l.Click.Handler = "if (#{OrdersSpot}.active) #{OrdersSpot}.show(#{OrdersGrid}); #{OrdersForm}.reset();";
+                            })
+                    )
             )
     )
 )

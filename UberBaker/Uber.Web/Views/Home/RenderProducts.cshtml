@@ -60,7 +60,8 @@
                 X.Column()
                     .DataIndex("UnitPrice")
                     .Text("Price")
-                    .Width(100),
+                    .Width(100)
+                    .Renderer(RendererFormat.UsMoney),
                 X.Column()
                     .DataIndex("ProductType")
                     .Text("Type")
@@ -128,7 +129,6 @@
                         )
                     )
             )
-            .ButtonAlign(Alignment.Center)
             .TopBar(
                 Html.X().Toolbar()
                     .Items(

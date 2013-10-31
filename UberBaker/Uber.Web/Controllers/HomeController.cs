@@ -1,6 +1,9 @@
 ﻿using System.Web.Mvc;
 using Ext.Net;
 using Ext.Net.MVC;
+using StackExchange.Profiling;
+using StackExchange.Profiling.MVCHelpers;
+using PartialViewResult = Ext.Net.MVC.PartialViewResult;
 
 namespace Uber.Web.Controllers
 {
@@ -9,35 +12,47 @@ namespace Uber.Web.Controllers
 	{
 		public ActionResult Index()
 		{
-            return this.View();
+            var profiler = MiniProfiler.Current;
+            
+		    using (profiler.Step("Render Index Page"))
+		    {
+		        return this.View();
+		    }
 		}
 
 		#region PartialViewsRenderingActions
 
+        [ProfilingActionFilter]
         public ActionResult RenderTab(string containerId, string tabId)
-	    {
-            switch (tabId)
-	        {
-                case "ProductsPanel":
-	                return RenderProducts(containerId);
+        {
+            var profiler = MiniProfiler.Current;
 
-                case "ProductTypesPanel":
-	                return RenderProductTypes(containerId);
+            using (profiler.Step("Render Tab Page"))
+            {
 
-                case "CustomersPanel":
-	                return RenderCustomers(containerId);
+                switch (tabId)
+                {
+                    case "ProductsPanel":
+                        return RenderProducts(containerId);
 
-                case "OrdersPanel":
-	                return RenderOrders(containerId);
+                    case "ProductTypesPanel":
+                        return RenderProductTypes(containerId);
 
-                case "OrdersChartPanel":
-	                return RenderOrdersChart(containerId);
+                    case "CustomersPanel":
+                        return RenderCustomers(containerId);
 
-                case "UsersPanel":
-	                return RenderUsers(containerId);
-	        }
+                    case "OrdersPanel":
+                        return RenderOrders(containerId);
 
-	        return null;
+                    case "OrdersChartPanel":
+                        return RenderOrdersChart(containerId);
+
+                    case "UsersPanel":
+                        return RenderUsers(containerId);
+                }
+            }
+
+            return null;
 	    }
 
 		public ActionResult RenderProducts(string containerId)
@@ -117,17 +132,23 @@ namespace Uber.Web.Controllers
 
 		public ActionResult RenderCustomers(string containerId)
 		{
-            var result = new Ext.Net.MVC.PartialViewResult
-			{
-                ViewName = "RenderCustomers",
-				RenderMode = RenderMode.AddTo,
-				ContainerId = containerId,
-				WrapByScriptTag = false // we load the view via Loader with Script mode therefore script tags is not required
-			};
+            var profiler = MiniProfiler.Current;
+            PartialViewResult result;
 
-            this.GetCmp<TabPanel>(containerId).SetLastTabAsActive();
+		    using (profiler.Step("Render Index Page"))
+		    {
+		        result = new PartialViewResult
+		        {
+		            ViewName = "RenderCustomers",
+		            RenderMode = RenderMode.AddTo,
+		            ContainerId = containerId,
+		            WrapByScriptTag = false
+		            // we load the view via Loader with Script mode therefore script tags is not required
+		        };
 
-            return result;
+		        this.GetCmp<TabPanel>(containerId).SetLastTabAsActive();
+		    }
+		    return result;
 		}
 
 		public ActionResult RenderUsers(string containerId)

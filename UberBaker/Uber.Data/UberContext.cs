@@ -19,6 +19,7 @@ namespace Uber.Data
 
 		public UberContext() : base("UberContext")
 		{
+            Database.SetInitializer<UberContext>(null);
 		}
 
 		protected override void OnModelCreating(DbModelBuilder builder)

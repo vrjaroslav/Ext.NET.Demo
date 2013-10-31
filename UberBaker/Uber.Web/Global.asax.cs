@@ -2,6 +2,7 @@
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
+using StackExchange.Profiling;
 using Uber.Data;
 
 namespace Uber.Web
@@ -13,7 +14,7 @@ namespace Uber.Web
 	{
 		protected void Application_Start()
 		{
-			UberContextInitializer initializer = new UberContextInitializer();
+            UberContextInitializer initializer = new UberContextInitializer();
 			Database.SetInitializer(initializer);
 
 			AreaRegistration.RegisterAllAreas();
@@ -22,6 +23,20 @@ namespace Uber.Web
 			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 			AuthConfig.RegisterAuth();
+
+            // Profiler
+            GlobalFilters.Filters.Add(new StackExchange.Profiling.MVCHelpers.ProfilingActionFilter());
+            MiniProfilerEF.Initialize();
 		}
+
+	    protected void Application_BeginRequest()
+	    {
+            MiniProfiler.Start();
+	    }
+
+        protected void Application_EndRequest()
+        {
+            MiniProfiler.Stop();
+        }
 	}
 }

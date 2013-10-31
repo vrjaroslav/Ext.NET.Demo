@@ -31,7 +31,9 @@ namespace Uber.Data.Repositories
 
 		public IQueryable<Customer> GetAll()
 		{
-            return this.DbContext.Customers;
+            return this.DbContext.Customers
+                .Include("BillingAddress")
+                .Include("ShippingAddress");
 		}
 
 		public Customer Add(Customer customer)

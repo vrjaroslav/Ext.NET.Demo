@@ -34,7 +34,9 @@ namespace Uber.Web.Controllers
 
 		#endregion
 
-		public ActionResult Index()
+        #region Actions
+
+        public ActionResult Index()
 		{
             return this.View();
 		}
@@ -61,7 +63,11 @@ namespace Uber.Web.Controllers
 		{
             this.ViewBag.ReturnUrl = returnUrl;
 
-            return this.View();
+            return this.View(new LoginModel
+            {
+                UserName = "admin",
+                Password = "demo"
+            });
 		}
 
 		//
@@ -240,8 +246,10 @@ namespace Uber.Web.Controllers
 			return this.View(model);
 		}
 
-		#region Helpers
-		private ActionResult RedirectToLocal(string returnUrl)
+        #endregion
+
+        #region Helpers
+        private ActionResult RedirectToLocal(string returnUrl)
 		{
 			if (this.Url.IsLocalUrl(returnUrl))
 			{

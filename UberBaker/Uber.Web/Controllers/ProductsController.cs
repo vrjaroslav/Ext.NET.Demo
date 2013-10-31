@@ -46,11 +46,6 @@ namespace Uber.Web.Controllers
 			return this.Store(repository.GetAll());
 		}
 
-        public ActionResult Index()
-        {
-            return this.View();
-        }
-
 		#endregion
     }
 }

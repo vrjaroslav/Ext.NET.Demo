@@ -73,10 +73,7 @@
                         Html.X().Button()
                             .Text("Add")
                             .Icon(Icon.Add)
-                            .Handler(@"
-                                #{CustomersSpot}.show(#{CustomersForm}); 
-                                #{CustomersForm}.getForm().loadRecord(new Customer({  }));
-                            "),
+                            .Handler("addRecordButtonHandler('Customers', new Customer({  }));"),
 
                         Html.X().Button()
                             .Text("Delete")
@@ -85,8 +82,8 @@
                                 de.Click.Url = Url.Action("Delete", "Customers");
                                 de.Click.Confirmation.Message = "Are you sure you want to delete this record?";
                                 de.Click.Confirmation.ConfirmRequest = true;
-                                de.Click.ExtraParams.Add(new Parameter("id", "this.up('grid').getSelectionModel().getSelection()[0].data.Id", ParameterMode.Raw));
-                                de.Click.Success = "#{CustomersGrid}.getStore().reload();";
+                                de.Click.ExtraParams.Add(new Parameter("id", "getSelectedIdParameter(this.up('grid'))", ParameterMode.Raw));
+                                de.Click.Success = "recordDeleteSuccess(this, this.up('grid'));";
                             })
                     )
             )
@@ -95,7 +92,7 @@
                     .Mode(SelectionMode.Single)
                     .Listeners(l =>
                     {
-                        l.Select.Handler = "#{CustomersForm}.getForm().loadRecord(record);";
+                        l.Select.Handler = "gridRowSelected('Customers', record); ";
                     })
             ),
                 
@@ -107,6 +104,8 @@
             .BodyPaddingSummary("0 10")
             .DefaultAnchor("100%")
             .Items(
+                X.HiddenFor(m => m.Id)
+                    .ID("CustomersIdValue"),
                 X.DisplayFieldFor(m => m.Id)
                     .ID("CustomersId"),
                 X.TextFieldFor(m => m.FirstName)
@@ -152,9 +151,6 @@
                         X.TextFieldFor(m => m.BillingAddress.State)
                             .DataIndex("BillingAddress.State")
                             .ID("CustomersBillingState"),
-                        //X.TextFieldFor(m => m.BillingAddress.Country)
-                        //    .DataIndex("BillingAddress.Country")
-                        //    .AllowBlank(false),
                         X.ComboBox()
                             .ID("CustomersBillingCountry")
                             .FieldLabel("Country")
@@ -193,9 +189,6 @@
                         X.TextFieldFor(m => m.ShippingAddress.State)
                             .DataIndex("ShippingAddress.State")
                             .ID("CustomersShippingState"),
-                        //X.TextFieldFor(m => m.BillingAddress.Country)
-                        //    .DataIndex("BillingAddress.Country")
-                        //    .AllowBlank(false),
                         X.ComboBox()
                             .ID("ShippingAddressCountry")
                             .FieldLabel("Country")
@@ -224,15 +217,14 @@
                             .Icon(Icon.Disk)
                             .DirectEvents(de => {
                                 de.Click.Url = Url.Action("Save", "Customers");
-                                de.Click.Before = "return true; ";
                                 de.Click.FormID = "CustomersForm";
-                                de.Click.Success = "if (#{CustomersSpot}.active) #{CustomersSpot}.hide(); #{CustomersGrid}.getStore().reload();";
+                                de.Click.Success = "recordAddSuccess('Customers');";
                             }),
                         X.Button()
                             .Text("Cancel")
                             .Icon(Icon.Cross)
                             .Listeners(l => {
-                                l.Click.Handler = "if (#{CustomersSpot}.active) #{CustomersSpot}.hide(); #{CustomersForm}.reset();";
+                                l.Click.Handler = "recordSaveCancel('Customers');";
                             })
                     )
             )

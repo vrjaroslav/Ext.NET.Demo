@@ -34,11 +34,6 @@ namespace Uber.Web.Controllers
 
 		#region Actions
 
-		public ActionResult Index()
-        {
-            return this.View();
-        }
-
 	    public ActionResult Save(Customer customer)
 		{
 			if (customer.IsNew)

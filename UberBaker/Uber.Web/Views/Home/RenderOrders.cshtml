@@ -75,7 +75,7 @@
                         Html.X().Button()
                             .Text("Add")
                             .Icon(Icon.Add)
-                            .Handler("#{OrdersSpot}.show(#{OrdersForm}); #{OrdersForm}.getForm().loadRecord(new ProductType());"),
+                            .Handler("addRecordButtonHandler('Orders', new Order({  }));"),
 
                         Html.X().Button()
                             .Text("Delete")
@@ -84,8 +84,8 @@
                                 de.Click.Url = Url.Action("Delete", "Orders");
                                 de.Click.Confirmation.Message = "Are you sure you want to delete this record?";
                                 de.Click.Confirmation.ConfirmRequest = true;
-                                de.Click.ExtraParams.Add(new Parameter("id", "this.up('grid').getSelectionModel().getSelection()[0].data.Id", ParameterMode.Raw));
-                                de.Click.Success = "#{OrdersGrid}.getStore().reload();";
+                                de.Click.ExtraParams.Add(new Parameter("id", "getSelectedIdParameter(this.up('grid'))", ParameterMode.Raw));
+                                de.Click.Success = "recordDeleteSuccess(this, this.up('grid'));";
                             })
                     )
             )
@@ -94,7 +94,7 @@
                     .Mode(SelectionMode.Single)
                     .Listeners(l =>
                     {
-                        l.Select.Handler = "#{OrdersForm}.getForm().loadRecord(record);";
+                        l.Select.Handler = "gridRowSelected('Orders', record);";
                     })
             ),
                 
@@ -106,6 +106,8 @@
             .DefaultAnchor("100%")
             .BodyPaddingSummary("0 10")            
             .Items(
+                X.HiddenFor(m => m.Id)
+                    .ID("OrdersIdValue"),
                 X.DisplayFieldFor(m => m.Id)
                     .ID("OrdersId"),
                 X.DateFieldFor(m => m.OrderDate)
@@ -116,10 +118,9 @@
                     .ID("OrdersQuantity")
                     .FieldLabel("Quantity")
                     .AllowBlank(false),
-                X.NumberFieldFor(m => m.GrossTotal)
+                X.DisplayFieldFor(m => m.GrossTotal)
                     .ID("OrdersGrossTotal")
                     .FieldLabel("Gross Total")
-                    .ReadOnly(true)
             )
             .TopBar(
                 X.Toolbar()
@@ -130,15 +131,14 @@
                             .Icon(Icon.Disk)
                             .DirectEvents(de => {
                                 de.Click.Url = Url.Action("Save", "Orders");
-                                de.Click.Before = "return true; ";
                                 de.Click.FormID = "OrdersForm";
-                                de.Click.Success = "if (#{OrdersSpot}.active) #{OrdersSpot}.hide(); #{OrdersGrid}.getStore().reload();";
+                                de.Click.Success = "recordAddSuccess('Orders');";
                             }),
                         X.Button()
                             .Text("Cancel")
                             .Icon(Icon.Cross)
                             .Listeners(l => {
-                                l.Click.Handler = "if (#{OrdersSpot}.active) #{OrdersSpot}.show(#{OrdersGrid}); #{OrdersForm}.reset();";
+                                l.Click.Handler = "recordSaveCancel('Orders');";
                             })
                     )
             )

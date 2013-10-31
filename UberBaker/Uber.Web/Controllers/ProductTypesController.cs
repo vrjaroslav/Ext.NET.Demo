@@ -45,11 +45,6 @@ namespace Uber.Web.Controllers
 			return this.Direct();
 		}
 
-		public ActionResult Index()
-		{
-            return this.View();
-		}
-
 		#endregion
     }
 }

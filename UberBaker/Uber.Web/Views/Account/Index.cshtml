@@ -86,7 +86,6 @@
                     .Icon(Icon.Disk)
                     .DirectEvents(de => {
                         de.Click.Action = "Save";
-                        de.Click.Before = "return true; ";
                         de.Click.FormID = "UsersForm";
                         de.Click.Success = "if (#{UsersSpot}.active) #{UsersSpot}.hide(); #{UsersGrid}.getStore().reload();";
                     }),

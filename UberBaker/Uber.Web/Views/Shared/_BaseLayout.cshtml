@@ -1,5 +1,4 @@
 ﻿@using ScriptMode = Ext.Net.ScriptMode
-
 @{
     Layout = null;
 }
@@ -12,9 +11,7 @@
 	@RenderSection("headtag", false)
 </head>
 <body>
-    @Html.X().ResourceManager(ViewBag.ManagerConfig as MvcResourceManagerConfig).StartupMask(new StartupMask())
-        .SourceFormatting(true)
-        .ScriptMode(ScriptMode.Development)
+    @Html.X().ResourceManager(ViewBag.ManagerConfig as MvcResourceManagerConfig).StartupMask(new StartupMask()).SourceFormatting(true).ScriptMode(ScriptMode.Development)
     @RenderSection("bodytag", true)
 </body>
 </html>

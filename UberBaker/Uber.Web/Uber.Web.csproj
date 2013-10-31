@@ -48,6 +48,9 @@
       <HintPath>..\packages\Ext.NET.Utilities.2.3.0\lib\Ext.Net.Utilities.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MiniProfiler">
+      <HintPath>..\packages\MiniProfiler.2.1.0\lib\net40\MiniProfiler.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -192,7 +195,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AuthConfig.cs" />
-    <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\ExtNetConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -264,15 +266,10 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\_BaseLayout.cshtml" />
-    <Content Include="Views\Products\Index.cshtml" />
-    <Content Include="Views\ProductTypes\Index.cshtml" />
-    <Content Include="Views\Orders\Index.cshtml" />
     <Content Include="Views\Home\RenderProducts.cshtml" />
     <Content Include="Views\Home\RenderProductTypes.cshtml" />
     <Content Include="Views\Home\RenderOrders.cshtml" />
-    <Content Include="Views\Orders\ChartPerMonth.cshtml" />
     <Content Include="Views\Home\RenderOrdersChart.cshtml" />
-    <Content Include="Views\Customers\Index.cshtml" />
     <Content Include="Views\Home\RenderCustomers.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -313,7 +310,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>30884</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:37688/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

@@ -48,16 +48,6 @@ namespace Uber.Web.Controllers
 			return this.Store(repository.GetAll());
 		}
 
-        public ActionResult Index()
-        {
-            return this.View();
-        }
-
-		public ActionResult ChartPerMonth()
-		{
-            return this.View();
-		}
-
 		public ActionResult GetChartDataForCurrentMonth(int month = 10)
 	    {
 			var data = repository.GetAll().Where(o => o.OrderDate.Month == month).Select(o => new OrderChartDataForMonth { Day = o.OrderDate.Day, OrdersCount = o.Quantity }).ToList();

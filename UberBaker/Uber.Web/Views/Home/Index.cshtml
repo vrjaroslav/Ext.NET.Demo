@@ -7,8 +7,8 @@
 @section headtag
 {
     <script>
-        var saveChart = function (btn) {
-            Ext.MessageBox.confirm('Confirm Download', 'Would you like to download the chart as an image?', function (choice) {
+        var saveChart = function(btn) {
+            Ext.MessageBox.confirm('Confirm Download', 'Would you like to download the chart as an image?', function(choice) {
                 if (choice == 'yes') {
                     btn.up('panel').down('chart').save({
                         type: 'image/png'
@@ -16,11 +16,64 @@
                 }
             });
         };
+
+        var addRecordButtonHandler = function(type, record) {
+            App[type + 'Spot'].show(App[type + 'Form']);
+            App[type + 'Form'].reset();
+            App[type + 'Form'].getForm().loadRecord(record);
+        };
+        
+        var getSelectedIdParameter = function (grid) {
+            return grid.getSelectionModel().getSelection()[0].data.Id;
+        };
+        
+        var recordDeleteSuccess = function (button, grid) {
+            grid.getStore().reload();
+        };
+
+        var gridRowSelected = function (type, record) {
+            App[type + 'Form'].getForm().loadRecord(record);
+            App[type + 'Id'].setValue(record.get('Id'));
+            var field = App[type + 'Form'].getForm().getFields().findBy(function (field) { return field.isXType('textfield'); });
+            if (field)
+                field.inputEl.focus(10);
+        };
+        
+        var recordAddSuccess = function(type) {
+            if (App[type + 'Spot'].active)
+                App[type + 'Spot'].hide();
+            App[type + 'Grid'].getStore().reload();
+        };
+        
+        var recordSaveCancel = function(type) {
+            if (App[type + 'Spot'].active)
+                App[type + 'Spot'].hide();
+            App[type + 'Form'].reset();
+            App[type + 'Grid'].getSelectionModel().clearSelections();
+            App[type + 'Grid'].view.refresh();
+        };
     </script>
 }
 
 @section bodytag
 {
+    <script>
+        @(X.XScript()
+            .ScriptBlock(@"
+                var beforeTabOpen = function(param) {
+                    var tab = #{MainTabPanel}.getComponent(param); 
+                    if (tab) { 
+                        #{MainTabPanel}.setActiveTab(tab); 
+                        return false; 
+                    }
+                }
+            ")
+       )
+        
+        
+
+    </script>
+
     @(X.Spotlight()
         .ID("ProductsSpot")
         .Easing(Easing.EaseIn)
@@ -78,11 +131,11 @@
                     X.MenuPanel()
                         .Region(Region.West)
                         .Width(215)
-                        .Icon(Icon.ArrowSwitch)
-                        .Title("Actions")
+                        .Split(true)
                         .Menu(m =>
                         {
                             m.Add(X.MenuItem()
+                                .Icon(Icon.ApplicationViewList)
                                 .Text("Products")
                                 .DirectEvents(
                                     de =>
@@ -92,12 +145,13 @@
                                         de.Click.ExtraParams.Add(new { tabId = "ProductsPanel" });
                                         de.Click.EventMask.ShowMask = true;
                                         de.Click.EventMask.Msg = "Loading...";
-                                        de.Click.Before = "var tab = #{MainTabPanel}.getComponent(extraParams['tabId']); if (tab) { #{MainTabPanel}.setActiveTab(tab); return false; }";
+                                        de.Click.Before = "beforeTabOpen(extraParams['tabId']);";
                                     }
                                 )
                             );
 
                             m.Add(X.MenuItem()
+                                .Icon(Icon.Basket)
                                 .Text("ProductTypes")
                                 .DirectEvents(
                                     de =>
@@ -107,13 +161,14 @@
                                         de.Click.ExtraParams.Add(new { tabId = "ProductTypesPanel" });
                                         de.Click.EventMask.ShowMask = true;
                                         de.Click.EventMask.Msg = "Loading...";
-                                        de.Click.Before = "var tab = #{MainTabPanel}.getComponent(extraParams['tabId']); if (tab) { #{MainTabPanel}.setActiveTab(tab); return false; }";
+                                        de.Click.Before = "beforeTabOpen(extraParams['tabId']);";
                                     }
                                 )
                             );
 
                             m.Add(X.MenuItem()
                                 .Text("Customers")
+                                .Icon(Icon.UserSuitBlack)
                                 .DirectEvents(
                                     de =>
                                     {
@@ -122,12 +177,13 @@
                                         de.Click.ExtraParams.Add(new { tabId = "CustomersPanel" });
                                         de.Click.EventMask.ShowMask = true;
                                         de.Click.EventMask.Msg = "Loading...";
-                                        de.Click.Before = "var tab = #{MainTabPanel}.getComponent(extraParams['tabId']); if (tab) { #{MainTabPanel}.setActiveTab(tab); return false; }";
+                                        de.Click.Before = "beforeTabOpen(extraParams['tabId']);";
                                     }
                                 )
                             );
 
                             m.Add(X.MenuItem()
+                                .Icon(Icon.Bookmark)
                                 .Text("Orders")
                                 .DirectEvents(
                                     de =>
@@ -137,13 +193,14 @@
                                         de.Click.ExtraParams.Add(new { tabId = "OrdersPanel" });
                                         de.Click.EventMask.ShowMask = true;
                                         de.Click.EventMask.Msg = "Loading...";
-                                        de.Click.Before = "var tab = #{MainTabPanel}.getComponent(extraParams['tabId']); if (tab) { #{MainTabPanel}.setActiveTab(tab); return false; }";
+                                        de.Click.Before = "beforeTabOpen(extraParams['tabId']);";
                                     }
                                 )
                             );
 
                             m.Add(X.MenuItem()
                                 .Text("Orders Chart")
+                                .Icon(Icon.TableMultiple)
                                 .DirectEvents(
                                     de =>
                                     {
@@ -152,13 +209,14 @@
                                         de.Click.ExtraParams.Add(new { tabId = "OrdersChartPanel" });
                                         de.Click.EventMask.ShowMask = true;
                                         de.Click.EventMask.Msg = "Loading...";
-                                        de.Click.Before = "var tab = #{MainTabPanel}.getComponent(extraParams['tabId']); if (tab) { #{MainTabPanel}.setActiveTab(tab); return false; }";
+                                        de.Click.Before = "beforeTabOpen(extraParams['tabId']);";
                                     }
                                 )
                             );
                             
                             m.Add(X.MenuItem()
                                 .Text("Users")
+                                .Icon(Icon.StatusOnline)
                                 .DirectEvents(
                                     de =>
                                     {
@@ -167,7 +225,7 @@
                                         de.Click.ExtraParams.Add(new { tabId = "UsersPanel" });
                                         de.Click.EventMask.ShowMask = true;
                                         de.Click.EventMask.Msg = "Loading...";
-                                        de.Click.Before = "var tab = #{MainTabPanel}.getComponent(extraParams['tabId']); if (tab) { #{MainTabPanel}.setActiveTab(tab); return false; }";
+                                        de.Click.Before = "beforeTabOpen(extraParams['tabId']);";
                                     }
                                 )
                             );

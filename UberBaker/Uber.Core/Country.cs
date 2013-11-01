@@ -1,7 +1,13 @@
-﻿namespace Uber.Core
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Uber.Core
 {
 	public class Country : BaseItem
 	{
-		public string Name { get; set; }
+        [Required]
+        public string Name { get; set; }
+
+        [Required]
+        public string ShortCode { get; set; }
 	}
 }

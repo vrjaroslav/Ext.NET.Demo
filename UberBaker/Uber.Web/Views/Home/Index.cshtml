@@ -154,7 +154,7 @@
                                         de.Click.ExtraParams.Add(new { tabId = "ProductsPanel" });
                                         de.Click.EventMask.ShowMask = true;
                                         de.Click.EventMask.Msg = "Loading...";
-                                        de.Click.Before = "beforeTabOpen(extraParams['tabId']);";
+                                        de.Click.Before = "return beforeTabOpen(extraParams['tabId']);";
                                         de.Click.Timeout = 120000;
                                     }
                                 )
@@ -171,7 +171,7 @@
                                         de.Click.ExtraParams.Add(new { tabId = "ProductTypesPanel" });
                                         de.Click.EventMask.ShowMask = true;
                                         de.Click.EventMask.Msg = "Loading...";
-                                        de.Click.Before = "beforeTabOpen(extraParams['tabId']);";
+                                        de.Click.Before = "return beforeTabOpen(extraParams['tabId']);";
                                         de.Click.Timeout = 120000;
                                     }
                                 )
@@ -188,7 +188,7 @@
                                         de.Click.ExtraParams.Add(new { tabId = "CustomersPanel" });
                                         de.Click.EventMask.ShowMask = true;
                                         de.Click.EventMask.Msg = "Loading...";
-                                        de.Click.Before = "beforeTabOpen(extraParams['tabId']);";
+                                        de.Click.Before = "return beforeTabOpen(extraParams['tabId']);";
                                         de.Click.Timeout = 120000;
                                     }
                                 )
@@ -205,7 +205,7 @@
                                         de.Click.ExtraParams.Add(new { tabId = "OrdersPanel" });
                                         de.Click.EventMask.ShowMask = true;
                                         de.Click.EventMask.Msg = "Loading...";
-                                        de.Click.Before = "beforeTabOpen(extraParams['tabId']);";
+                                        de.Click.Before = "return beforeTabOpen(extraParams['tabId']);";
                                         de.Click.Timeout = 120000;
                                     }
                                 )
@@ -222,7 +222,7 @@
                                         de.Click.ExtraParams.Add(new { tabId = "OrdersChartPanel" });
                                         de.Click.EventMask.ShowMask = true;
                                         de.Click.EventMask.Msg = "Loading...";
-                                        de.Click.Before = "beforeTabOpen(extraParams['tabId']);";
+                                        de.Click.Before = "return beforeTabOpen(extraParams['tabId']);";
                                         de.Click.Timeout = 120000;
                                     }
                                 )
@@ -239,7 +239,7 @@
                                         de.Click.ExtraParams.Add(new { tabId = "UsersPanel" });
                                         de.Click.EventMask.ShowMask = true;
                                         de.Click.EventMask.Msg = "Loading...";
-                                        de.Click.Before = "beforeTabOpen(extraParams['tabId']);";
+                                        de.Click.Before = "return beforeTabOpen(extraParams['tabId']);";
                                         de.Click.Timeout = 120000;
                                     }
                                 )
@@ -260,7 +260,7 @@
                                         .Border(false)
                                         .Items(
                                             X.PortalColumn()
-                                                .ItemsFromPartial("RenderOrdersChart")
+                                                .ItemsFromPartial("DashboardChart")
                                         )
                                 )
                         )

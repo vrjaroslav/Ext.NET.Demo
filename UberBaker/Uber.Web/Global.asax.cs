@@ -25,8 +25,8 @@ namespace Uber.Web
 			AuthConfig.RegisterAuth();
 
             // Profiler
-            GlobalFilters.Filters.Add(new StackExchange.Profiling.MVCHelpers.ProfilingActionFilter());
-            MiniProfilerEF.Initialize();
+            //GlobalFilters.Filters.Add(new StackExchange.Profiling.MVCHelpers.ProfilingActionFilter());
+            //MiniProfilerEF.Initialize();
 		}
 
 	    protected void Application_BeginRequest()

@@ -2,11 +2,11 @@
 var X = Html.X();
 }
 
-@(X.Panel()
-    .ID("OrdersChartPanel")
-    .Title("Orders Amount per Month Chart")
+@(X.Portlet()
+    .ID("DashboardChartPanel")
+    .Title("Some Dashboard chart")
     .Layout(LayoutType.Fit)
-    .Closable(true)
+    .Closable(false)
     .Height(300)
     .TopBar(X.Toolbar()
         .Items(
@@ -22,7 +22,7 @@ var X = Html.X();
     )
     .Items(
         X.Chart()
-            .ID("OrdersChart")
+            .ID("DashboardChart")
             .Animate(true)
             .Store(X.Store()
                 .Data(Model)

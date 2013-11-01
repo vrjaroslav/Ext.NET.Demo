@@ -110,5 +110,5 @@ UpgradeLog*.XML
 *.DS_Store
 
 # Local database files
-*.mdf
-*.ldf
+#*.mdf
+#*.ldf

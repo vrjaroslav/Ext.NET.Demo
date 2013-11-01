@@ -12,11 +12,11 @@ namespace Uber.Data
         {
             var products = this.SeedProducts(data);
 
-			var countries = SeedCountries();
+			var countries = this.SeedCountries();
 
-			var customers = SeedCustomers(countries);
+			var customers = this.SeedCustomers(countries);
 
-			SeedOrders(data, products, customers);
+			this.SeedOrders(data, products, customers);
 
 			// IMPORTANT!!
             data.SaveChanges();
@@ -24,19 +24,13 @@ namespace Uber.Data
 
 		private List<Country> SeedCountries()
 		{
-			string[] countries = new string[] { "U.S.", "Canada", "Russia", "UK", "Kazakhstan", "China" };
-			
-			var result = new List<Country>();
-
-			foreach (var country in countries)
-			{
-				result.Add(new Country
-				{
-					Name = country
-				});
-			}
-
-			return result;
+            return new List<Country> { 
+                new Country{ Name = "Canada", ShortCode = "ca" },
+                new Country{ Name = "China", ShortCode = "cn" },
+                new Country{ Name = "Kazakhstan", ShortCode = "kz" },
+                new Country{ Name = "Russia", ShortCode = "ru" },
+                new Country{ Name = "United States", ShortCode = "us" },
+            };
 		}
 
 		private List<Customer> SeedCustomers(List<Country> countries)

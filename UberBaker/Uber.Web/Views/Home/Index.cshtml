@@ -1,5 +1,4 @@
-﻿@using StackExchange.Profiling
-@{
+﻿@{
     var X = Html.X();
     ViewBag.Title = "Uber Baker";
     Layout = "~/Views/Shared/_BaseLayout.cshtml";
@@ -100,6 +99,13 @@
         .Easing(Easing.EaseIn)
         .Duration(1)
     )
+    
+    @(X.Window()
+        .ID("UserProfileWindow")
+        .Title("User Profile")
+        .Hidden(true)
+        .Modal(true)
+    )
 
     @(X.Viewport()
         .Layout(LayoutType.Fit)
@@ -111,6 +117,7 @@
                         .Items(i => i.Add(
                             X.SplitButton()
                             .Text("Uber Baker Demo Application")
+                            .MenuAlign("tr-br?")
                             .Menu(X.Menu()
                                 .Items(
                                     X.MenuItem()
@@ -120,6 +127,10 @@
                                     X.MenuItem()
                                         .Text("Profile")
                                         .Icon(Icon.User)
+                                        .DirectEvents(de =>
+                                        {
+                                            de.Click.Url = Url.Action("ProfileWindow", "Account");
+                                        })
                                 )
                             )
                             )
@@ -240,6 +251,19 @@
                         .Region(Region.Center)
                         .MinTabWidth(100)
                         .Plugins(plugins => plugins.Add(new TabCloseMenu()))
+                        .Items(
+                            X.Panel()
+                                .Layout(LayoutType.Fit)
+                                .Title("Dashboard")
+                                .Items(
+                                    X.Portal()
+                                        .Border(false)
+                                        .Items(
+                                            X.PortalColumn()
+                                                .ItemsFromPartial("RenderOrdersChart")
+                                        )
+                                )
+                        )
                 )
         )
     )   

@@ -14,8 +14,8 @@ namespace Uber.Web
 	{
 		protected void Application_Start()
 		{
-            UberContextInitializer initializer = new UberContextInitializer();
-			Database.SetInitializer(initializer);
+            //UberContextInitializer initializer = new UberContextInitializer();
+			//Database.SetInitializer(initializer);
 
 			AreaRegistration.RegisterAllAreas();
 

@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using System.Web.Security;
 using Ext.Net;
 using Ext.Net.MVC;
 using StackExchange.Profiling;
@@ -22,14 +23,12 @@ namespace Uber.Web.Controllers
 
 		#region PartialViewsRenderingActions
 
-        [ProfilingActionFilter]
         public ActionResult RenderTab(string containerId, string tabId)
         {
             var profiler = MiniProfiler.Current;
 
             using (profiler.Step("Render Tab Page"))
             {
-
                 switch (tabId)
                 {
                     case "ProductsPanel":

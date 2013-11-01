@@ -2,13 +2,12 @@
 var X = Html.X();
 }
 
-@(X.Panel()
+@(X.Portlet()
     .ID("OrdersChartPanel")
     .Title("Orders Amount per Month Chart")
     .Layout(LayoutType.Fit)
-    .Width(800)
-    .Height(600)
-    .Closable(true)
+    .Closable(false)
+    .Height(300)
     .TopBar(X.Toolbar()
         .Items(
             X.Button()

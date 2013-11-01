@@ -13,14 +13,25 @@
         X.GridPanel()
             .Region(Region.Center)
             .ID("UsersGrid")
-            .Store(X.StoreFor<User>()
-                .ModelName("User")
+            .Store(X.Store()
+                .Model(X.Model()
+                    .ClientIdProperty("PhantomId")
+                    .IDProperty("Id")
+                    .Name("User")
+                    .Fields(
+                        X.ModelFieldFor(m => m.Id)
+                            .UseNull(true),
+                        X.ModelFieldFor(m => m.PhantomId),
+                        X.ModelFieldFor(m => m.FirstName),
+                        X.ModelFieldFor(m => m.LastName),
+                        X.ModelFieldFor(m => m.UserName)
+                    )
+                )
                 .ID("UsersStore")
                 .Proxy(X.AjaxProxy()
                     .Url(Url.Action("GetAll", "Account"))
                     .Reader(X.JsonReader().Root("data"))
                 )
-                .PageSize(25)
             )
             .ColumnModel(
                 X.ColumnFor(Model, m => m.Id)

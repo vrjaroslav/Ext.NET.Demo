@@ -1,4 +1,6 @@
-﻿using Ext.Net.MVC;
+﻿using System.Linq;
+using Ext.Net;
+using Ext.Net.MVC;
 using Microsoft.Web.WebPages.OAuth;
 using System;
 using System.Transactions;
@@ -56,6 +58,21 @@ namespace Uber.Web.Controllers
 		public ActionResult Disable()
 		{
 			return this.Direct();
+		}
+
+		public ActionResult ProfileWindow()
+		{
+            string userName = Membership.GetUser().UserName;
+            var currentUser = repository.GetAll().SingleOrDefault(u => u.UserName == userName);
+			var result = new Ext.Net.MVC.PartialViewResult
+			{
+                ViewName = "ProfileWindow",
+				RenderMode = RenderMode.Auto,
+                Model = currentUser,
+				WrapByScriptTag = false // we load the view via Loader with Script mode therefore script tags is not required
+			};
+
+		    return result;
 		}
 
 		[AllowAnonymous]

@@ -1,0 +1,23 @@
+﻿@model Uber.Core.User
+@{
+    var X = Html.X();
+}
+
+@(X.Window()
+    .Icon(Icon.User)
+    .Modal(true)
+    .CloseAction(CloseAction.Destroy)
+    .Layout(LayoutType.Fit)
+    .Width(300)    
+    .BodyPadding(10) 
+    .Title("User Profile")
+    .Items(
+        X.FormPanel()
+            .DefaultAnchor("95%")
+            .Items(
+                X.TextFieldFor(m => m.UserName),
+                X.TextFieldFor(m => m.FirstName),
+                X.TextFieldFor(m => m.LastName)
+            )
+    )
+)

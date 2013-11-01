@@ -25,7 +25,7 @@ namespace Uber.Web.Filters
 		{
 			public SimpleMembershipInitializer()
 			{
-				Database.SetInitializer<UberContext>(null);
+				//Database.SetInitializer<UberContext>(null);
 
 				try
 				{

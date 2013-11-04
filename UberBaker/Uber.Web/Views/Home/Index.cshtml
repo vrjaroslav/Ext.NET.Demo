@@ -122,16 +122,17 @@
                             .Menu(X.Menu()
                                 .Items(
                                     X.MenuItem()
-                                        .Text("LogOut")
-                                        .Icon(Icon.DoorOut)
-                                        .DirectClickAction("LogOff", "Account"),
-                                    X.MenuItem()
                                         .Text("Profile")
                                         .Icon(Icon.User)
                                         .DirectEvents(de =>
                                         {
                                             de.Click.Url = Url.Action("ProfileWindow", "Account");
-                                        })
+                                        }),
+                                        
+                                    X.MenuItem()
+                                        .Text("LogOut")
+                                        .Icon(Icon.DoorOut)
+                                        .DirectClickAction("LogOff", "Account")
                                 )
                             )
                             )

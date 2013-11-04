@@ -10,32 +10,22 @@ namespace Uber.Web
 	// Note: For instructions on enabling IIS6 or IIS7 classic mode, 
 	// visit http://go.microsoft.com/?LinkId=9394801
 
-	public class MvcApplication : System.Web.HttpApplication
-	{
-		protected void Application_Start()
-		{
+    public class MvcApplication : System.Web.HttpApplication
+    {
+        protected void Application_Start()
+        {
             UberContextInitializer initializer = new UberContextInitializer();
-			Database.SetInitializer(initializer);
+            Database.SetInitializer(initializer);
 
-			AreaRegistration.RegisterAllAreas();
+            AreaRegistration.RegisterAllAreas();
 
-			WebApiConfig.Register(GlobalConfiguration.Configuration);
-			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-			RouteConfig.RegisterRoutes(RouteTable.Routes);
-			AuthConfig.RegisterAuth();
+            WebApiConfig.Register(GlobalConfiguration.Configuration);
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            AuthConfig.RegisterAuth();
 
             // Ensure ASP.NET Simple Membership is initialized only once per app start
             //LazyInitializer.EnsureInitialized(ref _initializer, ref _isInitialized, ref _initializerLock);
-		}
-
-	    protected void Application_BeginRequest()
-	    {
-            MiniProfiler.Start();
-	    }
-
-        protected void Application_EndRequest()
-        {
-            MiniProfiler.Stop();
         }
-	}
+    }
 }

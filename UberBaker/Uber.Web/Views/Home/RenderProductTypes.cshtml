@@ -15,6 +15,9 @@
             .Region(Region.Center)
             .Store(X.Store()
                 .ID("ProductTypesStore")
+                .RemoteSort(true)
+                .RemotePaging(true)
+                .PageSize(25)
                 .Model(X.Model()
                     .ClientIdProperty("PhantomId")
                     .IDProperty("Id")
@@ -28,10 +31,12 @@
                     )
                 )
                 .Proxy(X.AjaxProxy()
-                    .Url(Url.Action("GetAll", "ProductTypes"))
+                    .Url(Url.Action("ReadData", "ProductTypes"))
                     .Reader(X.JsonReader().Root("data"))
                 )
-                .PageSize(25)
+                .Sorters(
+                    Html.X().DataSorter().Property("Name").Direction(Ext.Net.SortDirection.ASC)                                
+                )
             )
             .ColumnModel(
                 X.ColumnFor(m => m.Id)
@@ -46,6 +51,14 @@
                     .ToBuilder<Column.Builder>()
                     .Text("Short Code")
                     .Width(100)
+            )
+            .Features(
+                Html.X().GridFilters()
+                    .Filters(
+                        Html.X().NumericFilter().DataIndex("Id"),
+                        Html.X().StringFilter().DataIndex("Name"),
+                        Html.X().StringFilter().DataIndex("ShortCode")
+                    )
             )
             .TopBar(
                 Html.X().Toolbar()

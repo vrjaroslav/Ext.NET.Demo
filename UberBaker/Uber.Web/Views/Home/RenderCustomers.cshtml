@@ -15,6 +15,9 @@
             .ID("CustomersGrid")
             .Store(X.Store()
                 .ID("CustomersStore")
+                .RemoteSort(true)
+                .RemotePaging(true)
+                .PageSize(25)
                 .Model(X.Model()
                     .ClientIdProperty("PhantomId")
                     .IDProperty("Id")
@@ -36,10 +39,12 @@
                     )
                 )
                 .Proxy(X.AjaxProxy()
-                    .Url(Url.Action("GetAll", "Customers"))
+                    .Url(Url.Action("ReadData", "Customers"))
                     .Reader(X.JsonReader().Root("data"))
                 )
-                .PageSize(25)
+                .Sorters(
+                    Html.X().DataSorter().Property("FullName").Direction(Ext.Net.SortDirection.ASC)                                
+                )
             )
             .ColumnModel(
                 X.Column()
@@ -57,6 +62,7 @@
                 X.Column()
                     .Text("Address")
                     .Flex(1)
+                    .Sortable(false)
                     .Renderer("return Ext.String.format('{0}, {1}, {2}, {3}', record.data.BillingAddress.StreetAddress, record.data.BillingAddress.City, record.data.BillingAddress.ZipCode, record.data.BillingAddress.Country.Name);"),
                 X.Column()
                     .DataIndex("ContactPhone")
@@ -66,6 +72,16 @@
                     .DataIndex("CellPhone")
                     .Text("Mobile")
                     .Width(100)
+            )
+            .Features(
+                Html.X().GridFilters()
+                    .Filters(
+                        Html.X().NumericFilter().DataIndex("Id"),
+                        Html.X().StringFilter().DataIndex("FullName"),
+                        Html.X().StringFilter().DataIndex("Company"),
+                        Html.X().StringFilter().DataIndex("ContactPhone"),
+                        Html.X().StringFilter().DataIndex("CellPhone")
+                    )
             )
             .TopBar(
                 Html.X().Toolbar()

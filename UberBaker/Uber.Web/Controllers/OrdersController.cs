@@ -1,9 +1,11 @@
-﻿using Ext.Net.MVC;
+﻿using Ext.Net;
+using Ext.Net.MVC;
 using System.Linq;
 using System.Web.Mvc;
 using Uber.Core;
 using Uber.Data.Abstract;
 using Uber.Data.Repositories;
+using Uber.Web.Helpers;
 using Uber.Web.Models;
 
 namespace Uber.Web.Controllers
@@ -43,10 +45,12 @@ namespace Uber.Web.Controllers
 			return this.Direct();
 		}
 
-		public ActionResult GetAll()
-		{
-			return this.Store(repository.GetAll());
-		}
+        public ActionResult ReadData(StoreRequestParameters parameters)
+        {
+            var data = repository.GetAll().ToList();
+
+            return this.Store(data.SortFilterPaged(parameters), data.Count);
+        }
 
 		public ActionResult GetChartDataForCurrentMonth(int month = 10)
 	    {

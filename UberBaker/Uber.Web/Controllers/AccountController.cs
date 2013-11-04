@@ -10,6 +10,7 @@ using Uber.Core;
 using Uber.Data.Abstract;
 using Uber.Data.Repositories;
 using Uber.Web.Filters;
+using Uber.Web.Helpers;
 using Uber.Web.Models;
 using WebMatrix.WebData;
 
@@ -43,10 +44,12 @@ namespace Uber.Web.Controllers
             return this.View();
 		}
 
-		public ActionResult GetAll()
-		{
-			return this.Store(repository.GetAll());
-		}
+        public ActionResult ReadData(StoreRequestParameters parameters)
+        {
+            var data = repository.GetAll().ToList();
+
+            return this.Store(data.SortFilterPaged(parameters), data.Count);
+        }
 
 		public ActionResult Save(User user)
 		{

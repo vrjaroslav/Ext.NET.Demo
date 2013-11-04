@@ -1,51 +1,57 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using Ext.Net;
 using Ext.Net.MVC;
 using Uber.Core;
 using Uber.Data.Abstract;
 using Uber.Data.Repositories;
+using Uber.Web.Helpers;
 
 namespace Uber.Web.Controllers
 {
     public class ProductsController : Controller
     {
-		private ProductsRepository repository { get; set; }
+        private ProductsRepository repository { get; set; }
 
-		#region Constructors
+        #region Constructors
 
-		public ProductsController()
-		{
-			repository = new ProductsRepository();
-		}
-		
-		public ProductsController(IProductsRepository repository)
-		{
-			// TODO Rewite with IoC
-			this.repository = new ProductsRepository();
-		}
+        public ProductsController()
+        {
+            repository = new ProductsRepository();
+        }
 
-		#endregion
+        public ProductsController(IProductsRepository repository)
+        {
+            // TODO Rewite with IoC
+            this.repository = new ProductsRepository();
+        }
 
-		#region Actions
+        #endregion
 
-		public ActionResult Save(Product product)
-		{
-			repository.AddOrUpdate(product);
+        #region Actions
 
-			return this.Direct();
-		}
+        public ActionResult Save(Product product)
+        {
+            repository.AddOrUpdate(product);
 
-		public ActionResult Delete(int id)
-		{
-			repository.Delete(id);
+            return this.Direct();
+        }
 
-			return this.Direct();
-		}
+        public ActionResult Delete(int id)
+        {
+            repository.Delete(id);
 
-		public ActionResult GetAll()
-		{
-			return this.Store(repository.GetAll());
-		}
+            return this.Direct();
+        }
 
-		#endregion
+        public ActionResult ReadData(StoreRequestParameters parameters)
+        {
+            var data = repository.GetAll().ToList();
+
+            return this.Store(data.SortFilterPaged(parameters), data.Count);
+        }
+
+        #endregion
     }
 }

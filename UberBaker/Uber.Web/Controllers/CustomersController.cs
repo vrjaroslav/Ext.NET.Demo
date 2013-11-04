@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
+using Ext.Net;
 using Ext.Net.MVC;
 using Uber.Core;
 using Uber.Data.Abstract;
 using Uber.Data.Repositories;
+using Uber.Web.Helpers;
 
 namespace Uber.Web.Controllers
 {
@@ -71,10 +74,12 @@ namespace Uber.Web.Controllers
 			return this.Direct();
 		}
 
-		public ActionResult GetAll()
-		{
-			return this.Store(repository.GetAll());
-		}
+        public ActionResult ReadData(StoreRequestParameters parameters)
+        {
+            var data = repository.GetAll().ToList();
+
+            return this.Store(data.SortFilterPaged(parameters), data.Count);
+        }
 
 		public ActionResult GetCountries()
 		{

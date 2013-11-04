@@ -15,6 +15,9 @@
             .ID("ProductsGrid")
             .Store(X.Store()
                 .ID("ProductsStore")
+                .RemoteSort(true)
+                .RemotePaging(true)
+                .PageSize(25)
                 .Model(X.Model()
                     .ClientIdProperty("PhantomId")
                     .IDProperty("Id")
@@ -35,10 +38,12 @@
                     )
                 )
                 .Proxy(X.AjaxProxy()
-                    .Url(Url.Action("GetAll", "Products"))
+                    .Url(Url.Action("ReadData", "Products"))
                     .Reader(X.JsonReader().Root("data"))
                 )
-                .PageSize(25)
+                .Sorters(
+                    Html.X().DataSorter().Property("Name").Direction(Ext.Net.SortDirection.ASC)                                
+                )
             )
             .ColumnModel(
                 X.Column()
@@ -66,6 +71,17 @@
                     .DataIndex("ProductType")
                     .Text("Type")
                     .Width(100)
+                    .Sortable(false)
+            )
+            .Features(
+                Html.X().GridFilters()
+                    .Filters(
+                        Html.X().NumericFilter().DataIndex("Id"),
+                        Html.X().StringFilter().DataIndex("Name"),
+                        Html.X().StringFilter().DataIndex("ShortCode"),
+                        Html.X().StringFilter().DataIndex("Description"),
+                        Html.X().NumericFilter().DataIndex("UnitPrice")
+                    )
             )
             .TopBar(
                 Html.X().Toolbar()
@@ -94,6 +110,9 @@
                     {
                         l.Select.Handler = "gridRowSelected('Products', record);";
                     })
+            )
+            .BottomBar(
+                Html.X().PagingToolbar()
             ),
                 
         X.FormPanel()
@@ -127,7 +146,7 @@
                     .ForceSelection(true)
                     .Store(X.StoreFor<ProductType>()
                         .Proxy(Html.X().AjaxProxy()
-                            .Url(Url.Action("GetAll", "ProductTypes"))
+                            .Url(Url.Action("ReadData", "ProductTypes"))
                             .Reader(Html.X().JsonReader().Root("data"))
                         )
                     )

@@ -1,8 +1,11 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
+using Ext.Net;
 using Ext.Net.MVC;
 using Uber.Core;
 using Uber.Data.Abstract;
 using Uber.Data.Repositories;
+using Uber.Web.Helpers;
 
 namespace Uber.Web.Controllers
 {
@@ -27,10 +30,12 @@ namespace Uber.Web.Controllers
 
 		#region Actions
 
-        public ActionResult GetAll()
+        public ActionResult ReadData(StoreRequestParameters parameters)
         {
-	        return this.Store(repository.GetAll());
-        } 
+            var data = repository.GetAll().ToList();
+
+            return this.Store(data.SortFilterPaged(parameters), data.Count);
+        }
 
 		public ActionResult Save(ProductType productType)
 		{

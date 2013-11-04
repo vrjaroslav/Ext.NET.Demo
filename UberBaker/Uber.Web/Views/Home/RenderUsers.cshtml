@@ -14,6 +14,9 @@
             .Region(Region.Center)
             .ID("UsersGrid")
             .Store(X.Store()
+                .RemoteSort(true)
+                .RemotePaging(true)
+                .PageSize(25)
                 .Model(X.Model()
                     .ClientIdProperty("PhantomId")
                     .IDProperty("Id")
@@ -29,8 +32,11 @@
                 )
                 .ID("UsersStore")
                 .Proxy(X.AjaxProxy()
-                    .Url(Url.Action("GetAll", "Account"))
+                    .Url(Url.Action("ReadData", "Account"))
                     .Reader(X.JsonReader().Root("data"))
+                )
+                .Sorters(
+                    Html.X().DataSorter().Property("UserName").Direction(Ext.Net.SortDirection.ASC)                                
                 )
             )
             .ColumnModel(
@@ -45,6 +51,15 @@
                 X.ColumnFor(Model, m => m.LastName)
                     .ToBuilder<Column.Builder>()
                     .Flex(1)
+            )
+            .Features(
+                Html.X().GridFilters()
+                    .Filters(
+                        Html.X().NumericFilter().DataIndex("Id"),
+                        Html.X().StringFilter().DataIndex("UserName"),
+                        Html.X().StringFilter().DataIndex("FirstName"),
+                        Html.X().StringFilter().DataIndex("LastName")
+                    )
             )
             .TopBar(
                 X.Toolbar()

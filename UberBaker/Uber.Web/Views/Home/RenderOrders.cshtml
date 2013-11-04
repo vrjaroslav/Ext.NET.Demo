@@ -101,7 +101,7 @@
                                 de.Click.Confirmation.Message = "Are you sure you want to delete this record?";
                                 de.Click.Confirmation.ConfirmRequest = true;
                                 de.Click.ExtraParams.Add(new Parameter("id", "getSelectedIdParameter(this.up('grid'))", ParameterMode.Raw));
-                                de.Click.Success = "recordDeleteSuccess(this, this.up('grid'));";
+                                de.Click.Success = "recordDeleteSuccess(this, this.up('grid'), 'Orders');";
                             })
                     )
             )
@@ -112,6 +112,9 @@
                     {
                         l.Select.Handler = "gridRowSelected('Orders', record);";
                     })
+            )
+            .BottomBar(
+                Html.X().PagingToolbar()
             ),
                 
         X.FormPanel()

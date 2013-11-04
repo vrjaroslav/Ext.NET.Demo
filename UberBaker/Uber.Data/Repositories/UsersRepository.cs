@@ -26,12 +26,14 @@ namespace Uber.Data.Repositories
 
 		public User Get(int id)
 		{
-            return this.DbContext.Users.SingleOrDefault(c => c.Id == id);
+            return this.DbContext.Users.SingleOrDefault(u => u.Id == id);
 		}
 
-		public IQueryable<User> GetAll()
+        public IQueryable<User> GetAll(bool includingDisabled = false)
 		{
-            return this.DbContext.Users;
+            return includingDisabled ?
+                this.DbContext.Users :
+                this.DbContext.Users.Where(u => !u.Disabled);
 		}
 
 		public User Add(User user)
@@ -52,9 +54,9 @@ namespace Uber.Data.Repositories
 
 		public void Delete(int id)
 		{
-			var c = Get(id);
-
-            this.DbContext.Users.Remove(c);
+			User u = Get(id);
+            u.Disabled = true;
+            
             this.DbContext.SaveChanges();
 		}
 

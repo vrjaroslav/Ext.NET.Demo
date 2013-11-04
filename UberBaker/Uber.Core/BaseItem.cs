@@ -15,6 +15,8 @@ namespace Uber.Core
 
 		public string PhantomId { get; set; }
 
+        public bool Disabled { get; set; }
+
         public virtual bool IsNew
         {
             get

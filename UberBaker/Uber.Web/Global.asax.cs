@@ -24,9 +24,8 @@ namespace Uber.Web
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 			AuthConfig.RegisterAuth();
 
-            // Profiler
-            //GlobalFilters.Filters.Add(new StackExchange.Profiling.MVCHelpers.ProfilingActionFilter());
-            //MiniProfilerEF.Initialize();
+            // Ensure ASP.NET Simple Membership is initialized only once per app start
+            //LazyInitializer.EnsureInitialized(ref _initializer, ref _isInitialized, ref _initializerLock);
 		}
 
 	    protected void Application_BeginRequest()

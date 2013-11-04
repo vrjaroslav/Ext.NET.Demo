@@ -29,9 +29,9 @@ namespace Uber.Data.Repositories
             return this.DbContext.Products.SingleOrDefault(p => p.Id == id);
 		}
 
-		public IQueryable<Product> GetAll()
+		public IQueryable<Product> GetAll(bool includingDisabled = false)
 		{
-            return this.DbContext.Products.Include("ProductType");
+            return includingDisabled ? this.DbContext.Products.Include("ProductType") : this.DbContext.Products.Include("ProductType").Where(p => !p.Disabled );
 		}
 
 		public Product Add(Product product)

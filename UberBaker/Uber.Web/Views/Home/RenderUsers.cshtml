@@ -71,7 +71,6 @@
                             .Handler("addRecordButtonHandler('User', new User());"),
 
                         X.Button()
-                            .Disabled(true)
                             .Text("Disable account")
                             .Icon(Icon.Exclamation)
                             .DirectEvents(de =>
@@ -80,7 +79,7 @@
                                 de.Click.Confirmation.Message = "Are you sure you want to disable this account?";
                                 de.Click.Confirmation.ConfirmRequest = true;
                                 de.Click.ExtraParams.Add(new Parameter("id", "getSelectedIdParameter(this.up('grid'))", ParameterMode.Raw));
-                                de.Click.Success = "recordDeleteSuccess(this, this.up('grid'));";
+                                de.Click.Success = "recordDeleteSuccess(this, this.up('grid'), 'Users');";
                             })
                     )
             )
@@ -91,6 +90,9 @@
                     {
                         l.Select.Handler = "gridRowSelected('Users', record);";
                     })
+            )
+            .BottomBar(
+                Html.X().PagingToolbar()
             ),
 
         X.FormPanel()
@@ -123,6 +125,7 @@
                     .Items(
                         X.ToolbarFill(),
                         X.Button()
+                            .Disabled(true)
                             .Text("Save")
                             .Icon(Icon.Disk)
                             .DirectEvents(de => {

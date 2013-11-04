@@ -11,7 +11,7 @@ namespace Uber.Data.Abstract
 	{
 		Customer Get(int id);
 
-		IQueryable<Customer> GetAll();
+        IQueryable<Customer> GetAll(bool includingDisabled = false);
 
 		Customer Add(Customer customer);
 

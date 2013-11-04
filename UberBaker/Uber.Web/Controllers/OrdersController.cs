@@ -40,7 +40,9 @@ namespace Uber.Web.Controllers
 
 		public ActionResult Delete(int id)
 		{
-			repository.Delete(id);
+            var o = repository.Get(id);
+            o.Disabled = true;
+            repository.Update(o);
 
 			return this.Direct();
 		}

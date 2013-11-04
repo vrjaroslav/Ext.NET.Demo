@@ -29,9 +29,9 @@ namespace Uber.Data.Repositories
             return this.DbContext.ProductTypes.SingleOrDefault(p => p.Id == id);
 		}
 
-		public IQueryable<ProductType> GetAll()
+        public IQueryable<ProductType> GetAll(bool includingDisabled = false)
 		{
-            return this.DbContext.ProductTypes;
+            return includingDisabled ? this.DbContext.ProductTypes : this.DbContext.ProductTypes.Where(p => !p.Disabled);
 		}
 
 		public ProductType Add(ProductType productType)
@@ -52,9 +52,16 @@ namespace Uber.Data.Repositories
 
 		public void Delete(int id)
 		{
-			var p = Get(id);
+			ProductType pt = Get(id);
+            pt.Disabled = true;
 
-            this.DbContext.ProductTypes.Remove(p);
+            var products = DbContext.Products.Where(p => p.ProductTypeId == id);
+            foreach (var p in products)
+            {
+                p.ProductTypeId = null;
+            }
+
+            this.DbContext.SaveChanges();
 		}
 
 		public ProductType AddOrUpdate(ProductType productType)

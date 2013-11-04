@@ -27,8 +27,9 @@
             return grid.getSelectionModel().getSelection()[0].data.Id;
         };
         
-        var recordDeleteSuccess = function (button, grid) {
+        var recordDeleteSuccess = function (button, grid, type) {
             grid.getStore().reload();
+            App[type + 'Form'].reset();
         };
 
         var gridRowSelected = function (type, record) {

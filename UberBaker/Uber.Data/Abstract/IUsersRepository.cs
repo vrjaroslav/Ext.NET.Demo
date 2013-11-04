@@ -6,7 +6,7 @@ namespace Uber.Data.Abstract
 	public interface IUsersRepository
 	{
 		User Get(int id);
-		IQueryable<User> GetAll();
+        IQueryable<User> GetAll(bool includingDisabled = false);
 		User Add(User user);
 		User Update(User user);
 		void Delete(int id);

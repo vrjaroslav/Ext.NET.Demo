@@ -7,7 +7,7 @@ namespace Uber.Data.Abstract
 	{
 		Order Get(int id);
 
-		IQueryable<Order> GetAll();
+        IQueryable<Order> GetAll(bool includingDisabled = false);
 
 		Order Add(Order order);
 

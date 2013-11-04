@@ -7,7 +7,7 @@ namespace Uber.Data.Abstract
 	{
 		ProductType Get(int id);
 
-		IQueryable<ProductType> GetAll();
+        IQueryable<ProductType> GetAll(bool includingDisabled = false);
 
 		ProductType Add(ProductType productType);
 

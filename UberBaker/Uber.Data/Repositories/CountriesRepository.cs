@@ -29,9 +29,9 @@ namespace Uber.Data.Repositories
             return this.DbContext.Countries.SingleOrDefault(c => c.Id == id);
 		}
 
-		public IQueryable<Country> GetAll()
+        public IQueryable<Country> GetAll(bool includingDisabled = false)
 		{
-            return this.DbContext.Countries;
+            return includingDisabled ? this.DbContext.Countries : this.DbContext.Countries.Where(c => !c.Disabled);
 		}
 
 		public Country Add(Country country)

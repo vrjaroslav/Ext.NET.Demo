@@ -31,9 +31,9 @@ namespace Uber.Data.Repositories
 		}
 
 
-		public IQueryable<Order> GetAll()
+        public IQueryable<Order> GetAll(bool includingDisabled = false)
 		{
-			return this.DbContext.Orders.Include("Customer");
+            return includingDisabled ? this.DbContext.Orders.Include("Customer") : this.DbContext.Orders.Include("Customer").Where(o => !o.Disabled);
 		}
 
 		public Order Add(Order order)
@@ -55,7 +55,8 @@ namespace Uber.Data.Repositories
 		public void Delete(int id)
 		{
 			var o = Get(id);
-			this.DbContext.Orders.Remove(o);
+            o.Disabled = true;
+            DbContext.SaveChanges();
 		}
 
 		public Order AddOrUpdate(Order order)

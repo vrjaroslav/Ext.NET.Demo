@@ -29,9 +29,9 @@ namespace Uber.Data.Repositories
             return this.DbContext.Addresses.SingleOrDefault(c => c.Id == id);
 		}
 
-		public IQueryable<Address> GetAll()
+        public IQueryable<Address> GetAll(bool includingDisabled = false)
 		{
-            return this.DbContext.Addresses;
+            return includingDisabled ? this.DbContext.Addresses : this.DbContext.Addresses.Where(a => !a.Disabled);
 		}
 
 		public Address Add(Address address)

@@ -6,7 +6,7 @@ namespace Uber.Data.Abstract
 	public interface IAddressesRepository
 	{
 		Address Get(int id);
-		IQueryable<Address> GetAll();
+        IQueryable<Address> GetAll(bool includingDisabled = false);
 		Address Add(Address address);
 		Address Update(Address address);
 		void Delete(int id);

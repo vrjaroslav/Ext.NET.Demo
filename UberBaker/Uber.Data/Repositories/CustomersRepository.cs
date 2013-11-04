@@ -29,11 +29,11 @@ namespace Uber.Data.Repositories
             return this.DbContext.Customers.SingleOrDefault(c => c.Id == id);
 		}
 
-		public IQueryable<Customer> GetAll()
+        public IQueryable<Customer> GetAll(bool includingDisabled = false)
 		{
-            return this.DbContext.Customers
-                .Include("BillingAddress")
-                .Include("ShippingAddress");
+            return includingDisabled ? 
+                this.DbContext.Customers.Include("BillingAddress").Include("ShippingAddress") :
+                this.DbContext.Customers.Include("BillingAddress").Include("ShippingAddress").Where(c => !c.Disabled);
 		}
 
 		public Customer Add(Customer customer)
@@ -54,8 +54,8 @@ namespace Uber.Data.Repositories
 		public void Delete(int id)
 		{
 			var c = Get(id);
+            c.Disabled = true;
             
-            this.DbContext.Customers.Remove(c);
             this.DbContext.SaveChanges();
 		}
 

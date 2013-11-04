@@ -9,7 +9,6 @@ using System.Web.Security;
 using Uber.Core;
 using Uber.Data.Abstract;
 using Uber.Data.Repositories;
-using Uber.Web.Filters;
 using Uber.Web.Helpers;
 using Uber.Web.Models;
 using WebMatrix.WebData;
@@ -17,7 +16,6 @@ using WebMatrix.WebData;
 namespace Uber.Web.Controllers
 {
 	[Authorize]
-	[InitializeSimpleMembership]
 	public class AccountController : Controller
 	{
 		private UsersRepository repository { get; set; }
@@ -53,13 +51,27 @@ namespace Uber.Web.Controllers
 
 		public ActionResult Save(User user)
 		{
-			repository.AddOrUpdate(user);
+			//repository.AddOrUpdate(user);
+            if (!WebSecurity.UserExists("admin"))
+            {
+                WebSecurity.CreateUserAndAccount("admin", "demo", new { FirstName = "Administrator", LastName = "" });
+            }
 
 			return this.Direct();
 		}
 
-		public ActionResult Disable()
+		public ActionResult Disable(int id)
 		{
+            var user = repository.Get(id);
+            user.Disabled = true;
+            repository.Update(user);
+
+            //var u = Membership.GetUser(user.UserName);
+            //if (u != null)
+            //{
+            //    u.IsApproved = false;
+            //    Membership.UpdateUser(u);
+            //}
 			return this.Direct();
 		}
 

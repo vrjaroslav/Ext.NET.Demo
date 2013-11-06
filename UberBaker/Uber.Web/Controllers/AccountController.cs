@@ -42,54 +42,6 @@ namespace Uber.Web.Controllers
             return this.View();
 		}
 
-        public ActionResult ReadData(StoreRequestParameters parameters)
-        {
-            var data = repository.GetAll().ToList();
-
-            return this.Store(data.SortFilterPaged(parameters), data.Count);
-        }
-
-		public ActionResult Save(User user)
-		{
-			//repository.AddOrUpdate(user);
-            if (!WebSecurity.UserExists("admin"))
-            {
-                WebSecurity.CreateUserAndAccount("admin", "demo", new { FirstName = "Administrator", LastName = "" });
-            }
-
-			return this.Direct();
-		}
-
-		public ActionResult Disable(int id)
-		{
-            var user = repository.Get(id);
-            user.Disabled = true;
-            repository.Update(user);
-
-            //var u = Membership.GetUser(user.UserName);
-            //if (u != null)
-            //{
-            //    u.IsApproved = false;
-            //    Membership.UpdateUser(u);
-            //}
-			return this.Direct();
-		}
-
-		public ActionResult ProfileWindow()
-		{
-            string userName = Membership.GetUser().UserName;
-            var currentUser = repository.GetAll().SingleOrDefault(u => u.UserName == userName);
-			var result = new Ext.Net.MVC.PartialViewResult
-			{
-                ViewName = "ProfileWindow",
-				RenderMode = RenderMode.Auto,
-                Model = currentUser,
-				WrapByScriptTag = false // we load the view via Loader with Script mode therefore script tags is not required
-			};
-
-		    return result;
-		}
-
 		[AllowAnonymous]
 		public ActionResult Login(string returnUrl)
 		{

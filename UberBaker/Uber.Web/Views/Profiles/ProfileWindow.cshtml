@@ -1,4 +1,4 @@
-﻿@model Uber.Core.User
+﻿@model Uber.Core.Profile
 @{
     var X = Html.X();
 }
@@ -15,7 +15,9 @@
         X.FormPanel()
             .DefaultAnchor("95%")
             .Items(
-                X.TextFieldFor(m => m.UserName),
+                X.TextFieldFor(m => m.User.UserName),
+                X.TextFieldFor(m => m.Email),
+                X.TextFieldFor(m => m.User.Role.Name),
                 X.TextFieldFor(m => m.FirstName),
                 X.TextFieldFor(m => m.LastName)
             )

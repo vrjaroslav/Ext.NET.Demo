@@ -54,18 +54,15 @@ namespace Uber.Web.Providers
 
         public override void SetPropertyValues(SettingsContext context, SettingsPropertyValueCollection collection)
         {
-            // получаем логин пользователя
+            // Getting User's name
             string username = (string)context["UserName"];
 
             if (username == null || username.Length < 1 || collection.Count < 1)
                 return;
 
             UberContext db = new UberContext();
-            // получаем id пользователя из таблицы Users по логину
             int userId = db.Users.Where(u => u.UserName.Equals(username)).FirstOrDefault().Id;
-            // по этому id извлекаем профиль из таблицы профилей
             Profile profile = db.Profiles.Where(u => u.UserId == userId).FirstOrDefault();
-            // если такой профиль уже есть изменяем его
             if (profile != null)
             {
                 foreach (SettingsPropertyValue val in collection)
@@ -76,7 +73,6 @@ namespace Uber.Web.Providers
             }
             else
             {
-                // если нет, то создаем новый профиль и добавляем его
                 profile = new Profile();
                 foreach (SettingsPropertyValue val in collection)
                 {

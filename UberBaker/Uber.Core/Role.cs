@@ -1,9 +1,7 @@
 ﻿namespace Uber.Core
 {
-    public class Role
+    public class Role : BaseItem
     {
-        public int Id { get; set; }
-
         public string Name { get; set; }
     }
 }

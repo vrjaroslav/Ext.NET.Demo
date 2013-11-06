@@ -2,47 +2,103 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.Web.Helpers;
 using Uber.Core;
-using WebMatrix.WebData;
 
 namespace Uber.Data
 {
 	public class UberContextInitializer : DropCreateDatabaseAlways<UberContext>
 	{
-		protected override void Seed(UberContext data)
+		protected override void Seed(UberContext db)
         {
-            var products = this.SeedProducts(data);
+            var products = SeedProducts(db);
 
-			var countries = this.SeedCountries();
+			var countries = SeedCountries();
 
-			var customers = this.SeedCustomers(countries);
+			var customers = SeedCustomers(countries);
 
-			this.SeedOrders(data, products, customers);
+			SeedOrders(db, products, customers);
 
-			// IMPORTANT!!
-            data.SaveChanges();
+            SeedMembership(db);
 
-            SeedMembership();
+			// IMPORTANT!!!
+            db.SaveChanges();
+
         }
-    
-        private void SeedMembership()
+
+        private void SeedMembership(UberContext db)
         {
-            //WebSecurity.InitializeDatabaseConnection("UberContext", "Users", "Id", "UserName", autoCreateTables: true);
+            // Adding Administrator
+            Role adminRole = new Role
+            {
+                Name = "Administrator"
+            };
+            db.Roles.Add(adminRole);
 
-            //if (!Membership.UserExists("admin"))
-            //{
-            //    WebSecurity.CreateUserAndAccount("admin", "demo", new { FirstName = "Administrator", LastName = "", Disabled = false });
-            //}
+            User admin = new User
+            {
+                UserName = "admin",
+                Password = Crypto.HashPassword("demo"),
+                Role = adminRole
+            };
 
-            //if (!WebSecurity.UserExists("manager"))
-            //{
-            //    WebSecurity.CreateUserAndAccount("manager", "demo", new { FirstName = "Manager", LastName = "", Disabled = false });
-            //}
+            db.Users.Add(admin);
 
-            //if (!WebSecurity.UserExists("user"))
-            //{
-            //    WebSecurity.CreateUserAndAccount("user", "demo", new { FirstName = "User", LastName = "", Disabled = false });
-            //}
+            db.Profiles.Add(new Profile
+            {
+                Email = "admin@uberbaker.com",
+                FirstName = "Admin",
+                LastName = "",
+                User = admin
+            });
+
+            // Adding Manager
+            Role managerRole = new Role
+            {
+                Name = "Manager"
+            };
+            db.Roles.Add(managerRole);
+
+            User manager = new User
+            {
+                UserName = "manager",
+                Password = Crypto.HashPassword("demo"),
+                Role = managerRole
+            };
+
+            db.Users.Add(manager);
+
+            db.Profiles.Add(new Profile
+            {
+                Email = "manager@uberbaker.com",
+                FirstName = "Manager",
+                LastName = "",
+                User = manager
+            });
+
+            // Adding User
+            Role userRole = new Role
+            {
+                Name = "User"
+            };
+            db.Roles.Add(userRole);
+
+            User user = new User
+            {
+                UserName = "user",
+                Password = Crypto.HashPassword("demo"),
+                Role = userRole
+            };
+
+            db.Users.Add(user);
+
+            db.Profiles.Add(new Profile
+            {
+                Email = "user@uberbaker.com",
+                FirstName = "User",
+                LastName = "",
+                User = user
+            });
         } 
 
 		private List<Country> SeedCountries()
@@ -104,7 +160,7 @@ namespace Uber.Data
 			return customers;
 		}
 
-		private List<Product> SeedProducts(UberContext data)
+		private List<Product> SeedProducts(UberContext db)
 		{
 			var bread = new ProductType {Name = "Bread", ShortCode = "bread"};
 			var pastry = new ProductType {Name = "Pastry", ShortCode = "pastry"};
@@ -119,7 +175,7 @@ namespace Uber.Data
                 chocolate
 			};
 
-			productTypes.ForEach(productType => data.ProductTypes.AddOrUpdate(item => item.ShortCode, productType));
+			productTypes.ForEach(productType => db.ProductTypes.AddOrUpdate(item => item.ShortCode, productType));
 
 			var products = new List<Product>
 			{
@@ -135,12 +191,12 @@ namespace Uber.Data
 				new Product {Name = "Pain au Chocolat", UnitPrice = 1.11, ShortCode = "painauchocolat", ProductType = pastry},
 			};
 
-			products.ForEach(product => data.Products.AddOrUpdate(item => item.ShortCode, product));
+			products.ForEach(product => db.Products.AddOrUpdate(item => item.ShortCode, product));
 
 			return products;
 		}
 
-		private void SeedOrders(UberContext data, List<Product> products, List<Customer> customers)
+		private void SeedOrders(UberContext db, List<Product> products, List<Customer> customers)
 		{
 			Random r = new Random(20);
 
@@ -157,7 +213,7 @@ namespace Uber.Data
 					});
 			}
 
-			orders.ForEach(order => data.Orders.AddOrUpdate(order));
+			orders.ForEach(order => db.Orders.AddOrUpdate(order));
 		}
 	}
 }

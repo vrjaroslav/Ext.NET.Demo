@@ -111,14 +111,14 @@ namespace Uber.Web.Providers
             return null;
         }
 
-        public override MembershipUser GetUser(string email, bool userIsOnline)
+        public override MembershipUser GetUser(string userName, bool userIsOnline)
         {
             try
             {
                 using (UberContext _db = new UberContext())
                 {
                     var users = from u in _db.Users
-                                where u.UserName == email
+                                where u.UserName == userName
                                 select u;
                     if (users.Count() > 0)
                     {

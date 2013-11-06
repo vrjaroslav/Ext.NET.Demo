@@ -35,6 +35,7 @@ namespace Uber.Data
 			builder.Entity<Customer>().ToTable("Customers");
 			builder.Entity<User>().ToTable("Users");
             builder.Entity<Role>().ToTable("Roles");
+            builder.Entity<Profile>().ToTable("Profiles");
 			builder.Entity<Country>().ToTable("Countries");
 			builder.Entity<Address>().ToTable("Addresses");
 		}

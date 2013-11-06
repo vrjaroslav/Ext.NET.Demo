@@ -1,5 +1,5 @@
 ﻿@using Uber.Core
-@model Uber.Core.User
+@model Uber.Core.Profile
 @{
     var X = Html.X();
 }
@@ -27,36 +27,48 @@
                         X.ModelFieldFor(m => m.PhantomId),
                         X.ModelFieldFor(m => m.FirstName),
                         X.ModelFieldFor(m => m.LastName),
-                        X.ModelFieldFor(m => m.UserName)
+                        X.ModelFieldFor(m => m.User)
+                            .Mapping("User.UserName"),
+                        X.ModelFieldFor(m => m.User.Role)
+                            .Mapping("User.Role.Name")
                     )
                 )
                 .ID("UsersStore")
                 .Proxy(X.AjaxProxy()
-                    .Url(Url.Action("ReadData", "Account"))
+                    .Url(Url.Action("ReadData", "Profiles"))
                     .Reader(X.JsonReader().Root("data"))
                 )
                 .Sorters(
-                    Html.X().DataSorter().Property("UserName").Direction(Ext.Net.SortDirection.ASC)                                
+                    Html.X().DataSorter().Property("FirstName").Direction(Ext.Net.SortDirection.ASC)                                
                 )
             )
             .ColumnModel(
-                X.ColumnFor(Model, m => m.Id)
-                    .ToBuilder<Column.Builder>(),
-                X.ColumnFor(Model, m => m.UserName)
-                    .ToBuilder<Column.Builder>()
-                    .Flex(1),
-                X.ColumnFor(Model, m => m.FirstName)
-                    .ToBuilder<Column.Builder>()
-                    .Flex(1),
-                X.ColumnFor(Model, m => m.LastName)
-                    .ToBuilder<Column.Builder>()
-                    .Flex(1)
+                X.Column()
+                    .DataIndex("Id")
+                    .Text("Id")
+                    .Width(50),
+                X.Column()
+                    .DataIndex("User")
+                    .Text("User Name")
+                    .Width(100),
+                X.Column()
+                    .DataIndex("Role")
+                    .Text("Role")
+                    .Width(100),
+                X.Column()
+                    .DataIndex("FirstName")
+                    .Text("First Name")
+                    .Width(150),
+                X.Column()
+                    .DataIndex("LastName")
+                    .Text("Last Name")
+                    .Width(150)
             )
             .Features(
                 Html.X().GridFilters()
                     .Filters(
                         Html.X().NumericFilter().DataIndex("Id"),
-                        Html.X().StringFilter().DataIndex("UserName"),
+                        Html.X().StringFilter().DataIndex("User"),
                         Html.X().StringFilter().DataIndex("FirstName"),
                         Html.X().StringFilter().DataIndex("LastName")
                     )
@@ -111,10 +123,14 @@
                     .ID("UsersFirstName")
                     .FieldLabel("First Name")
                     .AllowBlank(false),
-                X.TextFieldFor(m => m.UserName)
+                X.DisplayFieldFor(m => m.User.UserName)
+                    .DataIndex("User")
                     .ID("UsersUserName")
-                    .FieldLabel("UserName")
-                    .AllowBlank(false),
+                    .FieldLabel("UserName"),
+                X.DisplayFieldFor(m => m.User.Role)
+                    .DataIndex("Role")
+                    .ID("UsersUserRole")
+                    .FieldLabel("Role"),
                 X.TextFieldFor(m => m.LastName)
                     .ID("UsersLastName")
                     .FieldLabel("Last Name")

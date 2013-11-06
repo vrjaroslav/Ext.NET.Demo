@@ -207,9 +207,7 @@
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\ProductTypesController.cs" />
-    <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Controllers\ProfilesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -270,6 +268,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -291,7 +290,7 @@
     <Content Include="Views\Home\RenderUsers.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\ProfileWindow.cshtml" />
+    <Content Include="Views\Profiles\ProfileWindow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\DashboardChart.cshtml" />

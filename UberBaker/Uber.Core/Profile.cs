@@ -1,10 +1,8 @@
 ﻿namespace Uber.Core
 {
-    public class Profile
+    public class Profile : BaseItem
     {
-        public int Id { get; set; }
-
-        public int UserId { get; set; }
+        public virtual int? UserId { get; set; }
 
         public virtual User User { get; set; }
 

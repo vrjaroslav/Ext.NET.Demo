@@ -13,9 +13,10 @@ namespace Uber.Data
         public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Address> Addresses { get; set; }
-
+        public DbSet<Profile> Profiles { get; set; }
 
 		public UberContext() : base("UberContext")
 		{
@@ -33,6 +34,7 @@ namespace Uber.Data
 			builder.Entity<ProductType>().ToTable("ProductTypes");
 			builder.Entity<Customer>().ToTable("Customers");
 			builder.Entity<User>().ToTable("Users");
+            builder.Entity<Role>().ToTable("Roles");
 			builder.Entity<Country>().ToTable("Countries");
 			builder.Entity<Address>().ToTable("Addresses");
 		}

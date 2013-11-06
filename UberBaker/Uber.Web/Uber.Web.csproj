@@ -218,6 +218,9 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\OrderChartData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\UberMembershipProvider.cs" />
+    <Compile Include="Providers\UberProfileProvider.cs" />
+    <Compile Include="Providers\UberRoleProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Readme\Ext.NET.MVC\BREAKING_CHANGES.txt" />

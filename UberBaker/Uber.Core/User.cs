@@ -1,30 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Uber.Core
 {
-	public class User
+	public class User : BaseItem
 	{
-		[Key]
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Required]
-        public virtual int Id { get; set; }
+        public string UserName { get; set; }
 
-		public string PhantomId { get; set; }
+        public string Password { get; set; }
 
-        public bool Disabled { get; set; }
+        public int? RoleId { get; set; }
 
-        public virtual bool IsNew
-        {
-            get
-            {
-                return this.Id < 1;
-            }
-        }
-		public string UserName { get; set; }
-
-		public string FirstName { get; set; }
-
-		public string LastName { get; set; }
+        public Role Role { get; set; }
 	}
 }

@@ -7,7 +7,7 @@ using WebMatrix.WebData;
 
 namespace Uber.Data
 {
-	public class UberContextInitializer : DropCreateDatabaseIfModelChanges<UberContext>
+	public class UberContextInitializer : DropCreateDatabaseAlways<UberContext>
 	{
 		protected override void Seed(UberContext data)
         {
@@ -27,22 +27,22 @@ namespace Uber.Data
     
         private void SeedMembership()
         {
-            WebSecurity.InitializeDatabaseConnection("UberContext", "Users", "Id", "UserName", autoCreateTables: true);
+            //WebSecurity.InitializeDatabaseConnection("UberContext", "Users", "Id", "UserName", autoCreateTables: true);
 
-            if (!WebSecurity.UserExists("admin"))
-            {
-                WebSecurity.CreateUserAndAccount("admin", "demo", new { FirstName = "Administrator", LastName = "", Disabled = false });
-            }
+            //if (!Membership.UserExists("admin"))
+            //{
+            //    WebSecurity.CreateUserAndAccount("admin", "demo", new { FirstName = "Administrator", LastName = "", Disabled = false });
+            //}
 
-            if (!WebSecurity.UserExists("manager"))
-            {
-                WebSecurity.CreateUserAndAccount("manager", "demo", new { FirstName = "Manager", LastName = "", Disabled = false });
-            }
+            //if (!WebSecurity.UserExists("manager"))
+            //{
+            //    WebSecurity.CreateUserAndAccount("manager", "demo", new { FirstName = "Manager", LastName = "", Disabled = false });
+            //}
 
-            if (!WebSecurity.UserExists("user"))
-            {
-                WebSecurity.CreateUserAndAccount("user", "demo", new { FirstName = "User", LastName = "", Disabled = false });
-            }
+            //if (!WebSecurity.UserExists("user"))
+            //{
+            //    WebSecurity.CreateUserAndAccount("user", "demo", new { FirstName = "User", LastName = "", Disabled = false });
+            //}
         } 
 
 		private List<Country> SeedCountries()

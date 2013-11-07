@@ -11,6 +11,7 @@ using Uber.Data.Abstract;
 using Uber.Data.Repositories;
 using Uber.Web.Helpers;
 using Uber.Web.Models;
+using Uber.Web.Providers;
 using WebMatrix.WebData;
 
 namespace Uber.Web.Controllers
@@ -64,10 +65,10 @@ namespace Uber.Web.Controllers
 		{
 			if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
 			{
-				return this.RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home");
 			}
 
-            return this.View(model);
+            return View(model);
 		}
 
 		public ActionResult LogOff()
@@ -75,43 +76,6 @@ namespace Uber.Web.Controllers
 			WebSecurity.Logout();
 
             return this.RedirectToAction("Index", "Home");
-		}
-
-		//
-		// GET: /Account/Register
-
-		[AllowAnonymous]
-		public ActionResult Register()
-		{
-            return this.View();
-		}
-
-		//
-		// POST: /Account/Register
-
-		[HttpPost]
-		[AllowAnonymous]
-		[ValidateAntiForgeryToken]
-		public ActionResult Register(RegisterModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				// Attempt to register the user
-				try
-				{
-					WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
-					WebSecurity.Login(model.UserName, model.Password);
-
-                    return this.RedirectToAction("Index", "Home");
-				}
-				catch (MembershipCreateUserException e)
-				{
-                    this.ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
-				}
-			}
-
-			// If we got this far, something failed, redisplay form
-            return this.View(model);
 		}
 
 		//

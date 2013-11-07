@@ -53,7 +53,7 @@
                 X.DateColumn()
                     .DataIndex("OrderDate")
                     .Text("Date")
-                    .Format("dd-MM-yyyy"),
+                    .Format("yyyy-MM-dd"),
                 X.ColumnFor(m => m.Product)
                     .ToBuilder<Column.Builder>()
                     .Text("Product")
@@ -132,7 +132,32 @@
                 X.DateFieldFor(m => m.OrderDate)
                     .ID("OrdersOrderDate")
                     .FieldLabel("Order Date")
-                    .AllowBlank(false),
+                    .AllowBlank(false)
+                    .Format("yyyy-MM-dd"),
+                X.ComboBox()
+                    .FieldLabel("Customer")
+                    .Name("CustomerId")
+                    .DisplayField("FullName")
+                    .ValueField("Id")
+                    .ForceSelection(true)
+                    .Store(X.StoreFor<Customer>()
+                        .Proxy(Html.X().AjaxProxy()
+                            .Url(Url.Action("ReadData", "Customers"))
+                            .Reader(Html.X().JsonReader().Root("data"))
+                        )
+                    ),
+                X.ComboBox()
+                    .FieldLabel("Product")
+                    .Name("ProductId")
+                    .DisplayField("Name")
+                    .ValueField("Id")
+                    .ForceSelection(true)
+                    .Store(X.StoreFor<Product>()
+                        .Proxy(Html.X().AjaxProxy()
+                            .Url(Url.Action("ReadData", "Products"))
+                            .Reader(Html.X().JsonReader().Root("data"))
+                        )
+                    ),
                 X.NumberFieldFor(m => m.Quantity)
                     .ID("OrdersQuantity")
                     .FieldLabel("Quantity")

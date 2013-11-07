@@ -13,6 +13,7 @@
         X.GridPanel()
             .Region(Region.Center)
             .ID("UsersGrid")
+            .ForceFit(true)
             .Store(X.Store()
                 .RemoteSort(true)
                 .RemotePaging(true)
@@ -27,6 +28,14 @@
                         X.ModelFieldFor(m => m.PhantomId),
                         X.ModelFieldFor(m => m.FirstName),
                         X.ModelFieldFor(m => m.LastName),
+                        X.ModelField()
+                            .Name("LastLoginIp")
+                            .Mapping("User.LastLoginIp"),
+                        X.ModelField()
+                            .Name("LastLoginDate")
+                            .Mapping("User.LastLoginDate")
+                            .Type(ModelFieldType.Date)
+                            .UseNull(true),
                         X.ModelFieldFor(m => m.User)
                             .Mapping("User.UserName"),
                         X.ModelFieldFor(m => m.User.Role)
@@ -62,6 +71,15 @@
                 X.Column()
                     .DataIndex("LastName")
                     .Text("Last Name")
+                    .Width(150),
+                X.DateColumn()
+                    .Format("yyyy-MM-dd H:i:s")
+                    .DataIndex("LastLoginDate")
+                    .Text("Last Login Date")
+                    .Width(150),
+                X.Column()
+                    .DataIndex("LastLoginIp")
+                    .Text("Last Login IP")
                     .Width(150)
             )
             .Features(
@@ -123,6 +141,10 @@
                     .ID("UsersFirstName")
                     .FieldLabel("First Name")
                     .AllowBlank(false),
+                X.TextFieldFor(m => m.LastName)
+                    .ID("UsersLastName")
+                    .FieldLabel("Last Name")
+                    .AllowBlank(false),
                 X.DisplayFieldFor(m => m.User.UserName)
                     .DataIndex("User")
                     .ID("UsersUserName")
@@ -131,10 +153,15 @@
                     .DataIndex("Role")
                     .ID("UsersUserRole")
                     .FieldLabel("Role"),
-                X.TextFieldFor(m => m.LastName)
-                    .ID("UsersLastName")
-                    .FieldLabel("Last Name")
-                    .AllowBlank(false)
+                X.DisplayFieldFor(m => m.User.LastLoginDate)
+                    .DataIndex("LastLoginDate")
+                    .ID("LastLoginDate")
+                    .FieldLabel("Last Login DateTime")
+                    .Format("{0:date('Y-m-d H:i:s')}"),
+                X.DisplayFieldFor(m => m.User.LastLoginIp)
+                    .DataIndex("LastLoginIp")
+                    .ID("LastLoginIp")
+                    .FieldLabel("Last Login IP Address")
             )
             .TopBar(
                 X.Toolbar()

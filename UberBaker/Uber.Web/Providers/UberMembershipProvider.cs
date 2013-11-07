@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Web;
 using System.Web.Helpers;
 using System.Web.Security;
 using Uber.Core;
@@ -47,17 +49,22 @@ namespace Uber.Web.Providers
         {
             bool isValid = false;
 
-            using (UberContext _db = new UberContext())
+            using (UberContext db = new UberContext())
             {
                 try
                 {
-                    User user = (from u in _db.Users
+                    User user = (from u in db.Users
                                  where u.UserName == username
                                  select u).FirstOrDefault();
 
                     if (user != null && Crypto.VerifyHashedPassword(user.Password, password))
                     {
                         isValid = true;
+
+                        user.LastLoginIp = HttpContext.Current.Request.UserHostAddress;
+                        user.LastLoginDate = DateTime.Now;
+                        db.Entry(user).State = EntityState.Modified;
+                        db.SaveChanges();
                     }
                 }
                 catch

@@ -1,4 +1,6 @@
-﻿namespace Uber.Core
+﻿using System;
+
+namespace Uber.Core
 {
     public class Profile : BaseItem
     {
@@ -12,4 +14,4 @@
 
         public string Email { get; set; }
     }
-}
+} 

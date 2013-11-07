@@ -21,31 +21,31 @@
             App[type + 'Spot'].show(App[type + 'Form']);
             App[type + 'Form'].reset();
             App[type + 'Form'].getForm().loadRecord(record);
+            focusFormField(App[type + 'Form'].getForm());
         };
-        
-        var getSelectedIdParameter = function (grid) {
+
+        var getSelectedIdParameter = function(grid) {
             return grid.getSelectionModel().getSelection()[0].data.Id;
         };
-        
-        var recordDeleteSuccess = function (button, grid, type) {
+
+        var recordDeleteSuccess = function(button, grid, type) {
             grid.getStore().reload();
             App[type + 'Form'].reset();
         };
 
-        var gridRowSelected = function (type, record) {
+        var gridRowSelected = function(type, record) {
             App[type + 'Form'].getForm().loadRecord(record);
             App[type + 'Id'].setValue(record.get('Id'));
-            var field = App[type + 'Form'].getForm().getFields().findBy(function (field) { return field.isXType('textfield'); });
-            if (field)
-                field.inputEl.focus(10);
+            focusFormField(App[type + 'Form'].getForm());
         };
-        
+
         var recordAddSuccess = function(type) {
             if (App[type + 'Spot'].active)
                 App[type + 'Spot'].hide();
+            App[type + 'Form'].reset();
             App[type + 'Grid'].getStore().reload();
         };
-        
+
         var recordSaveCancel = function(type) {
             if (App[type + 'Spot'].active)
                 App[type + 'Spot'].hide();
@@ -53,6 +53,12 @@
             App[type + 'Grid'].getSelectionModel().clearSelections();
             App[type + 'Grid'].view.refresh();
         };
+
+        var focusFormField = function (form) {
+            var field = form.getFields().findBy(function (field) { return field.isXType('textfield'); });
+            if (field)
+                field.inputEl.focus(10);
+        }
     </script>
 }
 

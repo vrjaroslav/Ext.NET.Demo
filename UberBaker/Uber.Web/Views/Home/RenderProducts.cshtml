@@ -29,7 +29,8 @@
                         X.ModelFieldFor(m => m.Name),
                         X.ModelFieldFor(m => m.ShortCode),
                         X.ModelFieldFor(m => m.Description),
-                        X.ModelFieldFor(m => m.UnitPrice),
+                        X.ModelFieldFor(m => m.UnitPrice)
+                            .UseNull(true),
                         X.ModelFieldFor(m => m.ProductType)
                             .Mapping("ProductType.Name"),
                         X.ModelFieldFor(m => m.ProductTypeId)
@@ -89,10 +90,12 @@
                         Html.X().Button()
                             .Text("Add")
                             .Icon(Icon.Add)
-                            .Handler("addRecordButtonHandler('Products', new Product({ ProductType: null, ProductTypeId: null }));"),
+                            .Handler("addRecordButtonHandler('Products', new Product({ ProductType: null, ProductTypeId: null, UnitPrice: 0 }));"),
 
                         Html.X().Button()
+                            .ID("ProductsDeleteButton")
                             .Text("Delete")
+                            .Disabled(true)
                             .Icon(Icon.Exclamation)
                             .DirectEvents(de => {
                                 de.Click.Url = Url.Action("Delete", "Products");
@@ -108,6 +111,7 @@
                     .Mode(SelectionMode.Single)
                     .Listeners(l =>
                     {
+                        l.Deselect.Handler = "gridRowDeselected('Products');";
                         l.Select.Handler = "gridRowSelected('Products', record);";
                     })
             )
@@ -122,6 +126,10 @@
             .AutoScroll(true)
             .BodyPaddingSummary("0 10")
             .DefaultAnchor("100%")
+            .Listeners(l =>
+            {
+                l.ValidityChange.Handler = "validityChange('Products', valid);";
+            })
             .Items(
                 X.HiddenFor(m => m.Id)
                     .ID("ProductsIdValue"),
@@ -156,7 +164,9 @@
                     .Items(
                         X.ToolbarFill(),
                         X.Button()
+                            .ID("ProductsSaveButton")
                             .Text("Save")
+                            .Disabled(true)
                             .Icon(Icon.Disk)
                             .DirectEvents(de => {
                                 de.Click.Url = Url.Action("Save", "Products");
@@ -165,7 +175,9 @@
                                 de.Click.Success = "recordAddSuccess('Products');";
                             }),
                         X.Button()
+                            .ID("ProductsCancelButton")
                             .Text("Cancel")
+                            .Disabled(true)
                             .Icon(Icon.Cross)
                             .Listeners(l => {
                                 l.Click.Handler = "recordSaveCancel('Products');";

@@ -18,10 +18,16 @@
         };
 
         var addRecordButtonHandler = function(type, record) {
+            App[type + "SaveButton"].disable();
+            App[type + "CancelButton"].enable();
             App[type + 'Spot'].show(App[type + 'Form']);
             App[type + 'Form'].reset();
-            App[type + 'Form'].getForm().loadRecord(record);
+            App[type + 'Grid'].getSelectionModel().deselectAll();
             focusFormField(App[type + 'Form'].getForm());
+        };
+
+        var checkGridSelection = function(grid) {
+            return grid.getSelectionModel().getSelection().length > 0;
         };
 
         var getSelectedIdParameter = function(grid) {
@@ -34,31 +40,43 @@
         };
 
         var gridRowSelected = function(type, record) {
+            App[type + "DeleteButton"].enable();
+            App[type + "SaveButton"].enable();
+            App[type + "CancelButton"].enable();
             App[type + 'Form'].getForm().loadRecord(record);
             App[type + 'Id'].setValue(record.get('Id'));
             focusFormField(App[type + 'Form'].getForm());
         };
 
+        var gridRowDeselected = function(type, record) {
+            App[type + "DeleteButton"].disable();
+        };
+
         var recordAddSuccess = function(type) {
             if (App[type + 'Spot'].active)
                 App[type + 'Spot'].hide();
-            App[type + 'Form'].reset();
+            App[type + 'Form'].reset(true);
             App[type + 'Grid'].getStore().reload();
         };
 
-        var recordSaveCancel = function(type) {
+        var recordSaveCancel = function (type) {
+            App[type + 'Form'].reset(true);
             if (App[type + 'Spot'].active)
                 App[type + 'Spot'].hide();
-            App[type + 'Form'].reset();
-            App[type + 'Grid'].getSelectionModel().clearSelections();
-            App[type + 'Grid'].view.refresh();
+            App[type + "SaveButton"].disable();
+            App[type + "CancelButton"].disable();
+            App[type + 'Grid'].getSelectionModel().deselect(App[type + 'Form'].getRecord());
         };
 
         var focusFormField = function (form) {
             var field = form.getFields().findBy(function (field) { return field.isXType('textfield'); });
             if (field)
                 field.inputEl.focus(10);
-        }
+        };
+        
+        var validityChange = function (type, valid) {
+            App[type + "SaveButton"].setDisabled(!valid);
+        };
     </script>
 }
 
@@ -136,9 +154,14 @@
                                         }),
                                         
                                     X.MenuItem()
-                                        .Text("LogOut")
+                                        .Text("Log Out")
                                         .Icon(Icon.DoorOut)
-                                        .DirectClickAction("LogOff", "Account")
+                                        .DirectEvents(de =>
+                                        {
+                                            de.Click.Confirmation.ConfirmRequest = true;
+                                            de.Click.Confirmation.Message = "Are you sure you want to log out?";
+                                            de.Click.Url = Url.Action("LogOff", "Account");
+                                        })
                                 )
                             )
                             )

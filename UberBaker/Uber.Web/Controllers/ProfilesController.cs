@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using Ext.Net;
 using Ext.Net.MVC;
+using Uber.Core;
 using Uber.Data.Abstract;
 using Uber.Data.Repositories;
 using Uber.Web.Helpers;
@@ -44,12 +45,16 @@ namespace Uber.Web.Controllers
             profile.Disabled = true;
             repository.Update(profile);
 
-            //var u = Membership.GetUser(user.UserName);
-            //if (u != null)
-            //{
-            //    u.IsApproved = false;
-            //    Membership.UpdateUser(u);
-            //}
+            return this.Direct();
+        }
+
+        public ActionResult Save(Profile profile)
+        {
+            var p = repository.Get(profile.Id);
+            p.LastName = profile.LastName;
+            p.FirstName = profile.FirstName;
+            repository.AddOrUpdate(p);
+
             return this.Direct();
         }
 

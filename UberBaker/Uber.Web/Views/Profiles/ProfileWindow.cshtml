@@ -1,4 +1,5 @@
-﻿@model Uber.Core.Profile
+﻿@using Uber.Web.Helpers
+@model Uber.Core.Profile
 @{
     var X = Html.X();
 }
@@ -19,7 +20,12 @@
                 X.TextFieldFor(m => m.Email),
                 X.TextFieldFor(m => m.User.Role.Name),
                 X.TextFieldFor(m => m.FirstName),
-                X.TextFieldFor(m => m.LastName)
+                X.TextFieldFor(m => m.LastName),
+                X.Image()
+                    .Anchor("none")
+                    .ImageUrl(Html.GravatarImageUrl(Model.Email))
+                    .Width(80)
+                    .Height(80)
             )
     )
 )

@@ -101,11 +101,13 @@
                             .Handler("addRecordButtonHandler('User', new User());"),
 
                         X.Button()
+                            .ID("UsersDeleteButton")
                             .Text("Disable account")
                             .Icon(Icon.Exclamation)
+                            .Disabled(true)
                             .DirectEvents(de =>
                             {
-                                de.Click.Url = Url.Action("Disable", "Account");
+                                de.Click.Url = Url.Action("Disable", "Profiles");
                                 de.Click.Confirmation.Message = "Are you sure you want to disable this account?";
                                 de.Click.Confirmation.ConfirmRequest = true;
                                 de.Click.ExtraParams.Add(new Parameter("id", "getSelectedIdParameter(this.up('grid'))", ParameterMode.Raw));
@@ -119,6 +121,7 @@
                     .Listeners(l =>
                     {
                         l.Select.Handler = "gridRowSelected('Users', record);";
+                        l.Deselect.Handler = "gridRowDeselected('Users');";
                     })
             )
             .BottomBar(
@@ -132,6 +135,10 @@
             .AutoScroll(true)
             .BodyPaddingSummary("0 10")
             .DefaultAnchor("100%")
+            .Listeners(l =>
+            {
+                l.ValidityChange.Handler = "validityChange('Users', valid);";
+            }) 
             .Items(
                 X.HiddenFor(m => m.Id)
                     .ID("UsersIdValue"),
@@ -168,16 +175,19 @@
                     .Items(
                         X.ToolbarFill(),
                         X.Button()
+                            .ID("UsersSaveButton")
                             .Disabled(true)
                             .Text("Save")
                             .Icon(Icon.Disk)
                             .DirectEvents(de => {
-                                de.Click.Url = Url.Action("Save", "Account");
+                                de.Click.Url = Url.Action("Save", "Profiles");
                                 de.Click.FormID = "UsersForm";
                                 de.Click.Success = "recordAddSuccess('Users'); ";
                             }),
                         X.Button()
+                            .ID("UsersCancelButton")
                             .Text("Cancel")
+                            .Disabled(true)
                             .Icon(Icon.Cross)
                             .Listeners(l => {
                                 l.Click.Handler = "recordSaveCancel('Users');";

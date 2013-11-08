@@ -92,8 +92,10 @@
                             .Handler("addRecordButtonHandler('Customers', new Customer({  }));"),
 
                         Html.X().Button()
+                            .ID("CustomersDeleteButton")
                             .Text("Delete")
                             .Icon(Icon.Exclamation)
+                            .Disabled(true)
                             .DirectEvents(de => {
                                 de.Click.Url = Url.Action("Delete", "Customers");
                                 de.Click.Confirmation.Message = "Are you sure you want to delete this record?";
@@ -109,6 +111,7 @@
                     .Listeners(l =>
                     {
                         l.Select.Handler = "gridRowSelected('Customers', record); ";
+                        l.Deselect.Handler = "gridRowDeselected('Customers');";
                     })
             )
             .BottomBar(
@@ -122,6 +125,10 @@
             .Width(400)
             .BodyPaddingSummary("0 10")
             .DefaultAnchor("100%")
+            .Listeners(l =>
+            {
+                l.ValidityChange.Handler = "validityChange('Customers', valid);";
+            })
             .Items(
                 X.HiddenFor(m => m.Id)
                     .ID("CustomersIdValue"),
@@ -232,7 +239,9 @@
                     .Items(
                         X.ToolbarFill(),
                         X.Button()
+                            .ID("CustomersSaveButton")
                             .Text("Save")
+                            .Disabled(true)
                             .Icon(Icon.Disk)
                             .DirectEvents(de => {
                                 de.Click.Url = Url.Action("Save", "Customers");
@@ -240,7 +249,9 @@
                                 de.Click.Success = "recordAddSuccess('Customers');";
                             }),
                         X.Button()
+                            .ID("CustomersCancelButton")
                             .Text("Cancel")
+                            .Disabled(true)
                             .Icon(Icon.Cross)
                             .Listeners(l => {
                                 l.Click.Handler = "recordSaveCancel('Customers');";

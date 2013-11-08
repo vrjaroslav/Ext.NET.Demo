@@ -69,7 +69,9 @@
                             .Handler("addRecordButtonHandler('ProductTypes', new ProductType());"),
 
                         Html.X().Button()
+                            .ID("ProductTypesDeleteButton")
                             .Text("Delete")
+                            .Disabled(true)
                             .Icon(Icon.Exclamation)
                             .DirectEvents(de => {
                                 de.Click.Url = Url.Action("Delete", "ProductTypes");
@@ -86,6 +88,7 @@
                     .Listeners(l =>
                     {
                         l.Select.Handler = "gridRowSelected('ProductTypes', record);";
+                        l.Deselect.Handler = "gridRowDeselected('ProductTypes');";
                     })
             )
             .BottomBar(
@@ -99,6 +102,10 @@
             .AutoScroll(true)
             .BodyPaddingSummary("0 10")
             .DefaultAnchor("100%")
+            .Listeners(l =>
+            {
+                l.ValidityChange.Handler = "validityChange('ProductTypes', valid);";
+            }) 
             .Items(
                 X.HiddenFor(m => m.Id)
                     .ID("ProductTypesIdValue"),
@@ -119,7 +126,9 @@
                     .Items(
                         X.ToolbarFill(),
                         X.Button()
+                            .ID("ProductTypesSaveButton")
                             .Text("Save")
+                            .Disabled(true)
                             .Icon(Icon.Disk)
                             .DirectEvents(de => {
                                 de.Click.Url = Url.Action("Save", "ProductTypes");
@@ -127,7 +136,9 @@
                                 de.Click.Success = "recordAddSuccess('ProductTypes');";
                             }),
                         X.Button()
+                            .ID("ProductTypesCancelButton")
                             .Text("Cancel")
+                            .Disabled(true)
                             .Icon(Icon.Cross)
                             .Listeners(l => {
                                 l.Click.Handler = "recordSaveCancel('ProductTypes'); ";

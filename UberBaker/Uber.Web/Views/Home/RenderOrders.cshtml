@@ -95,6 +95,8 @@
 
                         Html.X().Button()
                             .Text("Delete")
+                            .ID("OrdersDeleteButton")
+                            .Disabled(true)
                             .Icon(Icon.Exclamation)
                             .DirectEvents(de => {
                                 de.Click.Url = Url.Action("Delete", "Orders");
@@ -111,6 +113,7 @@
                     .Listeners(l =>
                     {
                         l.Select.Handler = "gridRowSelected('Orders', record);";
+                        l.Deselect.Handler = "gridRowDeselected('Orders');";
                     })
             )
             .BottomBar(
@@ -123,7 +126,11 @@
             .Width(400)
             .AutoScroll(true)
             .DefaultAnchor("100%")
-            .BodyPaddingSummary("0 10")            
+            .BodyPaddingSummary("0 10")   
+            .Listeners(l =>
+            {
+                l.ValidityChange.Handler = "validityChange('Orders', valid);";
+            })         
             .Items(
                 X.HiddenFor(m => m.Id)
                     .ID("OrdersIdValue"),
@@ -171,7 +178,9 @@
                     .Items(
                         X.ToolbarFill(),
                         X.Button()
+                            .ID("OrdersSaveButton")
                             .Text("Save")
+                            .Disabled(true)
                             .Icon(Icon.Disk)
                             .DirectEvents(de => {
                                 de.Click.Url = Url.Action("Save", "Orders");
@@ -179,7 +188,9 @@
                                 de.Click.Success = "recordAddSuccess('Orders');";
                             }),
                         X.Button()
+                            .ID("OrdersCancelButton")
                             .Text("Cancel")
+                            .Disabled(true)
                             .Icon(Icon.Cross)
                             .Listeners(l => {
                                 l.Click.Handler = "recordSaveCancel('Orders');";

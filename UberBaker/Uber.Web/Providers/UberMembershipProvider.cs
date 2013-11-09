@@ -32,7 +32,29 @@ namespace Uber.Web.Providers
 
         public override bool ChangePassword(string username, string oldPassword, string newPassword)
         {
-            throw new NotImplementedException();
+            bool isValid = false;
+            using (UberContext db = new UberContext())
+            {
+                try
+                {
+                    User user = (from u in db.Users
+                                 where u.UserName == username
+                                 select u).FirstOrDefault();
+
+                    if (user != null && Crypto.VerifyHashedPassword(user.Password, oldPassword))
+                    {
+                        isValid = true;
+                        user.Password = Crypto.HashPassword(newPassword);
+                        db.Entry(user).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+                catch
+                {
+                    isValid = false;
+                }
+            }
+            return isValid;
         }
 
         public override string ResetPassword(string username, string answer)

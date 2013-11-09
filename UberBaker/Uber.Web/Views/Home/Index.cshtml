@@ -150,7 +150,14 @@
                                         .Icon(Icon.User)
                                         .DirectEvents(de =>
                                         {
-                                            de.Click.Url = Url.Action("ProfileWindow", "Profiles");
+                                            //de.Click.Url = Url.Action("ProfileWindow", "Profiles");
+                                            de.Click.Url = Url.Action("ProfilePanel", "Profiles");
+                                            de.Click.ExtraParams.Add(new { containerId = "MainTabPanel" });
+                                            de.Click.ExtraParams.Add(new { tabId = "ProfilePanel" });
+                                            de.Click.EventMask.ShowMask = true;
+                                            de.Click.EventMask.Msg = "Loading...";
+                                            de.Click.Before = "return beforeTabOpen(extraParams['tabId']);";
+                                            de.Click.Timeout = 120000;
                                         }),
                                         
                                     X.MenuItem()

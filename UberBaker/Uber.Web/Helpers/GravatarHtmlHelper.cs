@@ -18,8 +18,6 @@ namespace Uber.Web.Helpers
     /// </remarks>
     public static class GravatarHtmlHelper
     {
-
-
         /// <summary>
         /// In addition to allowing you to use your own image, Gravatar has a number of built in options which you can also use as defaults. Most of these work by taking the requested email hash and using it to generate a themed image that is unique to that email address
         /// </summary>
@@ -93,22 +91,8 @@ namespace Uber.Web.Helpers
             emailAddress = string.IsNullOrEmpty(emailAddress) ? string.Empty : emailAddress.Trim().ToLower();
 
             imgTag.Attributes.Add("src",
-                string.Format("{0}://{1}.gravatar.com/avatar/{2}?s={3}{4}{5}{6}",
-                    htmlHelper.ViewContext.HttpContext.Request.IsSecureConnection || forceSecureRequest
-                        ? "https"
-                        : "http",
-                    htmlHelper.ViewContext.HttpContext.Request.IsSecureConnection || forceSecureRequest
-                        ? "secure"
-                        : "www",
-                    GetMd5Hash(emailAddress),
-                    size.ToString(),
-                    "&d=" +
-                    (!string.IsNullOrEmpty(defaultImageUrl)
-                        ? HttpUtility.UrlEncode(defaultImageUrl)
-                        : defaultImage.GetDescription()),
-                    forceDefaultImage ? "&f=y" : "",
-                    "&r=" + rating.GetDescription()
-                    )
+                GetGravarUrl(htmlHelper, emailAddress, size, defaultImage, defaultImageUrl, forceDefaultImage, rating,
+                    forceSecureRequest)
                 );
 
             imgTag.Attributes.Add("class", "gravatar");
@@ -116,6 +100,16 @@ namespace Uber.Web.Helpers
             return new HtmlString(imgTag.ToString(TagRenderMode.SelfClosing));
         }
 
+        /// <summary>
+        /// Returns a Globally Recognised Avatar as a URL - http://gravatar.com
+        /// </summary>
+        /// <param name="emailAddress">Email Address for the Gravatar</param>
+        /// <param name="defaultImage">Default image if user hasn't created a Gravatar</param>
+        /// <param name="size">Size in pixels (default: 80)</param>
+        /// <param name="defaultImageUrl">URL to a custom default image (e.g: 'Url.Content("~/images/no-grvatar.png")' )</param>
+        /// <param name="forceDefaultImage">Prefer the default image over the users own Gravatar</param>
+        /// <param name="rating">Gravatar content rating (note that Gravatars are self-rated)</param>
+        /// <param name="forceSecureRequest">Always do secure (https) requests</param>
         public static string GravatarImageUrl(
             this HtmlHelper htmlHelper,
             string emailAddress,
@@ -127,24 +121,49 @@ namespace Uber.Web.Helpers
             bool forceSecureRequest = false)
         {
 
-            return string.Format("{0}://{1}.gravatar.com/avatar/{2}?s={3}{4}{5}{6}",
-                    htmlHelper.ViewContext.HttpContext.Request.IsSecureConnection || forceSecureRequest
-                        ? "https"
-                        : "http",
-                    htmlHelper.ViewContext.HttpContext.Request.IsSecureConnection || forceSecureRequest
-                        ? "secure"
-                        : "www",
-                    GetMd5Hash(emailAddress),
-                    size.ToString(),
-                    "&d=" +
-                    (!string.IsNullOrEmpty(defaultImageUrl)
-                        ? HttpUtility.UrlEncode(defaultImageUrl)
-                        : defaultImage.GetDescription()),
-                    forceDefaultImage ? "&f=y" : "",
-                    "&r=" + rating.GetDescription()
-                    );
+            return GetGravarUrl(htmlHelper, emailAddress, size, defaultImage, defaultImageUrl, forceDefaultImage, rating,
+                forceSecureRequest);
         }
 
+        /// <summary>
+        /// Returns Image Url
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <param name="emailAddress"></param>
+        /// <param name="size"></param>
+        /// <param name="defaultImage"></param>
+        /// <param name="defaultImageUrl"></param>
+        /// <param name="forceDefaultImage"></param>
+        /// <param name="rating"></param>
+        /// <param name="forceSecureRequest"></param>
+        /// <returns></returns>
+        private static string GetGravarUrl(
+            HtmlHelper htmlHelper,
+            string emailAddress,
+            int size = 80,
+            DefaultImage defaultImage = DefaultImage.Default,
+            string defaultImageUrl = "",
+            bool forceDefaultImage = false,
+            Rating rating = Rating.G,
+            bool forceSecureRequest = false)
+        {
+            return string.Format("{0}://{1}.gravatar.com/avatar/{2}?s={3}{4}{5}{6}",
+                htmlHelper.ViewContext.HttpContext.Request.IsSecureConnection || forceSecureRequest
+                    ? "https"
+                    : "http",
+                htmlHelper.ViewContext.HttpContext.Request.IsSecureConnection || forceSecureRequest
+                    ? "secure"
+                    : "www",
+                GetMd5Hash(emailAddress),
+                size.ToString(),
+                "&d=" +
+                (!string.IsNullOrEmpty(defaultImageUrl)
+                    ? HttpUtility.UrlEncode(defaultImageUrl)
+                    : defaultImage.GetDescription()),
+                forceDefaultImage ? "&f=y" : "",
+                "&r=" + rating.GetDescription()
+                );
+        }
 
         /// <summary>
         /// Generates an MD5 hash of the given string
@@ -171,8 +190,6 @@ namespace Uber.Web.Helpers
             return sBuilder.ToString();
         }
 
-
-
         /// <summary>
         /// Returns the value of a DescriptionAttribute for a given Enum value
         /// </summary>
@@ -196,6 +213,5 @@ namespace Uber.Web.Helpers
             return en.ToString();
 
         }
-
     }
 }

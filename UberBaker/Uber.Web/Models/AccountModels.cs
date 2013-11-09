@@ -14,6 +14,8 @@ namespace Uber.Web.Models
 
 	public class LocalPasswordModel
 	{
+        public int? Id { get; set; }
+
 		[Required]
 		[DataType(DataType.Password)]
 		[Display(Name = "Current password")]
@@ -46,6 +48,17 @@ namespace Uber.Web.Models
         [Field(LabelSeparator="")]
 		public bool RememberMe { get; set; }
 	}
+
+    public class ProfileUpdateModel
+    {
+        public int Id { get; set; }
+
+        public string Email { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+    }
 
 	public class RegisterModel
 	{

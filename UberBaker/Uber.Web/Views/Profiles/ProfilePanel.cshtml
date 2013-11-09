@@ -1,0 +1,124 @@
+﻿@using Uber.Web.Helpers
+@using InputType = Ext.Net.InputType
+@model Uber.Core.Profile
+@{
+    var X = Html.X();
+}
+
+@(X.Panel()
+    .ID("ProfilePanel")
+    .Icon(Icon.User)
+    .Closable(true)
+    .Layout(LayoutType.HBox)
+    .BodyPadding(10) 
+    .Title("Your Profile")
+    .Items(
+        X.Container()
+            .Width(160)
+            .Items(
+                X.Image()
+                    .Anchor("none")
+                    .ImageUrl(Html.GravatarImageUrl(Model.Email, 160))
+                    .Width(160)
+                    .Height(160)
+            ),
+        X.Panel()
+            .Flex(1)
+            .MarginSpec("0 0 0 20px")
+            .Items(
+                X.FormPanel()
+                    .ID("UserProfileUpdateProfileForm")
+                    .DefaultAnchor("95%")
+                    .ButtonAlign(Alignment.Left)
+                    .Items(
+                        X.HiddenFor(m => m.Id),
+                        X.DisplayFieldFor(m => m.User.UserName),
+                        X.TextFieldFor(m => m.Email)
+                            .AllowBlank(false)
+                            .StandardVtype(ValidationType.Email),
+                        X.DisplayFieldFor(m => m.User.Role.Name)
+                            .FieldLabel("Role"),
+                        X.TextFieldFor(m => m.FirstName)
+                            .AllowBlank(false),
+                        X.TextFieldFor(m => m.LastName)
+                            .AllowBlank(false)
+                    )
+                    .Buttons(
+                        X.Button()
+                            .ID("UserProfileSaveProfileButton")
+                            .Text("Update Profile")
+                            .Width(150)
+                            .Icon(Icon.Disk)
+                            .DirectEvents(de =>
+                            {
+                                de.Click.Url = Url.Action("Save");
+                                de.Click.FormID = "UserProfileUpdateProfileForm";
+                                de.Click.EventMask.ShowMask = true;
+                                de.Click.EventMask.Msg = "Updating your profile..";
+                            })
+                    )
+                    .Listeners(l =>
+                    {
+                        l.ValidityChange.Handler = "#{UserProfileSaveProfileButton}.setDisabled(!valid);";
+                    }) ,
+                    
+                X.FormPanel()
+                    .ID("UserProfilePassChangeForm")
+                    .Listeners(l =>
+                    {
+                        l.ValidityChange.Handler = "#{UserProfileSavePassButton}.setDisabled(!valid);";
+                    }) 
+                    .Items(
+                        X.FieldSet()
+                            .ID("UserProfilePassChangeFieldset")
+                            .DefaultAnchor("95%")
+                            .Collapsed(true)
+                            .Collapsible(true)
+                            .Title("Change Password")
+                            .Padding(5)
+                            .Items(
+                                X.TextField()
+                                    .FieldLabel("Current Password")
+                                    .Name("OldPassword")
+                                    .InputType(InputType.Password)
+                                    .AllowBlank(false),
+                                
+                                X.TextField()
+                                    .ID("UserProfileNewPass")
+                                    .FieldLabel("New Password")
+                                    .Name("NewPassword")
+                                    .InputType(InputType.Password)
+                                    .AllowBlank(false)
+                                    .Vtype("password")
+                                    .CustomConfig(c => c.Add(new ConfigItem { Name = "initialPassField", Value = "UserProfileNewPassConfirm" })),
+                                    
+                                X.TextField()
+                                    .FieldLabel("Confirm New Password")
+                                    .ID("UserProfileNewPassConfirm")
+                                    .Name("ConfirmPassword")
+                                    .InputType(InputType.Password)
+                                    .AllowBlank(false)
+                                    .Vtype("password")
+                                    .CustomConfig(c => c.Add(new ConfigItem { Name = "initialPassField", Value = "UserProfileNewPass" })),
+                                    
+                                X.Button()
+                                    .ID("UserProfileSavePassButton")
+                                    .Text("Update Password")
+                                    .Disabled(true)
+                                    .Icon(Icon.Key)
+                                    .Anchor("none")
+                                    .Width(150)
+                                    .DirectEvents(de =>
+                                    {
+                                        de.Click.Url = Url.Action("UpdatePassword");
+                                        de.Click.FormID = "UserProfilePassChangeForm";
+                                        de.Click.EventMask.ShowMask = true;
+                                        de.Click.EventMask.Msg = "Updating your profile..";
+                                    })
+                                    
+                            )
+                        )
+                    
+            )
+    )
+)

@@ -298,7 +298,10 @@
                                         .Border(false)
                                         .Items(
                                             X.PortalColumn()
-                                                .ItemsFromPartial("DashboardChart")
+                                                .ItemsFromPartial("OrdersLast31DaysChart"),
+                                                
+                                            X.PortalColumn()
+                                                .ItemsFromPartial("OrdersByTypeLast31DaysChart")
                                         )
                                 )
                         )

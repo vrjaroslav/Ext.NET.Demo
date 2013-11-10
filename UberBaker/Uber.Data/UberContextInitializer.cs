@@ -7,7 +7,7 @@ using Uber.Core;
 
 namespace Uber.Data
 {
-	public class UberContextInitializer : DropCreateDatabaseAlways<UberContext>
+	public class UberContextInitializer : DropCreateDatabaseIfModelChanges<UberContext>
 	{
 		protected override void Seed(UberContext db)
         {
@@ -198,22 +198,31 @@ namespace Uber.Data
 
 		private void SeedOrders(UberContext db, List<Product> products, List<Customer> customers)
 		{
-			Random r = new Random(20);
+			Random r = new Random(DateTime.Now.Second);
 
 			var orders = new List<Order>();
+            // Generating orders for each last 31 day
+		    for (int i = 1; i <= 31; i++)
+		    {
+                // Generating orders for each product
+		        foreach (var product in products)
+		        {
+                    // Get random amount of orders
+		            var count = r.Next(5);
+		            for (int j = 0; j < count; j++)
+		            {
+		                orders.Add(new Order
+		                {
+		                    OrderDate = DateTime.Now.AddDays(i * (-1)),
+		                    Product = product,
+		                    Quantity = r.Next(1, 50),
+		                    Customer = customers[r.Next(0, customers.Count - 1)]
+		                });
+		            }
+		        }
+		    }
 
-			foreach (var product in products)
-			{
-				orders.Add(new Order
-					{
-						OrderDate = DateTime.Now.AddDays(r.Next(-15, 15)),
-						Product = product,
-						Quantity = r.Next(1, 50),
-						Customer = customers[r.Next(0, customers.Count - 1)]
-					});
-			}
-
-			orders.ForEach(order => db.Orders.AddOrUpdate(order));
+		    orders.ForEach(order => db.Orders.AddOrUpdate(order));
 		}
 	}
 }

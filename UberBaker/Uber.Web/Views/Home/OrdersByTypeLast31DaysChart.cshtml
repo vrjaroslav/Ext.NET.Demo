@@ -1,0 +1,65 @@
+﻿@{
+    var X = Html.X();
+}
+
+@(X.Portlet()
+    .ID("OrdersByTypeLast31DaysPanel")
+    .Title("Orders by Type (Last 31 days)")
+    .Layout(LayoutType.Fit)
+    .Closable(false)
+    .Height(400)
+    .TopBar(X.Toolbar()
+        .Items(
+            X.Button()
+                .Text("Reload Data")
+                .Icon(Icon.ArrowRefresh)
+                .Handler("this.up('panel').down('chart').getStore().reload()"),
+            X.Button()
+                .Text("Save Chart")
+                .Icon(Icon.Disk)
+                .Handler("saveChart")
+        )
+    )
+    .Items(
+        X.Chart()
+            .ID("OrdersByTypeLast31DaysChart")
+            .Animate(true)
+            .Store(X.Store()
+                .Data(Model)
+                .Model(X.Model()
+                    .Fields(f =>
+                        {
+                            f.Add(X.ModelField().Name("OrdersCount").Type(ModelFieldType.Int));
+                            f.Add(X.ModelField().Name("ProductTypeName").Type(ModelFieldType.String));
+                        }
+                    )
+                )
+                .Proxy(X.AjaxProxy()
+                    .Url(Url.Action("GetDataLast31DaysByType", "Orders"))
+                    .Reader(X.JsonReader().Root("data"))
+                )
+            )
+            .Series(X.PieSeries()
+                .ShowInLegend(true)
+                .AngleField("OrdersCount")
+                .Highlight(true)
+                .HighlightSegmentMargin(20)
+                .Label(X.SeriesLabel()
+                    .Field(new [] { "ProductTypeName" })
+                    .Display(SeriesLabelDisplay.Rotate)
+                    .Contrast(true)
+                    .Font("18px Arial")
+                )
+                .Tips(X.ChartTip()
+                    .TrackMouse(true)
+                    .Width(140)
+                    .Height(28)
+                    .Renderer(r => r.Handler = "this.setTitle(storeItem.get('ProductTypeName') + ': ' + storeItem.get('OrdersCount') + ' orders');")
+                )
+            )
+            .Legend(true)
+            .LegendConfig(X.ChartLegend()
+                .Position(LegendPosition.Right)
+            )
+    )
+)

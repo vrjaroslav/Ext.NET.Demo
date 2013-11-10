@@ -291,13 +291,13 @@
     <Content Include="Views\Home\RenderUsers.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Profiles\_ProfileWindow.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Home\DashboardChart.cshtml" />
+    <Content Include="Views\Home\OrdersLast31DaysChart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Profiles\ProfilePanel.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\OrdersByTypeLast31DaysChart.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

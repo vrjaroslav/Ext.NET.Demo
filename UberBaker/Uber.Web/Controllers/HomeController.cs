@@ -1,7 +1,9 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 using Ext.Net;
 using Ext.Net.MVC;
 using StackExchange.Profiling;
+using Uber.Data.Repositories;
 using PartialViewResult = Ext.Net.MVC.PartialViewResult;
 
 namespace Uber.Web.Controllers
@@ -9,14 +11,11 @@ namespace Uber.Web.Controllers
 	[Authorize]
 	public class HomeController : Controller
 	{
+        private ProductTypesRepository productTypesRepository = new ProductTypesRepository();
+
 		public ActionResult Index()
 		{
-            var profiler = MiniProfiler.Current;
-            
-		    using (profiler.Step("Render Index Page"))
-		    {
-		        return this.View();
-		    }
+            return this.View();
 		}
 
 		#region PartialViewsRenderingActions
@@ -50,6 +49,20 @@ namespace Uber.Web.Controllers
 
 	        return null;
 	    }
+
+        public ActionResult OrdersByTypeLast31DaysChart()
+        {
+            var result = new Ext.Net.MVC.PartialViewResult
+            {
+                ViewName = "OrdersByTypeLast31DaysChart",
+                RenderMode = RenderMode.AddTo,
+                ContainerId = "OrdersByTypeLast31DaysChartContainer",
+                Model = this.productTypesRepository.GetAll().Select(pt => pt.Name).ToList(),
+                WrapByScriptTag = false // we load the view via Loader with Script mode therefore script tags is not required
+            };
+
+            return result;
+        }
 
 	    public ActionResult RenderProducts(string containerId)
 		{

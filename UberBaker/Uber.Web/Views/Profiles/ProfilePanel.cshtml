@@ -41,7 +41,12 @@
                         X.TextFieldFor(m => m.FirstName)
                             .AllowBlank(false),
                         X.TextFieldFor(m => m.LastName)
-                            .AllowBlank(false)
+                            .AllowBlank(false),
+                        X.DisplayFieldFor(m => m.User.LastLoginIp)
+                            .FieldLabel("Last IP address"),
+                        X.DisplayField()
+                            .Text(Model.User.LastLoginDate.HasValue ? Model.User.LastLoginDate.Value.ToString("yyyy-MM-dd HH:mm:ss") : "")
+                            .FieldLabel("Last Login Date")
                     )
                     .Buttons(
                         X.Button()

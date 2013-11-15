@@ -149,6 +149,7 @@
                     .ForceSelection(true)
                     .Store(X.StoreFor<Customer>()
                         .Proxy(Html.X().AjaxProxy()
+                            .ExtraParams(e => e.Add(new Parameter("getAll", "true", ParameterMode.Raw)))
                             .Url(Url.Action("ReadData", "Customers"))
                             .Reader(Html.X().JsonReader().Root("data"))
                         )
@@ -161,6 +162,7 @@
                     .ForceSelection(true)
                     .Store(X.StoreFor<Product>()
                         .Proxy(Html.X().AjaxProxy()
+                            .ExtraParams(e => e.Add(new Parameter("getAll", "true", ParameterMode.Raw)))
                             .Url(Url.Action("ReadData", "Products"))
                             .Reader(Html.X().JsonReader().Root("data"))
                         )
@@ -172,6 +174,10 @@
                 X.DisplayFieldFor(m => m.GrossTotal)
                     .ID("OrdersGrossTotal")
                     .FieldLabel("Gross Total")
+                    .CustomConfig(c =>
+                    {
+                        c.Add(new ConfigItem("renderer", "function (value) { return Ext.util.Format.usMoney(value); }", ParameterMode.Raw));
+                    })
             )
             .TopBar(
                 X.Toolbar()

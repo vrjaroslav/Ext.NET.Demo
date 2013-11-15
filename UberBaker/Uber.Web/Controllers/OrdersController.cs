@@ -52,11 +52,11 @@ namespace Uber.Web.Controllers
 			return this.Direct();
 		}
 
-        public ActionResult ReadData(StoreRequestParameters parameters)
+        public ActionResult ReadData(StoreRequestParameters parameters, bool getAll = false)
         {
             var data = repository.GetAll().ToList();
 
-            return this.Store(data.SortFilterPaged(parameters), data.Count);
+            return getAll ? this.Store(data, data.Count) : this.Store(data.SortFilterPaged(parameters), data.Count);
         }
 
         public ActionResult GetChartData(DateTime? startDate, DateTime? endDate)

@@ -19,7 +19,7 @@ namespace Uber.Web.Controllers
 	[Authorize]
 	public class AccountController : Controller
 	{
-		private UsersRepository repository { get; set; }
+        private IBaseRepository<User> repository { get; set; }
 
 		#region Constructors
 
@@ -28,7 +28,7 @@ namespace Uber.Web.Controllers
 			repository = new UsersRepository();
 		}
 
-		public AccountController(IUsersRepository repository)
+        public AccountController(IBaseRepository<User> repository)
 		{
 			// TODO Rewite with IoC
 			this.repository = new UsersRepository();

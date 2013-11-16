@@ -5,7 +5,7 @@ using Uber.Data.Abstract;
 
 namespace Uber.Data.Repositories
 {
-	public class ProductTypesRepository : IProductTypesRepository
+    public class ProductTypesRepository : IBaseRepository<ProductType>
 	{
 		private UberContext DbContext { get; set; }
 

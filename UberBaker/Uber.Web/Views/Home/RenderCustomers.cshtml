@@ -186,7 +186,8 @@
                             .ValueField("Id")
                             .Store(X.StoreFor<Country>()
                                 .Proxy(Html.X().AjaxProxy()
-                                    .Url(Url.Action("GetCountries", "Customers"))
+                                    .ExtraParams(e => e.Add(new Parameter("getAll", "true", ParameterMode.Raw)))
+                                    .Url(Url.Action("ReadData", "Countries"))
                                     .Reader(Html.X().JsonReader().Root("data"))
                                 )
                             ),

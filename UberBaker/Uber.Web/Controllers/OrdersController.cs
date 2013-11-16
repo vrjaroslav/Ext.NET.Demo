@@ -14,8 +14,8 @@ namespace Uber.Web.Controllers
 {
     public class OrdersController : Controller
     {
-        private IOrdersRepository repository { get; set; }
-        private IProductTypesRepository productTypesRepository { get; set; }
+        private IBaseRepository<Order> repository { get; set; }
+        private IBaseRepository<ProductType> productTypesRepository { get; set; }
 
 		#region Constructors
 
@@ -24,8 +24,8 @@ namespace Uber.Web.Controllers
 			repository = new OrdersRepository();
             productTypesRepository = new ProductTypesRepository();
 		}
-		
-		public OrdersController(IOrdersRepository repository, IProductTypesRepository productTypesRepository)
+
+        public OrdersController(IBaseRepository<Order> repository, IBaseRepository<ProductType> productTypesRepository)
 		{
 			// TODO Rewite with IoC
 			this.repository = new OrdersRepository();

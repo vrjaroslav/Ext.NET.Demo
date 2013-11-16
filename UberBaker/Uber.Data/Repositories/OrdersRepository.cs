@@ -6,7 +6,7 @@ using Uber.Data.Abstract;
 
 namespace Uber.Data.Repositories
 {
-	public class OrdersRepository : IOrdersRepository
+    public class OrdersRepository : IBaseRepository<Order>
 	{
 		private UberContext DbContext { get; set; }
 

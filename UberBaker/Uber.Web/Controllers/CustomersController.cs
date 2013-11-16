@@ -12,9 +12,8 @@ namespace Uber.Web.Controllers
 {
     public class CustomersController : Controller
     {
-		private ICustomersRepository repository { get; set; }
-		private IAddressesRepository addressesRepository { get; set; }
-		private ICountriesRepository countriesRepository { get; set; }
+        private IBaseRepository<Customer> repository { get; set; }
+        private IBaseRepository<Address> addressesRepository { get; set; }
 
 		#region Constructors
 
@@ -22,15 +21,13 @@ namespace Uber.Web.Controllers
 		{
 			this.repository = new CustomersRepository();
 			this.addressesRepository = new AddressesRepository();
-			this.countriesRepository = new CountriesRepository();
 		}
 
-		public CustomersController(ICustomersRepository repository, IAddressesRepository addressesRepository, ICountriesRepository countriesRepository)
+        public CustomersController(IBaseRepository<Customer> repository, IBaseRepository<Address> addressesRepository)
 		{
 			// TODO Rewite with IoC
 			this.repository = new CustomersRepository();
 			this.addressesRepository = new AddressesRepository();
-			this.countriesRepository = new CountriesRepository();
 		}
 
 		#endregion
@@ -80,11 +77,6 @@ namespace Uber.Web.Controllers
 
             return getAll ? this.Store(data, data.Count) : this.Store(data.SortFilterPaged(parameters), data.Count);
         }
-
-		public ActionResult GetCountries()
-		{
-			return this.Store(repository.GetCountries());
-		}
 
 		#endregion
 	}

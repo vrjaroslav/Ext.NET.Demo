@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
-using System.Web.Profile;
 using System.Web.Security;
 using Ext.Net;
 using Ext.Net.MVC;
@@ -15,7 +14,7 @@ namespace Uber.Web.Controllers
 {
     public class ProfilesController : Controller
     {
-        private IProfilesRepository repository { get; set; }
+        private IBaseRepository<Profile> repository { get; set; }
 
 		#region Constructors
 
@@ -24,7 +23,7 @@ namespace Uber.Web.Controllers
 			repository = new ProfilesRepository();
 		}
 
-        public ProfilesController(IProfilesRepository repository)
+        public ProfilesController(IBaseRepository<Profile> repository)
 		{
 			// TODO Rewite with IoC
 			this.repository = new ProfilesRepository();

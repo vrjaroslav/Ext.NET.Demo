@@ -80,18 +80,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstract\ICustomersRepository.cs" />
-    <Compile Include="Abstract\IOrdersRepository.cs" />
-    <Compile Include="Abstract\IProductsRepository.cs" />
-    <Compile Include="Abstract\IProductTypesRepository.cs" />
-    <Compile Include="Abstract\IProfilesRepository.cs" />
+    <Compile Include="Abstract\IBaseRepository.cs" />
     <Compile Include="ProductTypeJsonConverter.cs" />
     <Compile Include="Repositories\AddressesRepository.cs" />
     <Compile Include="Repositories\CountriesRepository.cs" />
     <Compile Include="Repositories\CustomersRepository.cs" />
-    <Compile Include="Abstract\IUsersRepository.cs" />
-    <Compile Include="Abstract\IAddressesRepository.cs" />
-    <Compile Include="Abstract\ICountriesRepository.cs" />
     <Compile Include="Repositories\OrdersRepository.cs" />
     <Compile Include="Repositories\ProductsRepository.cs" />
     <Compile Include="Repositories\ProductTypesRepository.cs" />

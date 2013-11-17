@@ -44,7 +44,7 @@ namespace Uber.Data
 
             db.Users.Add(admin);
 
-            db.Profiles.Add(new Profile
+            db.Profiles.Add(new UserProfile
             {
                 Email = "admin@uberbaker.com",
                 FirstName = "Admin",
@@ -68,7 +68,7 @@ namespace Uber.Data
 
             db.Users.Add(manager);
 
-            db.Profiles.Add(new Profile
+            db.Profiles.Add(new UserProfile
             {
                 Email = "manager@uberbaker.com",
                 FirstName = "Manager",
@@ -92,7 +92,7 @@ namespace Uber.Data
 
             db.Users.Add(user);
 
-            db.Profiles.Add(new Profile
+            db.Profiles.Add(new UserProfile
             {
                 Email = "user@uberbaker.com",
                 FirstName = "User",

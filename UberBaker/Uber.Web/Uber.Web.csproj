@@ -43,6 +43,12 @@
     <Reference Include="Antlr3.Runtime">
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.0.0\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.0.0\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
     <Reference Include="Ext.Net, Version=2.3.1.41064, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Ext.NET.MVC.2.3.1\lib\net40\Ext.Net.dll</HintPath>
@@ -201,6 +207,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="AutoMapperConfiguration.cs" />
+    <Compile Include="AutoMapperProfiles\UberBakerAutoMapperProfile.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
@@ -208,15 +216,23 @@
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\ProductTypesController.cs" />
-    <Compile Include="Controllers\ProfilesController.cs" />
+    <Compile Include="Controllers\UserProfilesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\GravatarHtmlHelper.cs" />
     <Compile Include="Helpers\ListHelper.cs" />
     <Compile Include="Helpers\QueryableHelper.cs" />
-    <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\AddressModel.cs" />
+    <Compile Include="Models\CountryModel.cs" />
+    <Compile Include="Models\CustomerModel.cs" />
+    <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\LocalPasswordModel.cs" />
     <Compile Include="Models\OrderChartData.cs" />
+    <Compile Include="Models\RoleModel.cs" />
+    <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Models\UserProfileModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\UberMembershipProvider.cs" />
     <Compile Include="Providers\UberProfileProvider.cs" />
@@ -295,7 +311,7 @@
     <Content Include="Views\Home\OrdersLast31DaysChart.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Profiles\ProfilePanel.cshtml" />
+    <Content Include="Views\UserProfiles\ProfilePanel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\OrdersByTypeLast31DaysChart.cshtml" />

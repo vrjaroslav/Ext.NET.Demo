@@ -2,7 +2,7 @@
 
 namespace Uber.Core
 {
-    public class Profile : BaseItem
+    public class UserProfile : BaseItem
     {
         public virtual int? UserId { get; set; }
 

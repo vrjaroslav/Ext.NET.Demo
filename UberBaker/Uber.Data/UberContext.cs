@@ -16,7 +16,7 @@ namespace Uber.Data
         public DbSet<Role> Roles { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Address> Addresses { get; set; }
-        public DbSet<Profile> Profiles { get; set; }
+        public DbSet<UserProfile> Profiles { get; set; }
 
 		public UberContext() : base("UberContext")
 		{
@@ -35,7 +35,7 @@ namespace Uber.Data
 			builder.Entity<Customer>().ToTable("Customers");
 			builder.Entity<User>().ToTable("Users");
             builder.Entity<Role>().ToTable("Roles");
-            builder.Entity<Profile>().ToTable("Profiles");
+            builder.Entity<UserProfile>().ToTable("Profiles");
 			builder.Entity<Country>().ToTable("Countries");
 			builder.Entity<Address>().ToTable("Addresses");
 		}

@@ -1,198 +1,197 @@
-﻿@using Uber.Core
-@model Uber.Core.Profile
+﻿@model Uber.Web.Models.UserProfileModel
 @{
     var X = Html.X();
 }
 
+
 @(X.Panel()
-    .ID("UsersPanel")
-    .Title("Users")
-    .Layout(LayoutType.Border)
-    .Closable(true)
-    .Items(
-        X.GridPanel()
-            .Region(Region.Center)
-            .ID("UsersGrid")
-            .ForceFit(true)
-            .Store(X.Store()
-                .RemoteSort(true)
-                .RemotePaging(true)
-                .PageSize(25)
-                .Model(X.Model()
-                    .ClientIdProperty("PhantomId")
-                    .IDProperty("Id")
-                    .Name("User")
-                    .Fields(
-                        X.ModelFieldFor(m => m.Id)
-                            .UseNull(true),
-                        X.ModelFieldFor(m => m.PhantomId),
-                        X.ModelFieldFor(m => m.FirstName),
-                        X.ModelFieldFor(m => m.LastName),
-                        X.ModelField()
-                            .Name("LastLoginIp")
-                            .Mapping("User.LastLoginIp"),
-                        X.ModelField()
-                            .Name("LastLoginDate")
-                            .Mapping("User.LastLoginDate")
-                            .Type(ModelFieldType.Date)
-                            .UseNull(true),
-                        X.ModelFieldFor(m => m.User)
-                            .Mapping("User.UserName"),
-                        X.ModelFieldFor(m => m.User.Role)
-                            .Mapping("User.Role.Name")
-                    )
-                )
-                .ID("UsersStore")
-                .Proxy(X.AjaxProxy()
-                    .Url(Url.Action("ReadData", "Profiles"))
-                    .Reader(X.JsonReader().Root("data"))
-                )
-                .Sorters(
-                    Html.X().DataSorter().Property("FirstName").Direction(Ext.Net.SortDirection.ASC)                                
-                )
-            )
-            .ColumnModel(
-                X.Column()
-                    .DataIndex("Id")
-                    .Text("Id")
-                    .Width(50),
-                X.Column()
-                    .DataIndex("User")
-                    .Text("User Name")
-                    .Width(100),
-                X.Column()
-                    .DataIndex("Role")
-                    .Text("Role")
-                    .Width(100),
-                X.Column()
-                    .DataIndex("FirstName")
-                    .Text("First Name")
-                    .Width(150),
-                X.Column()
-                    .DataIndex("LastName")
-                    .Text("Last Name")
-                    .Width(150),
-                X.DateColumn()
-                    .Format("yyyy-MM-dd H:i:s")
-                    .DataIndex("LastLoginDate")
-                    .Text("Last Login Date")
-                    .Width(150),
-                X.Column()
-                    .DataIndex("LastLoginIp")
-                    .Text("Last Login IP")
-                    .Width(150)
-            )
-            .Features(
-                Html.X().GridFilters()
-                    .Filters(
-                        Html.X().NumericFilter().DataIndex("Id"),
-                        Html.X().StringFilter().DataIndex("User"),
-                        Html.X().StringFilter().DataIndex("FirstName"),
-                        Html.X().StringFilter().DataIndex("LastName")
-                    )
-            )
-            .TopBar(
-                X.Toolbar()
-                    .Items(
-                        X.Button()
-                            .Text("Add")
-                            .Icon(Icon.Add)
-                            .Disabled(true)
-                            .Handler("addRecordButtonHandler('User', new User());"),
+      .ID("UsersPanel")
+      .Title("Users")
+      .Layout(LayoutType.Border)
+      .Closable(true)
+      .Items(
+          X.GridPanel()
+              .Region(Region.Center)
+              .ID("UsersGrid")
+              .ForceFit(true)
+              .Store(X.Store()
+                  .RemoteSort(true)
+                  .RemotePaging(true)
+                  .PageSize(25)
+                  .Model(X.Model()
+                      .ClientIdProperty("PhantomId")
+                      .IDProperty("Id")
+                      .Name("User")
+                      .Fields(
+                          X.ModelFieldFor(m => m.Id)
+                              .UseNull(true),
+                          X.ModelFieldFor(m => m.PhantomId),
+                          X.ModelFieldFor(m => m.FirstName),
+                          X.ModelFieldFor(m => m.LastName),
+                          X.ModelField()
+                              .Name("LastLoginIp")
+                              .Mapping("User.LastLoginIp"),
+                          X.ModelField()
+                              .Name("LastLoginDate")
+                              .Mapping("User.LastLoginDate")
+                              .Type(ModelFieldType.Date)
+                              .UseNull(true),
+                          X.ModelFieldFor(m => m.User)
+                              .Mapping("User.UserName"),
+                          X.ModelFieldFor(m => m.User.RoleName)
+                              .Mapping("User.Role.Name")
+                      )
+                  )
+                  .ID("UsersStore")
+                  .Proxy(X.AjaxProxy()
+                      .Url(Url.Action("ReadData", "UserProfiles"))
+                      .Reader(X.JsonReader().Root("data"))
+                  )
+                  .Sorters(
+                      Html.X().DataSorter().Property("FirstName").Direction(Ext.Net.SortDirection.ASC)                                
+                  )
+              )
+              .ColumnModel(
+                  X.Column()
+                      .DataIndex("Id")
+                      .Text("Id")
+                      .Width(50),
+                  X.Column()
+                      .DataIndex("User")
+                      .Text("User Name")
+                      .Width(100),
+                  X.Column()
+                      .DataIndex("Role")
+                      .Text("Role")
+                      .Width(100),
+                  X.Column()
+                      .DataIndex("FirstName")
+                      .Text("First Name")
+                      .Width(150),
+                  X.Column()
+                      .DataIndex("LastName")
+                      .Text("Last Name")
+                      .Width(150),
+                  X.DateColumn()
+                      .Format("yyyy-MM-dd H:i:s")
+                      .DataIndex("LastLoginDate")
+                      .Text("Last Login Date")
+                      .Width(150),
+                  X.Column()
+                      .DataIndex("LastLoginIp")
+                      .Text("Last Login IP")
+                      .Width(150)
+              )
+              .Features(
+                  Html.X().GridFilters()
+                      .Filters(
+                          Html.X().NumericFilter().DataIndex("Id"),
+                          Html.X().StringFilter().DataIndex("User"),
+                          Html.X().StringFilter().DataIndex("FirstName"),
+                          Html.X().StringFilter().DataIndex("LastName")
+                      )
+              )
+              .TopBar(
+                  X.Toolbar()
+                      .Items(
+                          X.Button()
+                              .Text("Add")
+                              .Icon(Icon.Add)
+                              .Disabled(true)
+                              .Handler("addRecordButtonHandler('User', new User());"),
 
-                        X.Button()
-                            .ID("UsersDeleteButton")
-                            .Text("Disable account")
-                            .Icon(Icon.Exclamation)
-                            .Disabled(true)
-                            .DirectEvents(de =>
-                            {
-                                de.Click.Url = Url.Action("Disable", "Profiles");
-                                de.Click.Confirmation.Message = "Are you sure you want to disable this account?";
-                                de.Click.Confirmation.ConfirmRequest = true;
-                                de.Click.ExtraParams.Add(new Parameter("id", "getSelectedIdParameter(this.up('grid'))", ParameterMode.Raw));
-                                de.Click.Success = "recordDeleteSuccess(this, this.up('grid'), 'Users');";
-                            })
-                    )
-            )
-            .SelectionModel(
-                X.RowSelectionModel()
-                    .Mode(SelectionMode.Single)
-                    .Listeners(l =>
-                    {
-                        l.Select.Handler = "gridRowSelected('Users', record);";
-                        l.Deselect.Handler = "gridRowDeselected('Users');";
-                    })
-            )
-            .BottomBar(
-                Html.X().PagingToolbar()
-            ),
+                          X.Button()
+                              .ID("UsersDeleteButton")
+                              .Text("Disable account")
+                              .Icon(Icon.Exclamation)
+                              .Disabled(true)
+                              .DirectEvents(de =>
+                              {
+                                  de.Click.Url = Url.Action("Disable", "UserProfiles");
+                                  de.Click.Confirmation.Message = "Are you sure you want to disable this account?";
+                                  de.Click.Confirmation.ConfirmRequest = true;
+                                  de.Click.ExtraParams.Add(new Parameter("id", "getSelectedIdParameter(this.up('grid'))", ParameterMode.Raw));
+                                  de.Click.Success = "recordDeleteSuccess(this, this.up('grid'), 'Users');";
+                              })
+                      )
+              )
+              .SelectionModel(
+                  X.RowSelectionModel()
+                      .Mode(SelectionMode.Single)
+                      .Listeners(l =>
+                      {
+                          l.Select.Handler = "gridRowSelected('Users', record);";
+                          l.Deselect.Handler = "gridRowDeselected('Users');";
+                      })
+              )
+              .BottomBar(
+                  Html.X().PagingToolbar()
+              ),
 
-        X.FormPanel()
-            .ID("UsersForm")
-            .Region(Region.East)
-            .Width(400)
-            .AutoScroll(true)
-            .BodyPaddingSummary("0 10")
-            .DefaultAnchor("100%")
-            .Listeners(l =>
-            {
-                l.ValidityChange.Handler = "validityChange('Users', valid);";
-            }) 
-            .Items(
-                X.HiddenFor(m => m.Id)
-                    .ID("UsersIdValue"),
-                X.DisplayFieldFor(m => m.Id)
-                    .ID("UsersId"),
-                X.TextFieldFor(m => m.FirstName)
-                    .ID("UsersFirstName")
-                    .FieldLabel("First Name")
-                    .AllowBlank(false),
-                X.TextFieldFor(m => m.LastName)
-                    .ID("UsersLastName")
-                    .FieldLabel("Last Name")
-                    .AllowBlank(false),
-                X.DisplayFieldFor(m => m.User.UserName)
-                    .DataIndex("User")
-                    .ID("UsersUserName")
-                    .FieldLabel("UserName"),
-                X.DisplayFieldFor(m => m.User.Role)
-                    .DataIndex("Role")
-                    .ID("UsersUserRole")
-                    .FieldLabel("Role"),
-                X.DisplayFieldFor(m => m.User.LastLoginDate)
-                    .DataIndex("LastLoginDate")
-                    .ID("LastLoginDate")
-                    .FieldLabel("Last Login DateTime")
-                    .Format("{0:date('Y-m-d H:i:s')}"),
-                X.DisplayFieldFor(m => m.User.LastLoginIp)
-                    .DataIndex("LastLoginIp")
-                    .ID("LastLoginIp")
-                    .FieldLabel("Last Login IP Address")
-            )
-            .TopBar(
-                X.Toolbar()
-                    .Items(
-                        X.ToolbarFill(),
-                        X.Button()
-                            .ID("UsersSaveButton")
-                            .Disabled(true)
-                            .Text("Save")
-                            .Icon(Icon.Disk)
-                            .DirectEvents(de => {
-                                de.Click.Url = Url.Action("Save", "Profiles");
-                                de.Click.FormID = "UsersForm";
-                                de.Click.Success = "recordAddSuccess('Users'); ";
-                            }),
-                        X.Button()
-                            .ID("UsersCancelButton")
-                            .Text("Cancel")
-                            .Disabled(true)
-                            .Icon(Icon.Cross)
-                            .Listeners(l => {
-                                l.Click.Handler = "recordSaveCancel('Users');";
-                            })
-                )
-            )
-    )
-)
+          X.FormPanel()
+              .ID("UsersForm")
+              .Region(Region.East)
+              .Width(400)
+              .AutoScroll(true)
+              .BodyPaddingSummary("0 10")
+              .DefaultAnchor("100%")
+              .Listeners(l =>
+              {
+                  l.ValidityChange.Handler = "validityChange('Users', valid);";
+              }) 
+              .Items(
+                  X.HiddenFor(m => m.Id)
+                      .ID("UsersIdValue"),
+                  X.DisplayFieldFor(m => m.Id)
+                      .ID("UsersId"),
+                  X.TextFieldFor(m => m.FirstName)
+                      .ID("UsersFirstName")
+                      .FieldLabel("First Name")
+                      .AllowBlank(false),
+                  X.TextFieldFor(m => m.LastName)
+                      .ID("UsersLastName")
+                      .FieldLabel("Last Name")
+                      .AllowBlank(false),
+                  X.DisplayFieldFor(m => m.User.UserName)
+                      .DataIndex("User")
+                      .ID("UsersUserName")
+                      .FieldLabel("UserName"),
+                  X.DisplayFieldFor(m => m.User.RoleName)
+                      .DataIndex("Role")
+                      .ID("UsersUserRole")
+                      .FieldLabel("Role"),
+                  X.DisplayFieldFor(m => m.User.LastLoginDate)
+                      .DataIndex("LastLoginDate")
+                      .ID("LastLoginDate")
+                      .FieldLabel("Last Login DateTime")
+                      .Format("{0:date('Y-m-d H:i:s')}"),
+                  X.DisplayFieldFor(m => m.User.LastLoginIp)
+                      .DataIndex("LastLoginIp")
+                      .ID("LastLoginIp")
+                      .FieldLabel("Last Login IP Address")
+              )
+              .TopBar(
+                  X.Toolbar()
+                      .Items(
+                          X.ToolbarFill(),
+                          X.Button()
+                              .ID("UsersSaveButton")
+                              .Disabled(true)
+                              .Text("Save")
+                              .Icon(Icon.Disk)
+                              .DirectEvents(de => {
+                                                      de.Click.Url = Url.Action("Save", "UserProfiles");
+                                                      de.Click.FormID = "UsersForm";
+                                                      de.Click.Success = "recordAddSuccess('Users'); ";
+                              }),
+                          X.Button()
+                              .ID("UsersCancelButton")
+                              .Text("Cancel")
+                              .Disabled(true)
+                              .Icon(Icon.Cross)
+                              .Listeners(l => {
+                                                  l.Click.Handler = "recordSaveCancel('Users');";
+                              })
+                      )
+              )
+      ))

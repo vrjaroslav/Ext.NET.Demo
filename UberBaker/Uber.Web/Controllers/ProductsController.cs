@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using AutoMapper;
 using Ext.Net;
 using Ext.Net.MVC;
 using Uber.Core;
 using Uber.Data.Abstract;
 using Uber.Data.Repositories;
 using Uber.Web.Helpers;
+using Uber.Web.Models;
 
 namespace Uber.Web.Controllers
 {
@@ -49,7 +51,9 @@ namespace Uber.Web.Controllers
 
         public ActionResult ReadData(StoreRequestParameters parameters, bool getAll = false)
         {
-            var data = repository.GetAll().ToList();
+            List<Product> dataFromRepo = repository.GetAll().ToList();
+
+            List<ProductModel> data = Mapper.Map<List<Product>, List<ProductModel>>(dataFromRepo);
 
             return getAll ? this.Store(data, data.Count) : this.Store(data.SortFilterPaged(parameters), data.Count);
         }

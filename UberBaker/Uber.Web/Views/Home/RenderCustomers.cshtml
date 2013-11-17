@@ -1,5 +1,5 @@
-﻿@using Uber.Core
-@model Uber.Core.Customer
+﻿@using Uber.Web.Models
+@model Uber.Web.Models.CustomerModel
 @{
     var X = Html.X();
 }
@@ -184,7 +184,7 @@
                             .Name("BillingAddress.CountryId")
                             .DisplayField("Name")
                             .ValueField("Id")
-                            .Store(X.StoreFor<Country>()
+                            .Store(X.StoreFor<CountryModel>()
                                 .Proxy(Html.X().AjaxProxy()
                                     .ExtraParams(e => e.Add(new Parameter("getAll", "true", ParameterMode.Raw)))
                                     .Url(Url.Action("ReadData", "Countries"))
@@ -223,9 +223,10 @@
                             .Name("ShippingAddress.CountryId")
                             .DisplayField("Name")
                             .ValueField("Id")
-                            .Store(X.StoreFor<Country>()
+                            .Store(X.StoreFor<CountryModel>()
                                 .Proxy(Html.X().AjaxProxy()
-                                    .Url(Url.Action("GetCountries", "Customers"))
+                                    .ExtraParams(e => e.Add(new Parameter("getAll", "true", ParameterMode.Raw)))
+                                    .Url(Url.Action("ReadData", "Countries"))
                                     .Reader(Html.X().JsonReader().Root("data"))
                                 )
                             ),

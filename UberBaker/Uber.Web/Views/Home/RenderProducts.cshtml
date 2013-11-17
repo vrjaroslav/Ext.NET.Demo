@@ -1,5 +1,5 @@
-﻿@using Uber.Core
-@model Product
+﻿@using Uber.Web.Models
+@model Uber.Web.Models.ProductModel
 @{
     var X = Html.X();
 }
@@ -152,8 +152,9 @@
                     .DisplayField("Name")
                     .ValueField("Id")
                     .ForceSelection(true)
-                    .Store(X.StoreFor<ProductType>()
+                    .Store(X.StoreFor<ProductTypeModel>()
                         .Proxy(Html.X().AjaxProxy()
+                            .ExtraParams(e => e.Add(new Parameter("getAll", "true", ParameterMode.Raw)))
                             .Url(Url.Action("ReadData", "ProductTypes"))
                             .Reader(Html.X().JsonReader().Root("data"))
                         )

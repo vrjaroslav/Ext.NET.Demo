@@ -88,7 +88,7 @@
     <Compile Include="Repositories\OrdersRepository.cs" />
     <Compile Include="Repositories\ProductsRepository.cs" />
     <Compile Include="Repositories\ProductTypesRepository.cs" />
-    <Compile Include="Repositories\ProfilesRepository.cs" />
+    <Compile Include="Repositories\UserProfilesRepository.cs" />
     <Compile Include="Repositories\UsersRepository.cs" />
     <Compile Include="UberContext.cs" />
     <Compile Include="Migrations\Configuration.cs" />

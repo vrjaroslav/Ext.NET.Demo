@@ -29,14 +29,14 @@ namespace Uber.Web.Providers
             UberContext db = new UberContext();
             
             int userId = db.Users.Where(u => u.UserName.Equals(username)).FirstOrDefault().Id;
-            Profile profile = db.Profiles.Where(u => u.UserId == userId).FirstOrDefault();
+            UserProfile userProfile = db.Profiles.Where(u => u.UserId == userId).FirstOrDefault();
 
-            if (profile != null)
+            if (userProfile != null)
             {
                 foreach (SettingsProperty prop in collection)
                 {
                     SettingsPropertyValue svp = new SettingsPropertyValue(prop);
-                    svp.PropertyValue = profile.GetType().GetProperty(prop.Name).GetValue(profile, null);
+                    svp.PropertyValue = userProfile.GetType().GetProperty(prop.Name).GetValue(userProfile, null);
                     result.Add(svp);
                 }
             }
@@ -62,24 +62,24 @@ namespace Uber.Web.Providers
 
             UberContext db = new UberContext();
             int userId = db.Users.Where(u => u.UserName.Equals(username)).FirstOrDefault().Id;
-            Profile profile = db.Profiles.Where(u => u.UserId == userId).FirstOrDefault();
-            if (profile != null)
+            UserProfile userProfile = db.Profiles.Where(u => u.UserId == userId).FirstOrDefault();
+            if (userProfile != null)
             {
                 foreach (SettingsPropertyValue val in collection)
                 {
-                    profile.GetType().GetProperty(val.Property.Name).SetValue(profile, val.PropertyValue);
+                    userProfile.GetType().GetProperty(val.Property.Name).SetValue(userProfile, val.PropertyValue);
                 }
-                db.Entry(profile).State = EntityState.Modified;
+                db.Entry(userProfile).State = EntityState.Modified;
             }
             else
             {
-                profile = new Profile();
+                userProfile = new UserProfile();
                 foreach (SettingsPropertyValue val in collection)
                 {
-                    profile.GetType().GetProperty(val.Property.Name).SetValue(profile, val.PropertyValue);
+                    userProfile.GetType().GetProperty(val.Property.Name).SetValue(userProfile, val.PropertyValue);
                 }
-                profile.UserId = userId;
-                db.Profiles.Add(profile);
+                userProfile.UserId = userId;
+                db.Profiles.Add(userProfile);
             }
             db.SaveChanges();
         }

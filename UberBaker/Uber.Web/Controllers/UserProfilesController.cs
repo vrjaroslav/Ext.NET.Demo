@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
+using AutoMapper;
 using Ext.Net;
 using Ext.Net.MVC;
 using Uber.Core;
@@ -12,32 +14,34 @@ using Uber.Web.Providers;
 
 namespace Uber.Web.Controllers
 {
-    public class ProfilesController : Controller
+    public class UserProfilesController : Controller
     {
-        private IBaseRepository<Profile> repository { get; set; }
+        private IBaseRepository<UserProfile> repository { get; set; }
 
 		#region Constructors
 
-		public ProfilesController()
+		public UserProfilesController()
 		{
-			repository = new ProfilesRepository();
+			repository = new UserProfilesRepository();
 		}
 
-        public ProfilesController(IBaseRepository<Profile> repository)
+        public UserProfilesController(IBaseRepository<UserProfile> repository)
 		{
 			// TODO Rewite with IoC
-			this.repository = new ProfilesRepository();
+			this.repository = new UserProfilesRepository();
 		}
 
 		#endregion
 
         #region Actions
 
-        public ActionResult ReadData(StoreRequestParameters parameters)
+        public ActionResult ReadData(StoreRequestParameters parameters, bool getAll = false)
         {
-            var data = repository.GetAll().ToList();
+            List<UserProfile> dataFromRepo = repository.GetAll().ToList();
 
-            return this.Store(data.SortFilterPaged(parameters), data.Count);
+            List<UserProfileModel> data = Mapper.Map<List<UserProfile>, List<UserProfileModel>>(dataFromRepo);
+
+            return getAll ? this.Store(data, data.Count) : this.Store(data.SortFilterPaged(parameters), data.Count);
         }
 
         public ActionResult Disable(int id)
@@ -49,7 +53,7 @@ namespace Uber.Web.Controllers
             return this.Direct();
         }
 
-        public ActionResult Save(ProfileUpdateModel profile)
+        public ActionResult Save(UserProfileModel profile)
         {
             var p = repository.Get(profile.Id);
             p.Email = profile.Email;

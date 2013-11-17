@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoMapper;
 using Ext.Net;
 using Ext.Net.MVC;
 using System.Linq;
@@ -54,7 +55,9 @@ namespace Uber.Web.Controllers
 
         public ActionResult ReadData(StoreRequestParameters parameters, bool getAll = false)
         {
-            var data = repository.GetAll().ToList();
+            List<Order> dataFromRepo = repository.GetAll().ToList();
+
+            List<OrderModel> data = Mapper.Map<List<Order>, List<OrderModel>>(dataFromRepo);
 
             return getAll ? this.Store(data, data.Count) : this.Store(data.SortFilterPaged(parameters), data.Count);
         }
@@ -72,6 +75,7 @@ namespace Uber.Web.Controllers
                 .Select(g => new OrderChartDataForMonth { Day = g.Key, OrdersCount = g.Sum(o => o.Quantity) })
                 .ToDictionary(o => o.Day.Date, o => o.OrdersCount);
 
+            // TODO Rewrite with AutoMapper
             List<OrderChartDataForMonth> result = new List<OrderChartDataForMonth>();
             for (DateTime i = startDate.Value; i < endDate; i = i.AddDays(1))
             {

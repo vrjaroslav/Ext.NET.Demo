@@ -1,11 +1,14 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
+using AutoMapper;
 using Ext.Net;
 using Ext.Net.MVC;
 using Uber.Core;
 using Uber.Data.Abstract;
 using Uber.Data.Repositories;
 using Uber.Web.Helpers;
+using Uber.Web.Models;
 
 namespace Uber.Web.Controllers
 {
@@ -30,11 +33,13 @@ namespace Uber.Web.Controllers
 
 		#region Actions
 
-        public ActionResult ReadData(StoreRequestParameters parameters)
+        public ActionResult ReadData(StoreRequestParameters parameters, bool getAll = false)
         {
-            var data = repository.GetAll().ToList();
+            List<ProductType> dataFromRepo = repository.GetAll().ToList();
 
-            return this.Store(data.SortFilterPaged(parameters), data.Count);
+            List<ProductTypeModel> data = Mapper.Map<List<ProductType>, List<ProductTypeModel>>(dataFromRepo);
+
+            return getAll ? this.Store(data, data.Count) : this.Store(data.SortFilterPaged(parameters), data.Count);
         }
 
 		public ActionResult Save(ProductType productType)

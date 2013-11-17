@@ -5,17 +5,17 @@ using Uber.Data.Abstract;
 
 namespace Uber.Data.Repositories
 {
-    public class ProfilesRepository : IBaseRepository<Profile>
+    public class UserProfilesRepository : IBaseRepository<UserProfile>
     {
         private UberContext DbContext { get; set; }
 
 		#region Constructors
 
-		public ProfilesRepository() : this(new UberContext())
+		public UserProfilesRepository() : this(new UberContext())
 		{
 		}
 
-        public ProfilesRepository(UberContext db)
+        public UserProfilesRepository(UberContext db)
 		{
 			this.DbContext = db;
 		}
@@ -24,45 +24,45 @@ namespace Uber.Data.Repositories
 
 		#region Methods
 
-		public Profile Get(int id)
+		public UserProfile Get(int id)
 		{
             return this.DbContext.Profiles.SingleOrDefault(p => p.Id == id);
 		}
 
-        public IQueryable<Profile> GetAll(bool includingDisabled = false)
+        public IQueryable<UserProfile> GetAll(bool includingDisabled = false)
 		{
             return includingDisabled ?
                 this.DbContext.Profiles.Include("User").Include("User.Role") :
                 this.DbContext.Profiles.Include("User").Include("User.Role").Where(p => !p.Disabled);
 		}
 
-        public Profile Add(Profile profile)
+        public UserProfile Add(UserProfile userProfile)
 		{
-            this.DbContext.Profiles.Add(profile);
+            this.DbContext.Profiles.Add(userProfile);
             this.DbContext.SaveChanges();
 			
-            return profile;
+            return userProfile;
 		}
 
-        public Profile Update(Profile profile)
+        public UserProfile Update(UserProfile userProfile)
 		{
-            this.DbContext.Entry(profile).State = EntityState.Modified;
+            this.DbContext.Entry(userProfile).State = EntityState.Modified;
             this.DbContext.SaveChanges();
 			
-            return profile;
+            return userProfile;
 		}
 
 		public void Delete(int id)
 		{
-            Profile p = Get(id);
+            UserProfile p = Get(id);
             p.Disabled = true;
             
             this.DbContext.SaveChanges();
 		}
 
-        public Profile AddOrUpdate(Profile profile)
+        public UserProfile AddOrUpdate(UserProfile userProfile)
 		{
-			return profile.IsNew ? this.Add(profile) : this.Update(profile);
+			return userProfile.IsNew ? this.Add(userProfile) : this.Update(userProfile);
 		}
 
 		#endregion

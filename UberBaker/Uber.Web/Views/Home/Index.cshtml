@@ -151,7 +151,7 @@
                                         .DirectEvents(de =>
                                         {
                                             //de.Click.Url = Url.Action("ProfileWindow", "Profiles");
-                                            de.Click.Url = Url.Action("ProfilePanel", "Profiles");
+                                            de.Click.Url = Url.Action("ProfilePanel", "UserProfiles");
                                             de.Click.ExtraParams.Add(new { containerId = "MainTabPanel" });
                                             de.Click.ExtraParams.Add(new { tabId = "ProfilePanel" });
                                             de.Click.EventMask.ShowMask = true;

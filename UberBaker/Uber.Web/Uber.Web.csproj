@@ -224,12 +224,15 @@
     <Compile Include="Helpers\ListHelper.cs" />
     <Compile Include="Helpers\QueryableHelper.cs" />
     <Compile Include="Models\AddressModel.cs" />
+    <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\CountryModel.cs" />
     <Compile Include="Models\CustomerModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
-    <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\LocalPasswordModel.cs" />
     <Compile Include="Models\OrderChartData.cs" />
+    <Compile Include="Models\OrderModel.cs" />
+    <Compile Include="Models\ProductModel.cs" />
+    <Compile Include="Models\ProductTypeModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\UserProfileModel.cs" />
@@ -299,6 +302,10 @@
     <ProjectReference Include="..\Uber.Data\Uber.Data.csproj">
       <Project>{E2CD674D-A1FD-4632-8828-0B8842520645}</Project>
       <Name>Uber.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Uber.Services\Uber.Services.csproj">
+      <Project>{743063ED-B055-4378-971E-F7E9F5B53EE1}</Project>
+      <Name>Uber.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

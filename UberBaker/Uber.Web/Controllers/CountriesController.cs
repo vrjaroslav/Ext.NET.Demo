@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
 using Ext.Net;
 using Ext.Net.MVC;
 using Uber.Core;
-using Uber.Data.Abstract;
-using Uber.Data.Repositories;
+using Uber.Services;
 using Uber.Web.Helpers;
 using Uber.Web.Models;
 
@@ -14,24 +12,21 @@ namespace Uber.Web.Controllers
 {
     public class CountriesController : Controller
     {
-        private IBaseRepository<Country> repository { get; set; }
+        private ICountriesService service { get; set; }
 
         public CountriesController()
 		{
-			this.repository = new CountriesRepository();
+            this.service = new CountriesService();
 		}
 
-        public CountriesController(IBaseRepository<Country> repository)
+        public CountriesController(ICountriesService service)
 		{
-			// TODO Rewite with IoC
-			this.repository = new CountriesRepository();
+            this.service = service;
 		}
 
         public ActionResult ReadData(StoreRequestParameters parameters, bool getAll = false)
         {
-            List<Country> dataFromRepo = repository.GetAll().ToList();
-
-            List<CountryModel> data = Mapper.Map<List<Country>, List<CountryModel>>(dataFromRepo);
+            List<CountryModel> data = Mapper.Map<List<Country>, List<CountryModel>>(service.GetAll());
 
             return getAll ? this.Store(data, data.Count) : this.Store(data.SortFilterPaged(parameters), data.Count);
         }

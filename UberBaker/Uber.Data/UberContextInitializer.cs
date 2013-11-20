@@ -179,16 +179,16 @@ namespace Uber.Data
 
 			var products = new List<Product>
 			{
-				new Product {Name = "Sour Dough", UnitPrice = 2.22, ShortCode = "sourdough", ProductType = glutenfree},
-				new Product {Name = "5 Grain", UnitPrice = 3.33, ShortCode = "5grain", ProductType = glutenfree},
-				new Product {Name = "Baguette", ShortCode = "baguette", ProductType = bread},
-				new Product {Name = "Dark Rye", UnitPrice = 4.44, ShortCode = "darkrye", ProductType = bread},
+				new Product {Name = "Sour Dough", UnitPrice = (decimal)2.22, ShortCode = "sourdough", ProductType = glutenfree},
+				new Product {Name = "5 Grain", UnitPrice = (decimal)3.33, ShortCode = "5grain", ProductType = glutenfree},
+				new Product {Name = "Baguette", UnitPrice = (decimal) 5.78, ShortCode = "baguette", ProductType = bread},
+				new Product {Name = "Dark Rye", UnitPrice = (decimal)4.44, ShortCode = "darkrye", ProductType = bread},
 				new Product {Name = "Pumpernickel", ShortCode = "pumpernickel", ProductType = bread},
-				new Product {Name = "Corn Bread", UnitPrice = 5.55, ShortCode = "cornbread", ProductType = bread},
-				new Product {Name = "Brioche", ShortCode = "brioche", ProductType = pastry},
-				new Product {Name = "Focaccia", ShortCode = "focaccia", ProductType = bread},
-				new Product {Name = "Croissant", ShortCode = "croissant", ProductType = pastry},
-				new Product {Name = "Pain au Chocolat", UnitPrice = 1.11, ShortCode = "painauchocolat", ProductType = pastry},
+				new Product {Name = "Corn Bread", UnitPrice = (decimal)5.55, ShortCode = "cornbread", ProductType = bread},
+				new Product {Name = "Brioche", UnitPrice = (decimal)6.87, ShortCode = "brioche", ProductType = pastry},
+				new Product {Name = "Focaccia", UnitPrice = (decimal)9.55,ShortCode = "focaccia", ProductType = bread},
+				new Product {Name = "Croissant", UnitPrice = (decimal)4.99, ShortCode = "croissant", ProductType = pastry},
+				new Product {Name = "Pain au Chocolat", UnitPrice = (decimal)1.11, ShortCode = "painauchocolat", ProductType = pastry},
 			};
 
 			products.ForEach(product => db.Products.AddOrUpdate(item => item.ShortCode, product));

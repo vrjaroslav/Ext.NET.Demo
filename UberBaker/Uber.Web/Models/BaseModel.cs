@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Ext.Net.MVC;
 
 namespace Uber.Web.Models
 {
     public abstract class BaseModel
     {
-        public virtual int Id { get; set; }
+        [ModelField(UseNull = true, IDProperty = true)]
+        [Column(Width = 50, Order = 1)]
+        public int Id { get; set; }
 
+        [Column(Ignore = true)]
+        [Field(Ignore = true)]
         public string PhantomId { get; set; }
 
+        [Column(Ignore = true)]
         public bool IsNew
         {
             get

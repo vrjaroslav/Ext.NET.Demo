@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
 using Ext.Net;
 using Ext.Net.MVC;
 using Uber.Core;
-using Uber.Data.Abstract;
-using Uber.Data.Repositories;
+using Uber.Services;
 using Uber.Web.Helpers;
 using Uber.Web.Models;
 
@@ -14,46 +12,41 @@ namespace Uber.Web.Controllers
 {
     public class ProductsController : Controller
     {
-        private IBaseRepository<Product> repository { get; set; }
+        private IProductsService productService { get; set; }
 
         #region Constructors
 
         public ProductsController()
         {
-            repository = new ProductsRepository();
+            productService = new ProductsService();
         }
 
-        public ProductsController(IBaseRepository<Product> repository)
+        public ProductsController(IProductsService service)
         {
-            // TODO Rewite with IoC
-            this.repository = new ProductsRepository();
+            this.productService = service;
         }
 
         #endregion
 
         #region Actions
 
-        public ActionResult Save(Product product)
+        public ActionResult Save(ProductModel product)
         {
-            repository.AddOrUpdate(product);
+            productService.Save(Mapper.Map<ProductModel, Product>(product));
 
             return this.Direct();
         }
 
         public ActionResult Delete(int id)
         {
-            var p = repository.Get(id);
-            p.Disabled = true;
-            repository.Update(p);
+            productService.Delete(id);
 
             return this.Direct();
         }
 
         public ActionResult ReadData(StoreRequestParameters parameters, bool getAll = false)
         {
-            List<Product> dataFromRepo = repository.GetAll().ToList();
-
-            List<ProductModel> data = Mapper.Map<List<Product>, List<ProductModel>>(dataFromRepo);
+            List<ProductModel> data = Mapper.Map<List<Product>, List<ProductModel>>(productService.GetAll());
 
             return getAll ? this.Store(data, data.Count) : this.Store(data.SortFilterPaged(parameters), data.Count);
         }

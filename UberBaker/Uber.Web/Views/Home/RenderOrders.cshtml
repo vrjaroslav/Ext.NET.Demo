@@ -190,6 +190,7 @@
                             .DirectEvents(de => {
                                 de.Click.Url = Url.Action("Save", "Orders");
                                 de.Click.FormID = "OrdersForm";
+                                de.Click.EventMask.ShowMask = true;
                                 de.Click.Success = "recordAddSuccess('Orders');";
                             }),
                         X.Button()

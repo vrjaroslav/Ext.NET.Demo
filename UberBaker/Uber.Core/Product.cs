@@ -16,7 +16,7 @@ namespace Uber.Core
         public string Description { get; set; }
 
         [DefaultValue(0.0)]
-        public double UnitPrice { get; set; }
+        public decimal UnitPrice { get; set; }
 
 		public virtual int? ProductTypeId { get; set; }
 

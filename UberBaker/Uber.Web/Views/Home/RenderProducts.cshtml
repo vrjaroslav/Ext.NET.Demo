@@ -13,37 +13,17 @@
         X.GridPanel()
             .Region(Region.Center)
             .ID("ProductsGrid")
-            .Store(X.Store()
+            .Store(X.StoreForModel()
                 .ID("ProductsStore")
                 .RemoteSort(true)
                 .RemotePaging(true)
                 .PageSize(25)
-                .Model(X.Model()
-                    .ClientIdProperty("PhantomId")
-                    .IDProperty("Id")
-                    .Name("Product")
-                    .Fields(
-                        X.ModelFieldFor(m => m.Id)
-                            .UseNull(true),
-                        X.ModelFieldFor(m => m.PhantomId),
-                        X.ModelFieldFor(m => m.Name),
-                        X.ModelFieldFor(m => m.ShortCode),
-                        X.ModelFieldFor(m => m.Description),
-                        X.ModelFieldFor(m => m.UnitPrice)
-                            .UseNull(true),
-                        X.ModelFieldFor(m => m.ProductType)
-                            .Mapping("ProductType.Name"),
-                        X.ModelFieldFor(m => m.ProductTypeId)
-                            .Mapping("ProductType.Id")
-                            .NullConvert(true)
-                    )
-                )
                 .Proxy(X.AjaxProxy()
                     .Url(Url.Action("ReadData", "Products"))
                     .Reader(X.JsonReader().Root("data"))
                 )
                 .Sorters(
-                    Html.X().DataSorter().Property("Name").Direction(Ext.Net.SortDirection.ASC)                                
+                    Html.X().DataSorter().Property("Name").Direction(Ext.Net.SortDirection.ASC)
                 )
             )
             .ColumnModel(
@@ -69,7 +49,7 @@
                     .Width(100)
                     .Renderer(RendererFormat.UsMoney),
                 X.Column()
-                    .DataIndex("ProductType")
+                    .DataIndex("ProductTypeName")
                     .Text("Type")
                     .Width(100)
                     .Sortable(false)
@@ -81,6 +61,7 @@
                         Html.X().StringFilter().DataIndex("Name"),
                         Html.X().StringFilter().DataIndex("ShortCode"),
                         Html.X().StringFilter().DataIndex("Description"),
+                        Html.X().StringFilter().DataIndex("ProductTypeName"),
                         Html.X().NumericFilter().DataIndex("UnitPrice")
                     )
             )
@@ -90,7 +71,7 @@
                         Html.X().Button()
                             .Text("Add")
                             .Icon(Icon.Add)
-                            .Handler("addRecordButtonHandler('Products', new Product({ ProductType: null, ProductTypeId: null, UnitPrice: 0 }));"),
+                            .Handler("addRecordButtonHandler('Products', new Product({ ProductTypeId: null, UnitPrice: 0 }));"),
 
                         Html.X().Button()
                             .ID("ProductsDeleteButton")

@@ -12,7 +12,7 @@ namespace Uber.Core
 		[Required]
         public int Quantity { get; set; }
 
-		public double GrossTotal
+		public decimal GrossTotal
 		{
 			get
 			{

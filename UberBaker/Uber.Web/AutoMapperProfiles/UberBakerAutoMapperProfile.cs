@@ -12,10 +12,22 @@ namespace Uber.Web.AutoMapperProfiles
             CreateMap<UserProfile, UserProfileModel>();
             CreateMap<Role, RoleModel>();
             CreateMap<Address, AddressModel>();
-            CreateMap<Customer, CustomerModel>();
+            CreateMap<Customer, CustomerModel>()
+                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => string.Format("{0} {1}", src.FirstName, src.LastName)));
             CreateMap<Country, CountryModel>();
             CreateMap<Order, OrderModel>();
+            CreateMap<Product, ProductModel>();
             CreateMap<ProductType, ProductTypeModel>();
+
+            CreateMap<UserModel, User>();
+            CreateMap<UserProfileModel, UserProfile>();
+            CreateMap<RoleModel, Role>();
+            CreateMap<ProductModel, Product>();
+            CreateMap<ProductTypeModel, ProductType>();
+            CreateMap<CustomerModel, Customer>();
+            CreateMap<AddressModel, Address>();
+            CreateMap<CountryModel, Country>();
+            CreateMap<OrderModel, Order>();
         }
     }
 }

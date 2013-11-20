@@ -6,8 +6,7 @@ using Ext.Net.MVC;
 using System.Linq;
 using System.Web.Mvc;
 using Uber.Core;
-using Uber.Data.Abstract;
-using Uber.Data.Repositories;
+using Uber.Services;
 using Uber.Web.Helpers;
 using Uber.Web.Models;
 
@@ -15,49 +14,41 @@ namespace Uber.Web.Controllers
 {
     public class OrdersController : Controller
     {
-        private IBaseRepository<Order> repository { get; set; }
-        private IBaseRepository<ProductType> productTypesRepository { get; set; }
+        private IOrdersService service { get; set; }
 
 		#region Constructors
 
 		public OrdersController()
 		{
-			repository = new OrdersRepository();
-            productTypesRepository = new ProductTypesRepository();
+            service = new OrdersService();
 		}
 
-        public OrdersController(IBaseRepository<Order> repository, IBaseRepository<ProductType> productTypesRepository)
+        public OrdersController(IOrdersService service)
 		{
-			// TODO Rewite with IoC
-			this.repository = new OrdersRepository();
-            this.productTypesRepository = new ProductTypesRepository();
+            this.service = service;
 		}
 
 		#endregion
 
 		#region Actions
 
-		public ActionResult Save(Order order)
+		public ActionResult Save(OrderModel order)
 		{
-			repository.AddOrUpdate(order);
+            service.Save(Mapper.Map<OrderModel, Order>(order));
 
 			return this.Direct();
 		}
 
 		public ActionResult Delete(int id)
 		{
-            var o = repository.Get(id);
-            o.Disabled = true;
-            repository.Update(o);
+            service.Delete(id);
 
 			return this.Direct();
 		}
 
         public ActionResult ReadData(StoreRequestParameters parameters, bool getAll = false)
         {
-            List<Order> dataFromRepo = repository.GetAll().ToList();
-
-            List<OrderModel> data = Mapper.Map<List<Order>, List<OrderModel>>(dataFromRepo);
+            List<OrderModel> data = Mapper.Map<List<Order>, List<OrderModel>>(service.GetAll());
 
             return getAll ? this.Store(data, data.Count) : this.Store(data.SortFilterPaged(parameters), data.Count);
         }
@@ -70,13 +61,12 @@ namespace Uber.Web.Controllers
             if (endDate == null)
                 endDate = DateTime.Now.Date;
 
-            var data = repository.GetAll()
-                .Where(o => (o.OrderDate > startDate && o.OrderDate < endDate)).GroupBy(o => o.OrderDate)
+            var data = service.GetAllByDate(startDate.Value, endDate.Value).GroupBy(o => o.OrderDate)
                 .Select(g => new OrderChartDataForMonth { Day = g.Key, OrdersCount = g.Sum(o => o.Quantity) })
                 .ToDictionary(o => o.Day.Date, o => o.OrdersCount);
 
             // TODO Rewrite with AutoMapper
-            List<OrderChartDataForMonth> result = new List<OrderChartDataForMonth>();
+            var result = new List<OrderChartDataForMonth>();
             for (DateTime i = startDate.Value; i < endDate; i = i.AddDays(1))
             {
                 result.Add(new OrderChartDataForMonth { Day = i, OrdersCount = data.ContainsKey(i) ? data[i] : 0 });
@@ -89,8 +79,7 @@ namespace Uber.Web.Controllers
 	    {
             DateTime startDate = DateTime.Now.AddDays(-31),
                 endDate = DateTime.Now;
-            var data = repository.GetAll()
-                .Where(o => (o.OrderDate > startDate && o.OrderDate < endDate))
+            var data = service.GetAllByDate(startDate, endDate)
                 .GroupBy(o => o.Product.ProductType)
                 .Select(group => new { ProductTypeName = group.Key.Name, OrdersCount = group.Sum(o => o.Quantity) })
                 .ToList();

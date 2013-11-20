@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uber.WebForms", "Uber.WebFo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uber.Web", "Uber.Web\Uber.Web.csproj", "{AA8799C2-026F-406C-A1C5-22F82D6FED77}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uber.Services", "Uber.Services\Uber.Services.csproj", "{743063ED-B055-4378-971E-F7E9F5B53EE1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{AA8799C2-026F-406C-A1C5-22F82D6FED77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA8799C2-026F-406C-A1C5-22F82D6FED77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA8799C2-026F-406C-A1C5-22F82D6FED77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{743063ED-B055-4378-971E-F7E9F5B53EE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{743063ED-B055-4378-971E-F7E9F5B53EE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{743063ED-B055-4378-971E-F7E9F5B53EE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{743063ED-B055-4378-971E-F7E9F5B53EE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
 using AutoMapper;
 using Ext.Net;
 using Ext.Net.MVC;
 using Uber.Core;
-using Uber.Data.Abstract;
-using Uber.Data.Repositories;
+using Uber.Services;
 using Uber.Web.Helpers;
 using Uber.Web.Models;
 using Uber.Web.Providers;
@@ -16,19 +14,18 @@ namespace Uber.Web.Controllers
 {
     public class UserProfilesController : Controller
     {
-        private IBaseRepository<UserProfile> repository { get; set; }
+        private IUserProfilesService service { get; set; }
 
 		#region Constructors
 
 		public UserProfilesController()
 		{
-			repository = new UserProfilesRepository();
+            service = new UserProfilesService();
 		}
 
-        public UserProfilesController(IBaseRepository<UserProfile> repository)
+        public UserProfilesController(IUserProfilesService service)
 		{
-			// TODO Rewite with IoC
-			this.repository = new UserProfilesRepository();
+            this.service = service;
 		}
 
 		#endregion
@@ -37,29 +34,21 @@ namespace Uber.Web.Controllers
 
         public ActionResult ReadData(StoreRequestParameters parameters, bool getAll = false)
         {
-            List<UserProfile> dataFromRepo = repository.GetAll().ToList();
-
-            List<UserProfileModel> data = Mapper.Map<List<UserProfile>, List<UserProfileModel>>(dataFromRepo);
+            List<UserProfileModel> data = Mapper.Map<List<UserProfile>, List<UserProfileModel>>(service.GetAll());
 
             return getAll ? this.Store(data, data.Count) : this.Store(data.SortFilterPaged(parameters), data.Count);
         }
 
         public ActionResult Disable(int id)
         {
-            var profile = repository.Get(id);
-            profile.Disabled = true;
-            repository.Update(profile);
-
+            service.Disable(id);
             return this.Direct();
         }
 
         public ActionResult Save(UserProfileModel profile)
         {
-            var p = repository.Get(profile.Id);
-            p.Email = profile.Email;
-            p.LastName = profile.LastName;
-            p.FirstName = profile.FirstName;
-            repository.AddOrUpdate(p);
+            service.Save(Mapper.Map<UserProfileModel, UserProfile>(profile));
+
             X.MessageBox.Alert("Success", "Your profile has been updated").Show();
 
             return this.Direct();
@@ -75,8 +64,8 @@ namespace Uber.Web.Controllers
 
             var currentUserName = Membership.GetUser().UserName;
             var p = profile.Id.HasValue ? 
-                repository.Get(profile.Id.Value) :
-                repository.GetAll().SingleOrDefault(u => u.User.UserName == currentUserName);
+                service.Get(profile.Id.Value) :
+                service.GetByUserName(currentUserName);
 
             if (p == null)
             {
@@ -84,7 +73,7 @@ namespace Uber.Web.Controllers
                 return this.Direct();
             }
 
-            if (((UberMembershipProvider) Membership.Provider).ChangePassword(p.User.UserName, profile.OldPassword,
+            if (((UberMembershipProvider)Membership.Provider).ChangePassword(p.User.UserName, profile.OldPassword,
                 profile.NewPassword))
             {
                 X.MessageBox.Alert("Success", "Your password has been changed").Show();
@@ -103,7 +92,7 @@ namespace Uber.Web.Controllers
         public ActionResult ProfilePanel(string containerId)
         {
             string userName = Membership.GetUser().UserName;
-            var currentUser = repository.GetAll().SingleOrDefault(u => u.User.UserName == userName);
+            var currentUser = service.GetByUserName(userName);
             var result = new Ext.Net.MVC.PartialViewResult
             {
                 ViewName = "ProfilePanel",

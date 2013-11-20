@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
-using Uber.Core;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Uber.Web.Models
 {
@@ -17,13 +10,7 @@ namespace Uber.Web.Models
         [Required]
         public string LastName { get; set; }
 
-        public string FullName
-        {
-            get
-            {
-                return string.Format("{0} {1}", FirstName, LastName);
-            }
-        }
+        public string FullName { get; set; }
 
         [Required]
         public string Company { get; set; }

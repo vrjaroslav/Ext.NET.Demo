@@ -217,6 +217,7 @@
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\ProductTypesController.cs" />
     <Compile Include="Controllers\UserProfilesController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -281,11 +282,11 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\_BaseLayout.cshtml" />
-    <Content Include="Views\Home\RenderProducts.cshtml" />
-    <Content Include="Views\Home\RenderProductTypes.cshtml" />
-    <Content Include="Views\Home\RenderOrders.cshtml" />
-    <Content Include="Views\Home\RenderOrdersChart.cshtml" />
-    <Content Include="Views\Home\RenderCustomers.cshtml" />
+    <Content Include="Views\Products\Index.cshtml" />
+    <Content Include="Views\ProductTypes\Index.cshtml" />
+    <Content Include="Views\Orders\Index.cshtml" />
+    <Content Include="Views\Orders\Chart.cshtml" />
+    <Content Include="Views\Customers\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -312,16 +313,16 @@
     <Content Include="Views\Account\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\RenderUsers.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\OrdersLast31DaysChart.cshtml" />
+    <Content Include="Views\Orders\ChartLast31Days.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\UserProfiles\ProfilePanel.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\OrdersByTypeLast31DaysChart.cshtml" />
+    <Content Include="Views\Orders\ChartByTypeLast31Days.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

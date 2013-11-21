@@ -30,6 +30,20 @@ namespace Uber.Web.Controllers
 
 		#region Actions
 
+        public ActionResult Index(string containerId)
+        {
+            var result = new Ext.Net.MVC.PartialViewResult
+            {
+                RenderMode = RenderMode.AddTo,
+                ContainerId = containerId,
+                WrapByScriptTag = false
+            };
+
+            this.GetCmp<TabPanel>(containerId).SetLastTabAsActive();
+
+            return result;
+        }
+
         public ActionResult ReadData(StoreRequestParameters parameters, bool getAll = false)
         {
             List<ProductType> dataFromRepo = service.GetAll();

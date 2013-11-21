@@ -150,8 +150,7 @@
                                         .Icon(Icon.User)
                                         .DirectEvents(de =>
                                         {
-                                            //de.Click.Url = Url.Action("ProfileWindow", "Profiles");
-                                            de.Click.Url = Url.Action("ProfilePanel", "UserProfiles");
+                                            de.Click.Url = Url.Action("CurrentProfilePanel", "UserProfiles");
                                             de.Click.ExtraParams.Add(new { containerId = "MainTabPanel" });
                                             de.Click.ExtraParams.Add(new { tabId = "ProfilePanel" });
                                             de.Click.EventMask.ShowMask = true;
@@ -187,7 +186,7 @@
                                 .DirectEvents(
                                     de =>
                                     {
-                                        de.Click.Action = "RenderTab";
+                                        de.Click.Url = Url.Action("Index", "Products");
                                         de.Click.ExtraParams.Add(new {containerId = "MainTabPanel"});
                                         de.Click.ExtraParams.Add(new { tabId = "ProductsPanel" });
                                         de.Click.EventMask.ShowMask = true;
@@ -204,7 +203,7 @@
                                 .DirectEvents(
                                     de =>
                                     {
-                                        de.Click.Action = "RenderTab";
+                                        de.Click.Url = Url.Action("Index", "ProductTypes");
                                         de.Click.ExtraParams.Add(new {containerId = "MainTabPanel"});
                                         de.Click.ExtraParams.Add(new { tabId = "ProductTypesPanel" });
                                         de.Click.EventMask.ShowMask = true;
@@ -221,7 +220,7 @@
                                 .DirectEvents(
                                     de =>
                                     {
-                                        de.Click.Action = "RenderTab";
+                                        de.Click.Url = Url.Action("Index", "Customers");
                                         de.Click.ExtraParams.Add(new {containerId = "MainTabPanel"});
                                         de.Click.ExtraParams.Add(new { tabId = "CustomersPanel" });
                                         de.Click.EventMask.ShowMask = true;
@@ -238,7 +237,7 @@
                                 .DirectEvents(
                                     de =>
                                     {
-                                        de.Click.Action = "RenderTab";
+                                        de.Click.Url = Url.Action("Index", "Orders");
                                         de.Click.ExtraParams.Add(new { containerId = "MainTabPanel" });
                                         de.Click.ExtraParams.Add(new { tabId = "OrdersPanel" });
                                         de.Click.EventMask.ShowMask = true;
@@ -255,7 +254,7 @@
                                 .DirectEvents(
                                     de =>
                                     {
-                                        de.Click.Action = "RenderTab";
+                                        de.Click.Url = Url.Action("Chart", "Orders");
                                         de.Click.ExtraParams.Add(new {containerId = "MainTabPanel"});
                                         de.Click.ExtraParams.Add(new { tabId = "OrdersChartPanel" });
                                         de.Click.EventMask.ShowMask = true;
@@ -272,7 +271,7 @@
                                 .DirectEvents(
                                     de =>
                                     {
-                                        de.Click.Action = "RenderTab";
+                                        de.Click.Url = Url.Action("Index", "Users");
                                         de.Click.ExtraParams.Add(new {containerId = "MainTabPanel"});
                                         de.Click.ExtraParams.Add(new { tabId = "UsersPanel" });
                                         de.Click.EventMask.ShowMask = true;
@@ -298,10 +297,10 @@
                                         .Border(false)
                                         .Items(
                                             X.PortalColumn()
-                                                .ItemsFromPartial("OrdersLast31DaysChart"),
+                                                .ItemsFromAction("ChartLast31Days", "Orders"),
                                                 
                                             X.PortalColumn()
-                                                .ItemsFromPartial("OrdersByTypeLast31DaysChart")
+                                                .ItemsFromAction("ChartByTypeLast31Days", "Orders")
                                         )
                                 )
                         )

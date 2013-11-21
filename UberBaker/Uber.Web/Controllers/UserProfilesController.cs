@@ -89,7 +89,7 @@ namespace Uber.Web.Controllers
             return this.Direct();
         }
 
-        public ActionResult ProfilePanel(string containerId)
+        public ActionResult CurrentProfilePanel(string containerId)
         {
             string userName = Membership.GetUser().UserName;
             var currentUser = service.GetByUserName(userName);

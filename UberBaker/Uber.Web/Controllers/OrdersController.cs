@@ -23,7 +23,7 @@ namespace Uber.Web.Controllers
             service = new OrdersService();
 		}
 
-        public OrdersController(IOrdersService service)
+        public OrdersController(IOrdersService service, IProductTypesService productTypeService)
 		{
             this.service = service;
 		}
@@ -46,12 +46,48 @@ namespace Uber.Web.Controllers
 			return this.Direct();
 		}
 
-        public ActionResult ReadData(StoreRequestParameters parameters, bool getAll = false)
+        public ActionResult Index(string containerId)
         {
-            List<OrderModel> data = Mapper.Map<List<Order>, List<OrderModel>>(service.GetAll());
+            var result = new Ext.Net.MVC.PartialViewResult
+            {
+                RenderMode = RenderMode.AddTo,
+                ContainerId = containerId,
+                WrapByScriptTag = false // we load the view via Loader with Script mode therefore script tags is not required
+            };
 
-            return getAll ? this.Store(data, data.Count) : this.Store(data.SortFilterPaged(parameters), data.Count);
+            this.GetCmp<TabPanel>(containerId).SetLastTabAsActive();
+
+            return result;
         }
+
+        public ActionResult Chart(string containerId)
+        {
+            var result = new Ext.Net.MVC.PartialViewResult("Chart")
+            {
+                RenderMode = RenderMode.AddTo,
+                ContainerId = containerId,
+                WrapByScriptTag = false // we load the view via Loader with Script mode therefore script tags is not required
+            };
+
+            this.GetCmp<TabPanel>(containerId).SetLastTabAsActive();
+
+            return result;
+        }
+
+        public ActionResult ChartLast31Days()
+        {
+            return this.PartialView("ChartLast31Days");
+        }
+
+        public ActionResult ChartByTypeLast31Days()
+        {
+            return this.PartialView("ChartByTypeLast31Days");
+        }
+
+        #endregion
+
+
+        #region Data actions
 
         public ActionResult GetChartData(DateTime? startDate, DateTime? endDate)
 	    {
@@ -89,6 +125,13 @@ namespace Uber.Web.Controllers
 		    return new StoreResult(data);
 	    }
 
+        public ActionResult ReadData(StoreRequestParameters parameters, bool getAll = false)
+        {
+            List<OrderModel> data = Mapper.Map<List<Order>, List<OrderModel>>(service.GetAll());
+
+            return getAll ? this.Store(data, data.Count) : this.Store(data.SortFilterPaged(parameters), data.Count);
+        }
+        
 		#endregion
     }
 }

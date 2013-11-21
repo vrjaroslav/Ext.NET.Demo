@@ -30,6 +30,20 @@ namespace Uber.Web.Controllers
 
         #region Actions
 
+        public ActionResult Index(string containerId)
+        {
+            var result = new Ext.Net.MVC.PartialViewResult
+            {
+                RenderMode = RenderMode.AddTo,
+                ContainerId = containerId,
+                WrapByScriptTag = false // we load the view via Loader with Script mode therefore script tags is not required
+            };
+
+            this.GetCmp<TabPanel>(containerId).SetLastTabAsActive();
+
+            return result;
+        }
+
         public ActionResult Save(ProductModel product)
         {
             productService.Save(Mapper.Map<ProductModel, Product>(product));

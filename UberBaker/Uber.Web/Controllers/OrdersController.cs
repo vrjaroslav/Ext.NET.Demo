@@ -61,9 +61,11 @@ namespace Uber.Web.Controllers
             if (endDate == null)
                 endDate = DateTime.Now.Date;
 
-            var data = service.GetAllByDate(startDate.Value, endDate.Value).GroupBy(o => o.OrderDate)
+            var data = service.GetAllByDate(startDate.Value, endDate.Value)
+                .ToList()
+                .GroupBy(o => o.OrderDate.Date)
                 .Select(g => new OrderChartDataForMonth { Day = g.Key, OrdersCount = g.Sum(o => o.Quantity) })
-                .ToDictionary(o => o.Day.Date, o => o.OrdersCount);
+                .ToDictionary(o => o.Day, o => o.OrdersCount);
 
             // TODO Rewrite with AutoMapper
             var result = new List<OrderChartDataForMonth>();

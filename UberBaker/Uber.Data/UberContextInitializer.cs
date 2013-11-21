@@ -189,6 +189,7 @@ namespace Uber.Data
 				new Product {Name = "Focaccia", UnitPrice = (decimal)9.55,ShortCode = "focaccia", ProductType = bread},
 				new Product {Name = "Croissant", UnitPrice = (decimal)4.99, ShortCode = "croissant", ProductType = pastry},
 				new Product {Name = "Pain au Chocolat", UnitPrice = (decimal)1.11, ShortCode = "painauchocolat", ProductType = pastry},
+				new Product {Name = "Milk Chocolate", UnitPrice = (decimal)3.41, ShortCode = "milkchocolate", ProductType = chocolate}
 			};
 
 			products.ForEach(product => db.Products.AddOrUpdate(item => item.ShortCode, product));
@@ -208,7 +209,7 @@ namespace Uber.Data
 		        foreach (var product in products)
 		        {
                     // Get random amount of orders
-		            var count = r.Next(5);
+		            var count = r.Next(1, 5);
 		            for (int j = 0; j < count; j++)
 		            {
 		                orders.Add(new Order

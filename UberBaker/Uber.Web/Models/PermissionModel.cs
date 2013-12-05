@@ -6,6 +6,6 @@ namespace Uber.Web.Models
     {
         public string ObjectType { get; set; }
 
-        public PermissionType PermissionType { get; set; }
+        public string PermissionType { get; set; }
     }
 }

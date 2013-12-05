@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
 using Ext.Net;
@@ -63,9 +64,22 @@ namespace Uber.Web.Controllers
         }
 
         [AuthorizeAction("Role", new[] { "Create", "Update" })]
-        public ActionResult Save(RoleModel profile, Dictionary<string, List<string>> permissions)
+        public ActionResult Save(RoleModel profile, List<PermissionModel> permissions)
         {
-            service.Save(Mapper.Map<RoleModel, Role>(profile), permissions);
+            Dictionary<string, List<string>> r = new Dictionary<string,List<string>>();
+            foreach (var item in permissions.Where(item => item.PermissionType != null))
+            {
+                if (r.ContainsKey(item.ObjectType))
+                {
+                    r[item.ObjectType].Add(item.PermissionType);
+                }
+                else
+                {
+                    r.Add(item.ObjectType, new List<string> { item.PermissionType });
+                }
+            }
+
+            service.Save(Mapper.Map<RoleModel, Role>(profile), r);
 
             X.MessageBox.Alert("Success", "Role has been updated").Show();
 

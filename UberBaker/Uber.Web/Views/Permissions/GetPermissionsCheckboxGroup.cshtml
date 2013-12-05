@@ -1,18 +1,11 @@
 ﻿@model Dictionary<string, Dictionary<string, bool>>
 @{
     var X = Html.X();
-    int counter1 = 0;
-    int counter2 = 0;
+    int counter = 0;
 }
 
 @foreach (string objectType in Model.Keys)
 {
-    counter2 = 0;
-    @(X.Hidden()
-        .Name("permissions[" + counter1 + "].Key")
-        .Value(objectType)
-    )
-    
     @(X.CheckboxGroup()
         .ID("RolesPermissionGroup" + objectType)
         .AnchorHorizontal("100%")
@@ -22,16 +15,25 @@
         {
             foreach (string permission in Model[objectType].Keys)
             {
+                i.Add((X.Hidden()
+                    .Name("Index")
+                    .Value(counter)
+                ));
+                
+                i.Add((X.Hidden()
+                    .Name("[" + counter + "].ObjectType")
+                    .Value(objectType)
+                ));
+                
                 i.Add(X.Checkbox()
                     .BoxLabel(permission)
                     .Checked(Model[objectType][permission])
-                    .Name("permissions[" + counter1 + "].Value[" + counter2 + "]")
+                    .Name("[" + counter + "].PermissionType")
                     .InputValue(permission)
                 );
 
-                counter2++;
+                counter++;
             }
         })
     )
-    counter1++;
 }

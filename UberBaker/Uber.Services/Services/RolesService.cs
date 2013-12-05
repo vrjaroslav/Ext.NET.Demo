@@ -42,6 +42,12 @@ namespace Uber.Services
             repository.Update(profile);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="role"></param>
+        /// <param name="permissions">Permissions. The Key is ObjectType, the Value is the list of permissions for the ObjectType</param>
+        /// <returns></returns>
         public Role Save(Role role, Dictionary<string, List<string>> permissions)
         {
             var r = repository.Get(role.Id);

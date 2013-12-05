@@ -1,0 +1,172 @@
+﻿@model Uber.Web.Models.LeftAppMenuModel
+@{
+    var X = Html.X();
+}
+
+@(X.MenuPanel()
+    .Region(Region.West)
+    .Width(215)
+    .Split(true)
+    .Menu(m =>
+    {
+        if (Model.AllowReadProducts)
+        {
+            m.Add(X.MenuItem()
+                .Icon(Icon.ApplicationViewList)
+                .Text("Products")
+                .DirectEvents(
+                    de =>
+                    {
+                        de.Click.Url = Url.Action("Index", "Products");
+                        de.Click.ExtraParams.Add(new {containerId = "MainTabPanel"});
+                        de.Click.ExtraParams.Add(new {tabId = "ProductsPanel"});
+                        de.Click.EventMask.ShowMask = true;
+                        de.Click.EventMask.Msg = "Loading...";
+                        de.Click.Before = "return beforeTabOpen(extraParams['tabId']);";
+                        de.Click.Timeout = 120000;
+                    }
+                )
+                );
+        }
+
+        if (Model.AllowReadProductTypes)
+        {
+            m.Add(X.MenuItem()
+                .Icon(Icon.Basket)
+                .Text("ProductTypes")
+                .DirectEvents(
+                    de =>
+                    {
+                        de.Click.Url = Url.Action("Index", "ProductTypes");
+                        de.Click.ExtraParams.Add(new {containerId = "MainTabPanel"});
+                        de.Click.ExtraParams.Add(new {tabId = "ProductTypesPanel"});
+                        de.Click.EventMask.ShowMask = true;
+                        de.Click.EventMask.Msg = "Loading...";
+                        de.Click.Before = "return beforeTabOpen(extraParams['tabId']);";
+                        de.Click.Timeout = 120000;
+                    }
+                )
+                );
+        }
+
+        if (Model.AllowReadCustomers)
+        {
+            m.Add(X.MenuItem()
+                .Text("Customers")
+                .Icon(Icon.UserSuitBlack)
+                .DirectEvents(
+                    de =>
+                    {
+                        de.Click.Url = Url.Action("Index", "Customers");
+                        de.Click.ExtraParams.Add(new {containerId = "MainTabPanel"});
+                        de.Click.ExtraParams.Add(new {tabId = "CustomersPanel"});
+                        de.Click.EventMask.ShowMask = true;
+                        de.Click.EventMask.Msg = "Loading...";
+                        de.Click.Before = "return beforeTabOpen(extraParams['tabId']);";
+                        de.Click.Timeout = 120000;
+                    }
+                )
+                );
+        }
+
+        if (Model.AllowReadOrders)
+        {
+            m.Add(X.MenuItem()
+                .Icon(Icon.Bookmark)
+                .Text("Orders")
+                .DirectEvents(
+                    de =>
+                    {
+                        de.Click.Url = Url.Action("Index", "Orders");
+                        de.Click.ExtraParams.Add(new {containerId = "MainTabPanel"});
+                        de.Click.ExtraParams.Add(new {tabId = "OrdersPanel"});
+                        de.Click.EventMask.ShowMask = true;
+                        de.Click.EventMask.Msg = "Loading...";
+                        de.Click.Before = "return beforeTabOpen(extraParams['tabId']);";
+                        de.Click.Timeout = 120000;
+                    }
+                )
+                );
+
+            m.Add(X.MenuItem()
+                .Text("Orders Chart")
+                .Icon(Icon.TableMultiple)
+                .DirectEvents(
+                    de =>
+                    {
+                        de.Click.Url = Url.Action("Chart", "Orders");
+                        de.Click.ExtraParams.Add(new {containerId = "MainTabPanel"});
+                        de.Click.ExtraParams.Add(new {tabId = "OrdersChartPanel"});
+                        de.Click.EventMask.ShowMask = true;
+                        de.Click.EventMask.Msg = "Loading...";
+                        de.Click.Before = "return beforeTabOpen(extraParams['tabId']);";
+                        de.Click.Timeout = 120000;
+                    }
+                )
+                );
+        }
+
+        if (Model.AllowReadUsers)
+        {
+            m.Add(X.MenuItem()
+                .Text("Users")
+                .Icon(Icon.StatusOnline)
+                .DirectEvents(
+                    de =>
+                    {
+                        de.Click.Url = Url.Action("Index", "Users");
+                        de.Click.ExtraParams.Add(new {containerId = "MainTabPanel"});
+                        de.Click.ExtraParams.Add(new {tabId = "UsersPanel"});
+                        de.Click.EventMask.ShowMask = true;
+                        de.Click.EventMask.Msg = "Loading...";
+                        de.Click.Before = "return beforeTabOpen(extraParams['tabId']);";
+                        de.Click.Timeout = 120000;
+                    }
+                )
+                );
+        }
+
+        if (Model.AllowReadRoles)
+        {
+            m.Add(X.MenuItem()
+                .Text("Roles")
+                .Icon(Icon.StatusOnline)
+                .DirectEvents(
+                    de =>
+                    {
+                        de.Click.Url = Url.Action("Index", "Roles");
+                        de.Click.ExtraParams.Add(new {containerId = "MainTabPanel"});
+                        de.Click.ExtraParams.Add(new {tabId = "RolesPanel"});
+                        de.Click.EventMask.ShowMask = true;
+                        de.Click.EventMask.Msg = "Loading...";
+                        de.Click.Before = "return beforeTabOpen(extraParams['tabId']);";
+                        de.Click.Timeout = 120000;
+                    }
+                )
+                );
+        }
+    })
+)
+                        
+@(X.TabPanel()
+    .ID("MainTabPanel")
+    .Region(Region.Center)
+    .MinTabWidth(100)
+    .Plugins(plugins => plugins.Add(new TabCloseMenu()))
+    .Items(
+        X.Panel()
+            .Layout(LayoutType.Fit)
+            .Title("Dashboard")
+            .Items(
+                X.Portal()
+                    .Border(false)
+                    .Items(
+                        X.PortalColumn()
+                            .ItemsFromAction("ChartLast31Days", "Orders"),
+                                                
+                        X.PortalColumn()
+                            .ItemsFromAction("ChartByTypeLast31Days", "Orders")
+                    )
+            )
+    )
+)

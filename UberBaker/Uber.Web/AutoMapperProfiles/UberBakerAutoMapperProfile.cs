@@ -18,6 +18,7 @@ namespace Uber.Web.AutoMapperProfiles
             CreateMap<Order, OrderModel>();
             CreateMap<Product, ProductModel>();
             CreateMap<ProductType, ProductTypeModel>();
+            CreateMap<Permission, PermissionModel>();
 
             CreateMap<UserModel, User>();
             CreateMap<UserProfileModel, UserProfile>();
@@ -28,6 +29,7 @@ namespace Uber.Web.AutoMapperProfiles
             CreateMap<AddressModel, Address>();
             CreateMap<CountryModel, Country>();
             CreateMap<OrderModel, Order>();
+            CreateMap<PermissionModel, Permission>();
         }
     }
 }

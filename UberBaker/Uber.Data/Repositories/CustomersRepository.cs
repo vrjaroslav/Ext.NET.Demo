@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Uber.Core;
 using Uber.Data.Abstract;
@@ -64,7 +65,7 @@ namespace Uber.Data.Repositories
 			return customer.IsNew ? this.Add(customer) : this.Update(customer);
 		}
 
-		public IQueryable<Country> GetCountries()
+        public IQueryable<Country> GetCountries()
 		{
 			return DbContext.Countries;
 		}

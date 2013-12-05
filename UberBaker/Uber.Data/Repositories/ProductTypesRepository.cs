@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Uber.Core;
 using Uber.Data.Abstract;
@@ -69,6 +70,6 @@ namespace Uber.Data.Repositories
 			return productType.IsNew ? this.Add(productType) : this.Update(productType);
 		}
 
-		#endregion
+        #endregion
 	}
 }

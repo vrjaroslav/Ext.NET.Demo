@@ -1,4 +1,7 @@
 ﻿using System.Web.Mvc;
+using Ext.Net;
+using Ext.Net.MVC;
+using Uber.Web.Attributes;
 using Uber.Web.Models;
 using WebMatrix.WebData;
 
@@ -9,6 +12,7 @@ namespace Uber.Web.Controllers
 	{
         #region Actions
 
+        [AuthorizeAction("User", new[] { "Read" })]
         public ActionResult Index()
 		{
             return this.View();
@@ -39,7 +43,9 @@ namespace Uber.Web.Controllers
                 return RedirectToAction("Index", "Home");
 			}
 
-            return View(model);
+            X.Msg.Alert("Authentification Error", "Provided wrong login or password").Show();
+
+            return this.Direct();
 		}
 
 		public ActionResult LogOff()

@@ -21,17 +21,49 @@ namespace Uber.Data
 
             SeedMembership(db);
 
-			// IMPORTANT!!!
             db.SaveChanges();
-
         }
 
         private void SeedMembership(UberContext db)
         {
+            var administratorPermissions = new List<Permission>
+            {
+                new Permission { ObjectType = "Customer", PermissionType = PermissionType.Read },
+                new Permission { ObjectType = "Customer", PermissionType = PermissionType.Create },
+                new Permission { ObjectType = "Customer", PermissionType = PermissionType.Update },
+                new Permission { ObjectType = "Customer", PermissionType = PermissionType.Delete },
+            
+                new Permission { ObjectType = "Product", PermissionType = PermissionType.Read },
+                new Permission { ObjectType = "Product", PermissionType = PermissionType.Create },
+                new Permission { ObjectType = "Product", PermissionType = PermissionType.Update },
+                new Permission { ObjectType = "Product", PermissionType = PermissionType.Delete },
+
+                new Permission { ObjectType = "Order", PermissionType = PermissionType.Read },
+                new Permission { ObjectType = "Order", PermissionType = PermissionType.Create },
+                new Permission { ObjectType = "Order", PermissionType = PermissionType.Update },
+                new Permission { ObjectType = "Order", PermissionType = PermissionType.Delete },
+
+                new Permission { ObjectType = "ProductType", PermissionType = PermissionType.Read },
+                new Permission { ObjectType = "ProductType", PermissionType = PermissionType.Create },
+                new Permission { ObjectType = "ProductType", PermissionType = PermissionType.Update },
+                new Permission { ObjectType = "ProductType", PermissionType = PermissionType.Delete },
+
+                new Permission { ObjectType = "Role", PermissionType = PermissionType.Read },
+                new Permission { ObjectType = "Role", PermissionType = PermissionType.Create },
+                new Permission { ObjectType = "Role", PermissionType = PermissionType.Update },
+                new Permission { ObjectType = "Role", PermissionType = PermissionType.Delete },
+
+                new Permission { ObjectType = "User", PermissionType = PermissionType.Read },
+                new Permission { ObjectType = "User", PermissionType = PermissionType.Create },
+                new Permission { ObjectType = "User", PermissionType = PermissionType.Update },
+                new Permission { ObjectType = "User", PermissionType = PermissionType.Delete }
+            };
+
             // Adding Administrator
             Role adminRole = new Role
             {
-                Name = "Administrator"
+                Name = "Administrator",
+                Permisions = administratorPermissions
             };
             db.Roles.Add(adminRole);
 
@@ -41,21 +73,29 @@ namespace Uber.Data
                 Password = Crypto.HashPassword("demo"),
                 Role = adminRole
             };
-
             db.Users.Add(admin);
 
             db.Profiles.Add(new UserProfile
             {
                 Email = "admin@uberbaker.com",
                 FirstName = "Admin",
-                LastName = "",
+                LastName = "Uber",
                 User = admin
             });
 
             // Adding Manager
+            var managerPermissions = new List<Permission>
+            {
+                new Permission { ObjectType = "Product", PermissionType = PermissionType.Read },
+                new Permission { ObjectType = "Product", PermissionType = PermissionType.Create },
+                new Permission { ObjectType = "Product", PermissionType = PermissionType.Update },
+                new Permission { ObjectType = "Product", PermissionType = PermissionType.Delete }
+            };
+
             Role managerRole = new Role
             {
-                Name = "Manager"
+                Name = "Manager",
+                Permisions = managerPermissions
             };
             db.Roles.Add(managerRole);
 
@@ -72,14 +112,22 @@ namespace Uber.Data
             {
                 Email = "manager@uberbaker.com",
                 FirstName = "Manager",
-                LastName = "",
+                LastName = "Uber",
                 User = manager
             });
 
             // Adding User
+            var usersPermissions = new List<Permission>
+            {
+                new Permission { ObjectType = "Product", PermissionType = PermissionType.Read },
+                new Permission { ObjectType = "ProductType", PermissionType = PermissionType.Read },
+                new Permission { ObjectType = "Orders", PermissionType = PermissionType.Read },
+                new Permission { ObjectType = "Users", PermissionType = PermissionType.Read }
+            };
             Role userRole = new Role
             {
-                Name = "User"
+                Name = "User",
+                Permisions = usersPermissions
             };
             db.Roles.Add(userRole);
 

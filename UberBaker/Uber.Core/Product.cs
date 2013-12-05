@@ -4,6 +4,7 @@ using System.ComponentModel;
 
 namespace Uber.Core
 {
+    [Securable]
     public class Product : BaseItem
 	{
 		[Required]

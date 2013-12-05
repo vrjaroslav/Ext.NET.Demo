@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Uber.Core
 {
+    [Securable]
 	public class Customer : BaseItem
 	{
 		[Required]

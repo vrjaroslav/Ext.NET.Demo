@@ -1,0 +1,37 @@
+﻿@using Uber.Web.Helpers
+@model Uber.Web.Models.FormPanelTopToolbarModel
+@{
+    var X = Html.X();
+}
+
+@X.ToolbarFill()
+
+@if (Model.SaveButtonAvailable)
+{
+    @(X.Button()
+          .ID(Model.ObjectType.Pluralize() + "SaveButton")
+          .Text("Save")
+          .Disabled(true)
+          .Icon(Icon.Disk)
+          .DirectEvents(de =>
+          {
+              de.Click.Url = Url.Action("Save", Model.ObjectType.Pluralize());
+              de.Click.FormID = Model.ObjectType.Pluralize() + "Form";
+              de.Click.EventMask.ShowMask = true;
+              de.Click.Success = "recordAddSuccess('" + Model.ObjectType.Pluralize() + "');";
+          })
+    )
+}
+
+@if (Model.SaveButtonAvailable)
+{
+    @(X.Button()
+          .ID(Model.ObjectType.Pluralize() + "CancelButton")
+          .Text("Cancel")
+          .Disabled(true)
+          .Icon(Icon.Cross)
+          .Listeners(l => {
+                              l.Click.Handler = "recordSaveCancel('" + Model.ObjectType.Pluralize() + "');";
+          })
+    )
+}

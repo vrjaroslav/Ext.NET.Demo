@@ -24,7 +24,7 @@ namespace Uber.Services
 
 		#endregion
 
-        #region Date methods
+        #region Data methods
 
         public List<UserProfile> GetAll()
         {

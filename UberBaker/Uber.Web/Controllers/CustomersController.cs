@@ -5,11 +5,13 @@ using Ext.Net;
 using Ext.Net.MVC;
 using Uber.Core;
 using Uber.Services;
+using Uber.Web.Attributes;
 using Uber.Web.Helpers;
 using Uber.Web.Models;
 
 namespace Uber.Web.Controllers
 {
+    [Authorize]
     public class CustomersController : Controller
     {
         private ICustomersService service { get; set; }
@@ -30,6 +32,7 @@ namespace Uber.Web.Controllers
 
 		#region Actions
 
+        [AuthorizeAction("Customer", new[] { "Read" })]
         public ActionResult Index(string containerId)
         {
             var result = new Ext.Net.MVC.PartialViewResult
@@ -44,6 +47,7 @@ namespace Uber.Web.Controllers
             return result;
         }
 
+        [AuthorizeAction("Customer", new[] { "Create", "Update" })]
         public ActionResult Save(CustomerModel customer)
 		{
             service.Save(Mapper.Map<CustomerModel, Customer>(customer));
@@ -51,6 +55,7 @@ namespace Uber.Web.Controllers
 			return this.Direct();
 		}
 
+        [AuthorizeAction("Customer", new[] { "Delete" })]
 		public ActionResult Delete(int id)
 		{
             service.Delete(id);
@@ -58,6 +63,7 @@ namespace Uber.Web.Controllers
 			return this.Direct();
 		}
 
+        [AuthorizeAction("Customer", new[] { "Read" })]
         public ActionResult ReadData(StoreRequestParameters parameters, bool getAll = false)
         {
             List<CustomerModel> data = Mapper.Map<List<Customer>, List<CustomerModel>>(service.GetAll());

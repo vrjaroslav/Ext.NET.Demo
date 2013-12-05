@@ -12,6 +12,7 @@ using Uber.Web.Providers;
 
 namespace Uber.Web.Controllers
 {
+    [Authorize]
     public class UserProfilesController : Controller
     {
         private IUserProfilesService service { get; set; }

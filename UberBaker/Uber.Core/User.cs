@@ -1,9 +1,8 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Uber.Core
 {
+    [Securable]
 	public class User : BaseItem
 	{
         public string UserName { get; set; }

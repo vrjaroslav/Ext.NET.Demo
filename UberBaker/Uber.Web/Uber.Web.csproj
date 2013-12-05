@@ -71,6 +71,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Entity.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -207,6 +208,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Attributes\AuthorizeActionAttribute.cs" />
     <Compile Include="AutoMapperConfiguration.cs" />
     <Compile Include="AutoMapperProfiles\UberBakerAutoMapperProfile.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -214,8 +216,10 @@
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="Controllers\PermissionsController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\ProductTypesController.cs" />
+    <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\UserProfilesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -224,14 +228,19 @@
     <Compile Include="Helpers\GravatarHtmlHelper.cs" />
     <Compile Include="Helpers\ListHelper.cs" />
     <Compile Include="Helpers\QueryableHelper.cs" />
+    <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Models\AddressModel.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\CountryModel.cs" />
     <Compile Include="Models\CustomerModel.cs" />
+    <Compile Include="Models\FormPanelTopToolbarModel.cs" />
+    <Compile Include="Models\GridPanelTopToolbarModel.cs" />
+    <Compile Include="Models\LeftAppMenuModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\LocalPasswordModel.cs" />
     <Compile Include="Models\OrderChartData.cs" />
     <Compile Include="Models\OrderModel.cs" />
+    <Compile Include="Models\PermissionModel.cs" />
     <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Models\ProductTypeModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
@@ -323,6 +332,24 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Orders\ChartByTypeLast31Days.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Roles\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Permissions\GetPermissionsCheckboxGroup.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\GridPanelTopToolbar.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\FormPanelTopToolbar.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\LeftAppMenu.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\AppMenu.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

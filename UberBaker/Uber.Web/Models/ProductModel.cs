@@ -18,7 +18,7 @@ namespace Uber.Web.Models
         [Column(Flex = 1, Order = 4)]
         public string Description { get; set; }
 
-        [ModelField(UseNull = true)]
+        [ModelField()]
         [Column(Width = 100, Order = 5)]
         public decimal UnitPrice { get; set; }
 

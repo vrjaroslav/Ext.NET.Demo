@@ -23,7 +23,7 @@
                     .Reader(X.JsonReader().Root("data"))
                 )
                 .Sorters(
-                    Html.X().DataSorter().Property("Name").Direction(Ext.Net.SortDirection.ASC)
+                    X.DataSorter().Property("Name").Direction(Ext.Net.SortDirection.ASC)
                 )
             )
             .ColumnModel(
@@ -55,40 +55,23 @@
                     .Sortable(false)
             )
             .Features(
-                Html.X().GridFilters()
+                X.GridFilters()
                     .Filters(
-                        Html.X().NumericFilter().DataIndex("Id"),
-                        Html.X().StringFilter().DataIndex("Name"),
-                        Html.X().StringFilter().DataIndex("ShortCode"),
-                        Html.X().StringFilter().DataIndex("Description"),
-                        Html.X().StringFilter().DataIndex("ProductTypeName"),
-                        Html.X().NumericFilter().DataIndex("UnitPrice")
+                        X.NumericFilter().DataIndex("Id"),
+                        X.StringFilter().DataIndex("Name"),
+                        X.StringFilter().DataIndex("ShortCode"),
+                        X.StringFilter().DataIndex("Description"),
+                        X.StringFilter().DataIndex("ProductTypeName"),
+                        X.NumericFilter().DataIndex("UnitPrice")
                     )
             )
             .TopBar(
-                Html.X().Toolbar()
-                    .Items(
-                        Html.X().Button()
-                            .Text("Add")
-                            .Icon(Icon.Add)
-                            .Handler("addRecordButtonHandler('Products', new Product({ ProductTypeId: null, UnitPrice: 0 }));"),
-
-                        Html.X().Button()
-                            .ID("ProductsDeleteButton")
-                            .Text("Delete")
-                            .Disabled(true)
-                            .Icon(Icon.Exclamation)
-                            .DirectEvents(de => {
-                                de.Click.Url = Url.Action("Delete", "Products");
-                                de.Click.Confirmation.Message = "Are you sure you want to delete this record?";
-                                de.Click.Confirmation.ConfirmRequest = true;
-                                de.Click.ExtraParams.Add(new Parameter("id", "getSelectedIdParameter(this.up('grid'))", ParameterMode.Raw));
-                                de.Click.Success = "recordDeleteSuccess(this, this.up('grid'), 'Products');";
-                            })
-                    )
+                X.Toolbar()
+                    .ItemsFromAction("GridPanelTopToolbar", "Permissions", new { typeName = "Product" })
+                    
             )
             .SelectionModel(
-                Html.X().RowSelectionModel()
+                X.RowSelectionModel()
                     .Mode(SelectionMode.Single)
                     .Listeners(l =>
                     {
@@ -97,7 +80,7 @@
                     })
             )
             .BottomBar(
-                Html.X().PagingToolbar()
+                X.PagingToolbar()
             ),
                 
         X.FormPanel()
@@ -134,36 +117,16 @@
                     .ValueField("Id")
                     .ForceSelection(true)
                     .Store(X.StoreFor<ProductTypeModel>()
-                        .Proxy(Html.X().AjaxProxy()
+                        .Proxy(X.AjaxProxy()
                             .ExtraParams(e => e.Add(new Parameter("getAll", "true", ParameterMode.Raw)))
                             .Url(Url.Action("ReadData", "ProductTypes"))
-                            .Reader(Html.X().JsonReader().Root("data"))
+                            .Reader(X.JsonReader().Root("data"))
                         )
                     )
             )
             .TopBar(
-                Html.X().Toolbar()
-                    .Items(
-                        X.ToolbarFill(),
-                        X.Button()
-                            .ID("ProductsSaveButton")
-                            .Text("Save")
-                            .Disabled(true)
-                            .Icon(Icon.Disk)
-                            .DirectEvents(de => {
-                                de.Click.Url = Url.Action("Save", "Products");
-                                de.Click.FormID = "ProductsForm";
-                                de.Click.EventMask.ShowMask = true;
-                                de.Click.Success = "recordAddSuccess('Products');";
-                            }),
-                        X.Button()
-                            .ID("ProductsCancelButton")
-                            .Text("Cancel")
-                            .Disabled(true)
-                            .Icon(Icon.Cross)
-                            .Listeners(l => {
-                                l.Click.Handler = "recordSaveCancel('Products');";
-                            }))
+                X.Toolbar()
+                    .ItemsFromAction("FormPanelTopToolbar", "Permissions", new { typeName = "Product" })
             )
     )
 )

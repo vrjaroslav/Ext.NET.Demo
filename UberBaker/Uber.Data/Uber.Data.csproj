@@ -81,13 +81,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IBaseRepository.cs" />
-    <Compile Include="ProductTypeJsonConverter.cs" />
     <Compile Include="Repositories\AddressesRepository.cs" />
     <Compile Include="Repositories\CountriesRepository.cs" />
     <Compile Include="Repositories\CustomersRepository.cs" />
     <Compile Include="Repositories\OrdersRepository.cs" />
+    <Compile Include="Repositories\PermissionsRepository.cs" />
     <Compile Include="Repositories\ProductsRepository.cs" />
     <Compile Include="Repositories\ProductTypesRepository.cs" />
+    <Compile Include="Repositories\RolesRepository.cs" />
     <Compile Include="Repositories\UserProfilesRepository.cs" />
     <Compile Include="Repositories\UsersRepository.cs" />
     <Compile Include="UberContext.cs" />

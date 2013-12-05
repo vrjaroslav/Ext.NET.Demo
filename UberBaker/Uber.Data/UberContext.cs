@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Objects;
 using System.Linq;
 using Uber.Core;
 
@@ -17,11 +18,9 @@ namespace Uber.Data
         public DbSet<Country> Countries { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<UserProfile> Profiles { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
 
-		public UberContext() : base("UberContext")
-		{
-            //Database.SetInitializer(null);
-		}
+		public UberContext() : base("UberContext") {}
 
 		protected override void OnModelCreating(DbModelBuilder builder)
 		{
@@ -35,9 +34,14 @@ namespace Uber.Data
 			builder.Entity<Customer>().ToTable("Customers");
 			builder.Entity<User>().ToTable("Users");
             builder.Entity<Role>().ToTable("Roles");
+            builder.Entity<Role>().HasMany<Permission>(r => r.Permisions)
+                .WithOptional(p => p.Role).HasForeignKey(p => p.RoleId);
+            builder.Entity<Role>().HasMany<User>(r => r.Users)
+                .WithRequired(p => p.Role).HasForeignKey(p => p.RoleId);
             builder.Entity<UserProfile>().ToTable("Profiles");
 			builder.Entity<Country>().ToTable("Countries");
 			builder.Entity<Address>().ToTable("Addresses");
+            builder.Entity<Permission>().ToTable("Permissions");
 		}
 
 		public override int SaveChanges()
@@ -56,14 +60,15 @@ namespace Uber.Data
 
 			var modified = this.ChangeTracker.Entries<BaseItem>().Where(c => c.State == EntityState.Modified);
 
-			if (modified != null)
-			{
-				foreach (var entry in modified)
-				{
-					((BaseItem)entry.Entity).SetDateUpdated();
-				}
-			}
-
+            //if (modified != null)
+            //{
+            //    foreach (var entry in modified)
+            //    {
+            //        ((BaseItem)entry.Entity).SetDateUpdated();
+            //    }
+            //}
+            base.SaveChanges();
+            
 			return base.SaveChanges();
 		}
     }

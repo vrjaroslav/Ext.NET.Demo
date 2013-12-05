@@ -1,0 +1,158 @@
+﻿@model Uber.Web.Models.RoleModel
+@{
+    var X = Html.X();
+}
+
+
+@(X.Panel()
+      .ID("RolesPanel")
+      .Title("Roles")
+      .Layout(LayoutType.Border)
+      .Closable(true)
+      .Items(
+          X.GridPanel()
+              .Region(Region.Center)
+              .ID("RolesGrid")
+              .ForceFit(true)
+              .Store(X.Store()
+                  .RemoteSort(true)
+                  .RemotePaging(true)
+                  .PageSize(25)
+                  .Model(X.Model()
+                      .ClientIdProperty("PhantomId")
+                      .IDProperty("Id")
+                      .Name("Role")
+                      .Fields(
+                          X.ModelFieldFor(m => m.Id)
+                              .UseNull(true),
+                          X.ModelFieldFor(m => m.PhantomId),
+                          X.ModelFieldFor(m => m.Name)
+                      )
+                  )
+                  .ID("RolesStore")
+                  .Proxy(X.AjaxProxy()
+                      .Url(Url.Action("ReadData", "Roles"))
+                      .Reader(X.JsonReader().Root("data"))
+                  )
+                  .Sorters(
+                      Html.X().DataSorter().Property("Name").Direction(Ext.Net.SortDirection.ASC)
+                  )
+              )
+              .ColumnModel(
+                  X.ColumnFor(m => m.Id)
+                      .ToBuilder<Column.Builder>()
+                      .Text("Id")
+                      .Width(50),
+                  X.ColumnFor(m => m.Name)
+                      .ToBuilder<Column.Builder>()
+                      .Text("Role Name")
+                      .Width(100)
+              )
+              .Features(
+                  Html.X().GridFilters()
+                      .Filters(
+                          Html.X().NumericFilter().DataIndex("Id"),
+                          Html.X().StringFilter().DataIndex("Name")
+                      )
+              )
+              .TopBar(
+                  X.Toolbar()
+                      .Items(
+                        X.Button()
+                            .Text("Add")
+                            .Icon(Icon.Add)
+                            .Disabled(true)
+                            .Handler("addRecordButtonHandler('Role', new Role());"),
+
+                        X.Button()
+                            .ID("RolesDeleteButton")
+                            .Text("Disable")
+                            .Icon(Icon.Exclamation)
+                            .Disabled(true)
+                            .DirectEvents(de =>
+                            {
+                                de.Click.Url = Url.Action("Disable", "Roles");
+                                de.Click.Confirmation.Message = "Are you sure you want to disable this account?";
+                                de.Click.Confirmation.ConfirmRequest = true;
+                                de.Click.ExtraParams.Add(new Parameter("id", "getSelectedIdParameter(this.up('grid'))", ParameterMode.Raw));
+                                de.Click.Success = "recordDeleteSuccess(this, this.up('grid'), 'Roles');";
+                            })
+                      )
+              )
+              .SelectionModel(
+                  X.RowSelectionModel()
+                      .Mode(SelectionMode.Single)
+                      .DirectEvents(de =>
+                      {
+                          de.Select.Url = Url.Action("GetPermissionsCheckboxGroup", "Permissions");
+                          de.Select.ExtraParams.Add(new { containerId = "RolesPermissionPanel" });
+                          de.Select.ExtraParams.Add(X.Parameter()
+                              .Name("id")
+                              .Value("getSelectedIdParameter(#{RolesGrid})")
+                              .Mode(ParameterMode.Raw));
+                          de.Select.EventMask.ShowMask = true;
+                          de.Select.EventMask.Msg = "Loading...";
+                          de.Select.Timeout = 120000;
+                      })
+                      .Listeners(l =>
+                      {
+                          l.Select.Handler = "gridRowSelected('Roles', record);";
+                          l.Deselect.Handler = "gridRowDeselected('Roles');";
+                      })
+              )
+              .BottomBar(
+                  Html.X().PagingToolbar()
+              ),
+
+          X.FormPanel()
+              .ID("RolesForm")
+              .Region(Region.East)
+              .Width(400)
+              .AutoScroll(true)
+              .BodyPaddingSummary("0 10")
+              .DefaultAnchor("100%")
+              .Listeners(l =>
+              {
+                  l.ValidityChange.Handler = "validityChange('Roles', valid);";
+              })
+              .Items(
+                  X.HiddenFor(m => m.Id)
+                      .ID("RolesIdValue"),
+                  X.DisplayFieldFor(m => m.Id)
+                      .ID("RolesId"),
+                  X.TextFieldFor(m => m.Name)
+                      .ID("RolesFirstName")
+                      .FieldLabel("First Name")
+                      .AllowBlank(false),
+                  X.Panel()
+                      .ID("RolesPermissionPanel")
+                      .Layout(LayoutType.Form)
+              )
+              .TopBar(
+                  X.Toolbar()
+                      .Items(
+                          X.ToolbarFill(),
+                          X.Button()
+                              .ID("RolesSaveButton")
+                              .Disabled(true)
+                              .Text("Save")
+                              .Icon(Icon.Disk)
+                              .DirectEvents(de =>
+                              {
+                                  de.Click.Url = Url.Action("Save", "Roles");
+                                  de.Click.FormID = "RolesForm";
+                                  de.Click.Success = "recordAddSuccess('Roles'); ";
+                              }),
+                          X.Button()
+                              .ID("RolesCancelButton")
+                              .Text("Cancel")
+                              .Disabled(true)
+                              .Icon(Icon.Cross)
+                              .Listeners(l =>
+                              {
+                                  l.Click.Handler = "recordSaveCancel('Roles');";
+                              })
+                      )
+              )
+      )
+)

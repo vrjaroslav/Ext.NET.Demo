@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Uber.Core;
 using Uber.Data.Abstract;
@@ -26,14 +27,14 @@ namespace Uber.Data.Repositories
 
 		public User Get(int id)
 		{
-            return this.DbContext.Users.SingleOrDefault(u => u.Id == id);
+            return this.DbContext.Users.Include("Role").SingleOrDefault(u => u.Id == id);
 		}
 
         public IQueryable<User> GetAll(bool includingDisabled = false)
 		{
             return includingDisabled ?
-                this.DbContext.Users :
-                this.DbContext.Users.Where(u => !u.Disabled);
+                this.DbContext.Users.Include("Role") :
+                this.DbContext.Users.Include("Role").Where(u => !u.Disabled);
 		}
 
 		public User Add(User user)
@@ -65,6 +66,6 @@ namespace Uber.Data.Repositories
 			return user.IsNew ? this.Add(user) : this.Update(user);
 		}
 
-		#endregion
+        #endregion
 	}
 }

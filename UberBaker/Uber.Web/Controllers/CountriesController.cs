@@ -10,6 +10,7 @@ using Uber.Web.Models;
 
 namespace Uber.Web.Controllers
 {
+    [Authorize]
     public class CountriesController : Controller
     {
         private ICountriesService service { get; set; }

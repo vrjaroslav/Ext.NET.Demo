@@ -18,8 +18,12 @@
         };
 
         var addRecordButtonHandler = function(type, record) {
-            App[type + "SaveButton"].disable();
-            App[type + "CancelButton"].enable();
+            if (App[type + "SaveButton"])
+                App[type + "SaveButton"].disable();
+            
+            if (App[type + "CancelButton"])
+                App[type + "CancelButton"].enable();
+            
             App[type + 'Spot'].show(App[type + 'Form']);
             App[type + 'Form'].reset();
             App[type + 'Grid'].getSelectionModel().deselectAll();
@@ -39,17 +43,24 @@
             App[type + 'Form'].reset();
         };
 
-        var gridRowSelected = function(type, record) {
-            App[type + "DeleteButton"].enable();
-            App[type + "SaveButton"].enable();
-            App[type + "CancelButton"].enable();
+        var gridRowSelected = function (type, record) {
+            if (App[type + "DeleteButton"])
+                App[type + "DeleteButton"].enable();
+            
+            if (App[type + "SaveButton"])
+                App[type + "SaveButton"].enable();
+
+            if (App[type + "CancelButton"])
+                App[type + "CancelButton"].enable();
+
             App[type + 'Form'].getForm().loadRecord(record);
             App[type + 'Id'].setValue(record.get('Id'));
             focusFormField(App[type + 'Form'].getForm());
         };
 
-        var gridRowDeselected = function(type, record) {
-            App[type + "DeleteButton"].disable();
+        var gridRowDeselected = function (type, record) {
+            if (App[type + "DeleteButton"])
+                App[type + "DeleteButton"].disable();
         };
 
         var recordAddSuccess = function(type) {
@@ -63,8 +74,12 @@
             App[type + 'Form'].reset(true);
             if (App[type + 'Spot'].active)
                 App[type + 'Spot'].hide();
-            App[type + "SaveButton"].disable();
-            App[type + "CancelButton"].disable();
+
+            if (App[type + "SaveButton"])
+                App[type + "SaveButton"].disable();
+            
+            if (App[type + "CancelButton"])
+                App[type + "CancelButton"].disable();
             App[type + 'Grid'].getSelectionModel().deselect(App[type + 'Form'].getRecord());
         };
 
@@ -75,7 +90,8 @@
         };
         
         var validityChange = function (type, valid) {
-            App[type + "SaveButton"].setDisabled(!valid);
+            if (App[type + "SaveButton"])
+                App[type + "SaveButton"].setDisabled(!valid);
         };
     </script>
 }
@@ -144,167 +160,12 @@
                             .Text("Uber Baker Demo Application")
                             .MenuAlign("tr-br?")
                             .Menu(X.Menu()
-                                .Items(
-                                    X.MenuItem()
-                                        .Text("Profile")
-                                        .Icon(Icon.User)
-                                        .DirectEvents(de =>
-                                        {
-                                            de.Click.Url = Url.Action("CurrentProfilePanel", "UserProfiles");
-                                            de.Click.ExtraParams.Add(new { containerId = "MainTabPanel" });
-                                            de.Click.ExtraParams.Add(new { tabId = "ProfilePanel" });
-                                            de.Click.EventMask.ShowMask = true;
-                                            de.Click.EventMask.Msg = "Loading...";
-                                            de.Click.Before = "return beforeTabOpen(extraParams['tabId']);";
-                                            de.Click.Timeout = 120000;
-                                        }),
-                                        
-                                    X.MenuItem()
-                                        .Text("Log Out")
-                                        .Icon(Icon.DoorOut)
-                                        .DirectEvents(de =>
-                                        {
-                                            de.Click.Confirmation.ConfirmRequest = true;
-                                            de.Click.Confirmation.Message = "Are you sure you want to log out?";
-                                            de.Click.Url = Url.Action("LogOff", "Account");
-                                        })
-                                )
+                                .ItemsFromAction("AppMenu", "Permissions")
                             )
                             )
                         )
                 )
-                .Items(
-                    X.MenuPanel()
-                        .Region(Region.West)
-                        .Width(215)
-                        .Split(true)
-                        .Menu(m =>
-                        {
-                            m.Add(X.MenuItem()
-                                .Icon(Icon.ApplicationViewList)
-                                .Text("Products")
-                                .DirectEvents(
-                                    de =>
-                                    {
-                                        de.Click.Url = Url.Action("Index", "Products");
-                                        de.Click.ExtraParams.Add(new {containerId = "MainTabPanel"});
-                                        de.Click.ExtraParams.Add(new { tabId = "ProductsPanel" });
-                                        de.Click.EventMask.ShowMask = true;
-                                        de.Click.EventMask.Msg = "Loading...";
-                                        de.Click.Before = "return beforeTabOpen(extraParams['tabId']);";
-                                        de.Click.Timeout = 120000;
-                                    }
-                                )
-                            );
-
-                            m.Add(X.MenuItem()
-                                .Icon(Icon.Basket)
-                                .Text("ProductTypes")
-                                .DirectEvents(
-                                    de =>
-                                    {
-                                        de.Click.Url = Url.Action("Index", "ProductTypes");
-                                        de.Click.ExtraParams.Add(new {containerId = "MainTabPanel"});
-                                        de.Click.ExtraParams.Add(new { tabId = "ProductTypesPanel" });
-                                        de.Click.EventMask.ShowMask = true;
-                                        de.Click.EventMask.Msg = "Loading...";
-                                        de.Click.Before = "return beforeTabOpen(extraParams['tabId']);";
-                                        de.Click.Timeout = 120000;
-                                    }
-                                )
-                            );
-
-                            m.Add(X.MenuItem()
-                                .Text("Customers")
-                                .Icon(Icon.UserSuitBlack)
-                                .DirectEvents(
-                                    de =>
-                                    {
-                                        de.Click.Url = Url.Action("Index", "Customers");
-                                        de.Click.ExtraParams.Add(new {containerId = "MainTabPanel"});
-                                        de.Click.ExtraParams.Add(new { tabId = "CustomersPanel" });
-                                        de.Click.EventMask.ShowMask = true;
-                                        de.Click.EventMask.Msg = "Loading...";
-                                        de.Click.Before = "return beforeTabOpen(extraParams['tabId']);";
-                                        de.Click.Timeout = 120000;
-                                    }
-                                )
-                            );
-
-                            m.Add(X.MenuItem()
-                                .Icon(Icon.Bookmark)
-                                .Text("Orders")
-                                .DirectEvents(
-                                    de =>
-                                    {
-                                        de.Click.Url = Url.Action("Index", "Orders");
-                                        de.Click.ExtraParams.Add(new { containerId = "MainTabPanel" });
-                                        de.Click.ExtraParams.Add(new { tabId = "OrdersPanel" });
-                                        de.Click.EventMask.ShowMask = true;
-                                        de.Click.EventMask.Msg = "Loading...";
-                                        de.Click.Before = "return beforeTabOpen(extraParams['tabId']);";
-                                        de.Click.Timeout = 120000;
-                                    }
-                                )
-                            );
-
-                            m.Add(X.MenuItem()
-                                .Text("Orders Chart")
-                                .Icon(Icon.TableMultiple)
-                                .DirectEvents(
-                                    de =>
-                                    {
-                                        de.Click.Url = Url.Action("Chart", "Orders");
-                                        de.Click.ExtraParams.Add(new {containerId = "MainTabPanel"});
-                                        de.Click.ExtraParams.Add(new { tabId = "OrdersChartPanel" });
-                                        de.Click.EventMask.ShowMask = true;
-                                        de.Click.EventMask.Msg = "Loading...";
-                                        de.Click.Before = "return beforeTabOpen(extraParams['tabId']);";
-                                        de.Click.Timeout = 120000;
-                                    }
-                                )
-                            );
-                            
-                            m.Add(X.MenuItem()
-                                .Text("Users")
-                                .Icon(Icon.StatusOnline)
-                                .DirectEvents(
-                                    de =>
-                                    {
-                                        de.Click.Url = Url.Action("Index", "Users");
-                                        de.Click.ExtraParams.Add(new {containerId = "MainTabPanel"});
-                                        de.Click.ExtraParams.Add(new { tabId = "UsersPanel" });
-                                        de.Click.EventMask.ShowMask = true;
-                                        de.Click.EventMask.Msg = "Loading...";
-                                        de.Click.Before = "return beforeTabOpen(extraParams['tabId']);";
-                                        de.Click.Timeout = 120000;
-                                    }
-                                )
-                            );
-                        }),
-                        
-                    X.TabPanel()
-                        .ID("MainTabPanel")
-                        .Region(Region.Center)
-                        .MinTabWidth(100)
-                        .Plugins(plugins => plugins.Add(new TabCloseMenu()))
-                        .Items(
-                            X.Panel()
-                                .Layout(LayoutType.Fit)
-                                .Title("Dashboard")
-                                .Items(
-                                    X.Portal()
-                                        .Border(false)
-                                        .Items(
-                                            X.PortalColumn()
-                                                .ItemsFromAction("ChartLast31Days", "Orders"),
-                                                
-                                            X.PortalColumn()
-                                                .ItemsFromAction("ChartByTypeLast31Days", "Orders")
-                                        )
-                                )
-                        )
-                )
+                .ItemsFromAction("LeftAppMenu", "Permissions")
         )
     )   
 }

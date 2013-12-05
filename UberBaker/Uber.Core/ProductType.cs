@@ -2,6 +2,7 @@
 
 namespace Uber.Core
 {
+    [Securable]
     public class ProductType : BaseItem
     {
 		[Required]

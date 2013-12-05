@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Uber.Core;
 using Uber.Data.Abstract;
@@ -65,6 +66,6 @@ namespace Uber.Data.Repositories
 			return userProfile.IsNew ? this.Add(userProfile) : this.Update(userProfile);
 		}
 
-		#endregion
+        #endregion
     }
 }

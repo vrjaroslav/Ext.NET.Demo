@@ -7,11 +7,13 @@ using System.Linq;
 using System.Web.Mvc;
 using Uber.Core;
 using Uber.Services;
+using Uber.Web.Attributes;
 using Uber.Web.Helpers;
 using Uber.Web.Models;
 
 namespace Uber.Web.Controllers
 {
+    [Authorize]
     public class OrdersController : Controller
     {
         private IOrdersService service { get; set; }
@@ -32,6 +34,7 @@ namespace Uber.Web.Controllers
 
 		#region Actions
 
+        [AuthorizeAction("Order", new[] { "Create", "Update" })]
 		public ActionResult Save(OrderModel order)
 		{
             service.Save(Mapper.Map<OrderModel, Order>(order));
@@ -39,6 +42,7 @@ namespace Uber.Web.Controllers
 			return this.Direct();
 		}
 
+        [AuthorizeAction("Order", new[] { "Delete" })]
 		public ActionResult Delete(int id)
 		{
             service.Delete(id);
@@ -46,6 +50,7 @@ namespace Uber.Web.Controllers
 			return this.Direct();
 		}
 
+        [AuthorizeAction("Order", new[] { "Read" })]
         public ActionResult Index(string containerId)
         {
             var result = new Ext.Net.MVC.PartialViewResult
@@ -74,11 +79,13 @@ namespace Uber.Web.Controllers
             return result;
         }
 
+        [AuthorizeAction("Order", new[] { "Read" })]
         public ActionResult ChartLast31Days()
         {
             return this.PartialView("ChartLast31Days");
         }
 
+        [AuthorizeAction("Order", new[] { "Read" })]
         public ActionResult ChartByTypeLast31Days()
         {
             return this.PartialView("ChartByTypeLast31Days");
@@ -89,6 +96,7 @@ namespace Uber.Web.Controllers
 
         #region Data actions
 
+        [AuthorizeAction("Order", new[] { "Read" })]
         public ActionResult GetChartData(DateTime? startDate, DateTime? endDate)
 	    {
             if (startDate == null)
@@ -113,6 +121,7 @@ namespace Uber.Web.Controllers
             return new StoreResult(result);
 	    }
 
+        [AuthorizeAction("Order", new[] { "Read" })]
         public ActionResult GetDataLast31DaysByType()
 	    {
             DateTime startDate = DateTime.Now.AddDays(-31),
@@ -125,6 +134,7 @@ namespace Uber.Web.Controllers
 		    return new StoreResult(data);
 	    }
 
+        [AuthorizeAction("Order", new[] { "Read" })]
         public ActionResult ReadData(StoreRequestParameters parameters, bool getAll = false)
         {
             List<OrderModel> data = Mapper.Map<List<Order>, List<OrderModel>>(service.GetAll());
